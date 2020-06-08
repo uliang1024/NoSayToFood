@@ -1,0 +1,25 @@
+<resources>
+    <string name="app_name">FirebaseAuthApp</string>
+    <string name="facebook_app_id">832631157219595</string>
+    <string name="fb_login_protocol_scheme">fb832631157219595</string>
+    <string name="red">AuthenticatorApp</string>
+    <string name="blue">AuthenticatorApp</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
+
+    <string name="tab_text_1">斷食計畫</string>
+    <string name="tab_text_2">吃飯紀錄</string>
+    <string name="title_activity_main2">Main2Activity</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="viewGithub">View on GitHub</string>
+    <string name="actionToggleLineValues">Toggle Line Values</string>
+    <string name="actionToggleBarValues">Toggle Bar Values</string>
+    <string name="actionRemoveDataSet">Remove Data Set</string>
+
+
+</resources>

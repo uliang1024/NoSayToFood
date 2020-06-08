@@ -1,0 +1,492 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+<LinearLayout
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="#ECF0F1">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="450dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_gravity="center">
+        <ImageView
+            android:id="@+id/imageView5"
+            android:layout_margin="5dp"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            app:srcCompat="@drawable/moon"
+            android:layout_centerHorizontal="true" />
+
+        <TextView
+            android:id="@+id/fastingplan"
+            android:layout_width="130dp"
+            android:layout_height="50dp"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="50dp"
+            android:background="@drawable/fasting_rounde"
+            android:text="更改斷食計畫"
+            android:gravity="center"
+            android:paddingStart="20sp" />
+        <com.hookedonplay.decoviewlib.DecoView
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/dynamicArcView2"
+            android:layout_width="275dp"
+            android:layout_height="275dp"
+            android:layout_centerHorizontal="true"
+            custom:dv_arc_gravity_horizontal="Fill"
+            custom:dv_arc_gravity_vertical="Bottom"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/imageView5"/>
+        <com.hookedonplay.decoviewlib.DecoView
+            xmlns:custom="http://schemas.android.com/apk/res-auto"
+            android:id="@+id/dynamicArcView"
+            android:layout_width="275dp"
+            android:layout_height="275dp"
+            android:layout_centerHorizontal="true"
+            custom:dv_arc_gravity_horizontal="Fill"
+            custom:dv_arc_gravity_vertical="Bottom"
+            android:layout_marginTop="10dp"
+            android:layout_below="@+id/imageView5"/>
+
+        <ImageView
+            android:id="@+id/iv_bells"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:src="@drawable/bells"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="35sp"
+            android:layout_marginEnd="35sp"/>
+
+
+        <TextView
+            android:id="@+id/textPercentage"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:textSize="30sp" />
+        <TextView
+            android:id="@+id/status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_above="@+id/textPercentage"
+            android:textSize="20sp" />
+
+        <Button
+            android:id="@+id/end_fasting"
+            android:layout_width="150dp"
+            android:layout_height="55dp"
+            android:layout_centerHorizontal="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="20sp"
+            android:text="提前結束"
+            android:textSize="17sp"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        android:gravity="center">
+        <TextView
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:background="@drawable/fasting_completed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="已完成"
+            android:padding="5dp"
+            android:gravity="center_vertical" />
+        <TextView
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:background="@drawable/fasting_not_completed" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="未完成"
+            android:padding="5dp"
+            android:gravity="center_vertical" />
+        <TextView
+            android:layout_width="30sp"
+            android:layout_height="30sp"
+            android:background="@drawable/fasting_break" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:text="進行中"
+            android:padding="5dp"
+            android:gravity="center_vertical" />
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/imageView6"
+            android:layout_marginStart="10dp"
+            android:layout_marginEnd="10dp"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="fitXY"
+            app:srcCompat="@drawable/fasting_square" />
+
+        <com.baoyachi.stepview.HorizontalStepView
+            android:id="@+id/horizontalStepView"
+            android:layout_marginTop="15dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/title_water"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:text="今日喝多少水"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:layout_margin="20sp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp">
+
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/waveLoadingView1"
+            app:wlv_borderColor="@color/colorAccent"
+            app:wlv_borderWidth="3dp"
+            app:wlv_shapeType="circle"
+            app:wlv_round_rectangle="true"
+            app:wlv_triangle_direction="north"
+            app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleCenterStrokeWidth="3dp"
+            app:wlv_titleCenterColor="@android:color/white"
+            app:wlv_titleCenterSize="24sp"
+
+            app:wlv_titleTopStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleTopStrokeWidth="3dp"
+            app:wlv_titleTopColor="@android:color/white"
+            app:wlv_titleTopSize="24sp"
+
+            app:wlv_titleBottomStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleBottomStrokeWidth="3dp"
+            app:wlv_titleBottomColor="@android:color/white"
+            app:wlv_titleBottomSize="24sp"
+
+            app:wlv_waveAmplitude="70"
+            app:wlv_waveColor="@color/colorAccent" />
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/waveLoadingView2"
+            app:wlv_borderColor="@color/colorAccent"
+            app:wlv_borderWidth="3dp"
+            app:wlv_shapeType="circle"
+            app:wlv_round_rectangle="true"
+            app:wlv_triangle_direction="north"
+            app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleCenterStrokeWidth="3dp"
+            app:wlv_titleCenterColor="@android:color/white"
+            app:wlv_titleCenterSize="24sp"
+
+            app:wlv_titleTopStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleTopStrokeWidth="3dp"
+            app:wlv_titleTopColor="@android:color/white"
+            app:wlv_titleTopSize="24sp"
+
+            app:wlv_titleBottomStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleBottomStrokeWidth="3dp"
+            app:wlv_titleBottomColor="@android:color/white"
+            app:wlv_titleBottomSize="24sp"
+
+            app:wlv_waveAmplitude="70"
+            app:wlv_waveColor="@color/colorAccent" />
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/waveLoadingView3"
+            app:wlv_borderColor="@color/colorAccent"
+            app:wlv_borderWidth="3dp"
+            app:wlv_shapeType="circle"
+            app:wlv_round_rectangle="true"
+            app:wlv_triangle_direction="north"
+            app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleCenterStrokeWidth="3dp"
+            app:wlv_titleCenterColor="@android:color/white"
+            app:wlv_titleCenterSize="24sp"
+
+            app:wlv_titleTopStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleTopStrokeWidth="3dp"
+            app:wlv_titleTopColor="@android:color/white"
+            app:wlv_titleTopSize="24sp"
+
+            app:wlv_titleBottomStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleBottomStrokeWidth="3dp"
+            app:wlv_titleBottomColor="@android:color/white"
+            app:wlv_titleBottomSize="24sp"
+
+            app:wlv_waveAmplitude="70"
+            app:wlv_waveColor="@color/colorAccent"/>
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/waveLoadingView4"
+            app:wlv_borderColor="@color/colorAccent"
+            app:wlv_borderWidth="3dp"
+            app:wlv_shapeType="circle"
+            app:wlv_round_rectangle="true"
+            app:wlv_triangle_direction="north"
+            app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleCenterStrokeWidth="3dp"
+            app:wlv_titleCenterColor="@android:color/white"
+            app:wlv_titleCenterSize="24sp"
+
+            app:wlv_titleTopStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleTopStrokeWidth="3dp"
+            app:wlv_titleTopColor="@android:color/white"
+            app:wlv_titleTopSize="24sp"
+
+            app:wlv_titleBottomStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleBottomStrokeWidth="3dp"
+            app:wlv_titleBottomColor="@android:color/white"
+            app:wlv_titleBottomSize="24sp"
+
+            app:wlv_waveAmplitude="70"
+            app:wlv_waveColor="@color/colorAccent" />
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/waveLoadingView5"
+            app:wlv_borderColor="@color/colorAccent"
+            app:wlv_borderWidth="3dp"
+            app:wlv_shapeType="circle"
+            app:wlv_round_rectangle="true"
+            app:wlv_triangle_direction="north"
+            app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleCenterStrokeWidth="3dp"
+            app:wlv_titleCenterColor="@android:color/white"
+            app:wlv_titleCenterSize="24sp"
+
+            app:wlv_titleTopStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleTopStrokeWidth="3dp"
+            app:wlv_titleTopColor="@android:color/white"
+            app:wlv_titleTopSize="24sp"
+
+            app:wlv_titleBottomStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleBottomStrokeWidth="3dp"
+            app:wlv_titleBottomColor="@android:color/white"
+            app:wlv_titleBottomSize="24sp"
+
+            app:wlv_waveAmplitude="70"
+            app:wlv_waveColor="@color/colorAccent" />
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/waveLoadingView6"
+            app:wlv_borderColor="@color/colorAccent"
+            app:wlv_borderWidth="3dp"
+            app:wlv_shapeType="circle"
+            app:wlv_round_rectangle="true"
+            app:wlv_triangle_direction="north"
+            app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleCenterStrokeWidth="3dp"
+            app:wlv_titleCenterColor="@android:color/white"
+            app:wlv_titleCenterSize="24sp"
+
+            app:wlv_titleTopStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleTopStrokeWidth="3dp"
+            app:wlv_titleTopColor="@android:color/white"
+            app:wlv_titleTopSize="24sp"
+
+            app:wlv_titleBottomStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleBottomStrokeWidth="3dp"
+            app:wlv_titleBottomColor="@android:color/white"
+            app:wlv_titleBottomSize="24sp"
+
+            app:wlv_waveAmplitude="70"
+            app:wlv_waveColor="@color/colorAccent" />
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/waveLoadingView7"
+            app:wlv_borderColor="@color/colorAccent"
+            app:wlv_borderWidth="3dp"
+            app:wlv_shapeType="circle"
+            app:wlv_round_rectangle="true"
+            app:wlv_triangle_direction="north"
+            app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleCenterStrokeWidth="3dp"
+            app:wlv_titleCenterColor="@android:color/white"
+            app:wlv_titleCenterSize="24sp"
+
+            app:wlv_titleTopStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleTopStrokeWidth="3dp"
+            app:wlv_titleTopColor="@android:color/white"
+            app:wlv_titleTopSize="24sp"
+
+            app:wlv_titleBottomStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleBottomStrokeWidth="3dp"
+            app:wlv_titleBottomColor="@android:color/white"
+            app:wlv_titleBottomSize="24sp"
+
+            app:wlv_waveAmplitude="70"
+            app:wlv_waveColor="@color/colorAccent" />
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/waveLoadingView8"
+            app:wlv_borderColor="@color/colorAccent"
+            app:wlv_borderWidth="3dp"
+            app:wlv_shapeType="circle"
+            app:wlv_round_rectangle="true"
+            app:wlv_triangle_direction="north"
+            app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleCenterStrokeWidth="3dp"
+            app:wlv_titleCenterColor="@android:color/white"
+            app:wlv_titleCenterSize="24sp"
+
+            app:wlv_titleTopStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleTopStrokeWidth="3dp"
+            app:wlv_titleTopColor="@android:color/white"
+            app:wlv_titleTopSize="24sp"
+
+            app:wlv_titleBottomStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleBottomStrokeWidth="3dp"
+            app:wlv_titleBottomColor="@android:color/white"
+            app:wlv_titleBottomSize="24sp"
+
+            app:wlv_waveAmplitude="70"
+            app:wlv_waveColor="@color/colorAccent" />
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/waveLoadingView9"
+            app:wlv_borderColor="@color/colorAccent"
+            app:wlv_borderWidth="3dp"
+            app:wlv_shapeType="circle"
+            app:wlv_round_rectangle="true"
+            app:wlv_triangle_direction="north"
+
+            app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleCenterStrokeWidth="3dp"
+            app:wlv_titleCenterColor="@android:color/white"
+            app:wlv_titleCenterSize="24sp"
+
+            app:wlv_titleTopStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleTopStrokeWidth="3dp"
+            app:wlv_titleTopColor="@android:color/white"
+            app:wlv_titleTopSize="24sp"
+
+            app:wlv_titleBottomStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleBottomStrokeWidth="3dp"
+            app:wlv_titleBottomColor="@android:color/white"
+            app:wlv_titleBottomSize="24sp"
+
+            app:wlv_waveAmplitude="70"
+            app:wlv_waveColor="@color/colorAccent"/>
+        <me.itangqi.waveloadingview.WaveLoadingView
+            android:layout_weight="1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/waveLoadingView10"
+            app:wlv_borderColor="@color/colorAccent"
+            app:wlv_borderWidth="3dp"
+            app:wlv_shapeType="circle"
+            app:wlv_round_rectangle="true"
+            app:wlv_triangle_direction="north"
+            app:wlv_titleCenterStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleCenterStrokeWidth="3dp"
+            app:wlv_titleCenterColor="@android:color/white"
+            app:wlv_titleCenterSize="24sp"
+
+            app:wlv_titleTopStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleTopStrokeWidth="3dp"
+            app:wlv_titleTopColor="@android:color/white"
+            app:wlv_titleTopSize="24sp"
+
+            app:wlv_titleBottomStrokeColor="@android:color/holo_blue_dark"
+            app:wlv_titleBottomStrokeWidth="3dp"
+            app:wlv_titleBottomColor="@android:color/white"
+            app:wlv_titleBottomSize="24sp"
+
+            app:wlv_waveAmplitude="70"
+            app:wlv_waveColor="@color/colorAccent"/>
+
+    </LinearLayout>
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="10dp">
+
+        <TextView
+            android:id="@+id/tv_water"
+            android:layout_width="50dp"
+            android:layout_height="40dp"
+            android:layout_centerHorizontal="true"
+            android:text="0"
+            android:layout_marginTop="5dp"
+            android:gravity="center"
+            android:background="#E5E7E9"/>
+        <TextView
+            android:id="@+id/tv_drop"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/drop"
+            android:layout_toStartOf="@+id/tv_water"
+            android:layout_marginEnd="15dp"
+            android:gravity="center"/>
+        <TextView
+            android:id="@+id/tv_add"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/add"
+            android:layout_toEndOf="@+id/tv_water"
+            android:layout_marginStart="15dp"
+            android:gravity="center"
+            />
+
+        <TextView
+            android:id="@+id/tv_cc"
+            android:layout_marginTop="10dp"
+            android:layout_width="60dp"
+            android:layout_height="30sp"
+            android:layout_below="@+id/tv_water"
+            android:layout_centerHorizontal="true"
+            android:text="0cc"
+            android:gravity="center"
+            android:background="#E5E7E9"/>
+
+
+
+    </RelativeLayout>
+
+</LinearLayout></ScrollView>

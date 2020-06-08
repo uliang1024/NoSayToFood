@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 按壓時 -->
+    <item android:state_pressed="true">
+        <shape android:shape="oval">
+            <stroke android:color="#ffffff" android:width="10dp" />
+            <solid android:color="#B28236"/>
+            <size android:width="75dp" android:height="75dp"/>
+        </shape>
+    </item>
+    <item>
+        <shape android:shape="oval">
+            <stroke android:color="#ffffff" android:width="10dp" />
+            <solid android:color="#9C6A1B"/>
+            <size android:width="75dp" android:height="75dp"/>
+        </shape>
+    </item>
+</selector>

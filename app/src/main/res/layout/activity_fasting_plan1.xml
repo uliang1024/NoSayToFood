@@ -1,0 +1,411 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".fasting.FirstFasting">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="64dp"
+        android:gravity="center"
+        android:text="設定七日斷食計畫"
+        android:textSize="50dp"
+        tools:layout_editor_absoluteY="29dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="5dp"
+        android:background="#000" />
+
+    <LinearLayout
+        android:id="@+id/set_day"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="5dp"
+        android:layout_marginEnd="5dp"
+        android:gravity="center">
+
+        <TextView
+            android:id="@+id/tv_day1"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/fasting_completed"
+            android:gravity="center"
+            android:text="day1" />
+
+        <TextView
+            android:id="@+id/tv_day2"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/fasting_completed"
+            android:gravity="center"
+            android:text="day2" />
+
+        <TextView
+            android:id="@+id/tv_day3"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/fasting_completed"
+            android:gravity="center"
+            android:text="day3" />
+
+        <TextView
+            android:id="@+id/tv_day4"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/fasting_completed"
+            android:gravity="center"
+            android:text="day4" />
+
+        <TextView
+            android:id="@+id/tv_day5"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/fasting_completed"
+            android:gravity="center"
+            android:text="day5" />
+
+        <TextView
+            android:id="@+id/tv_day6"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/fasting_not_completed"
+            android:gravity="center"
+            android:text="day6" />
+
+        <TextView
+            android:id="@+id/tv_day7"
+            android:layout_width="45dp"
+            android:layout_height="45dp"
+            android:layout_margin="3dp"
+            android:background="@drawable/fasting_not_completed"
+            android:gravity="center"
+            android:text="day7" />
+
+    </LinearLayout>
+
+    <ScrollView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/set_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <LinearLayout
+                android:id="@+id/ll_day1"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/fasting_square"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/one" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="vertical"
+                    android:padding="20sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="斷食區間"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/time1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_day2"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/fasting_square"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/two" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="vertical"
+                    android:padding="20sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="斷食區間"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/time2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_day3"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/fasting_square"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/three" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="vertical"
+                    android:padding="20sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="斷食區間"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/time3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_day4"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/fasting_square"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/four" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="vertical"
+                    android:padding="20sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="斷食區間"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/time4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_day5"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/fasting_square"
+                android:orientation="horizontal">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/five" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="vertical"
+                    android:padding="20sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="斷食區間"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/time5"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_day6"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/fasting_square"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/six" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="vertical"
+                    android:padding="20sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="斷食區間"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/time6"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/ll_day7"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginStart="10dp"
+                android:layout_marginEnd="10dp"
+                android:background="@drawable/fasting_square"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="100dp"
+                    android:layout_height="100dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="30dp"
+                    android:padding="5dp"
+                    app:srcCompat="@drawable/seven" />
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="right"
+                    android:orientation="vertical"
+                    android:padding="20sp">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="斷食區間"
+                        android:textSize="20sp" />
+
+                    <TextView
+                        android:id="@+id/time7"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:paddingTop="5dp"
+                        android:text="" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+            <Button
+                android:id="@+id/start_fasting"
+                android:layout_width="match_parent"
+                android:layout_height="40dp"
+                android:layout_gravity="right"
+                android:layout_margin="10dp"
+                android:background="#28B463"
+                android:text="完成"
+                android:textColor="#424949"
+                android:textSize="20sp"/>
+        </LinearLayout>
+
+
+    </ScrollView>
+</LinearLayout>

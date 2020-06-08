@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#a38af3</color>
+    <color name="colorPrimaryDark">#a38af3</color>
+    <color name="colorAccent">#a38af3</color>
+    <color name="white">#ffffff</color>
+    <color name="button">#E75FDC</color>
+    <color name="press">#25fa55</color>
+
+    <color name="colorNavIcon">#dae9f6</color>
+    <color name="colorNavText">#01294b</color>
+
+    <color name="grey">#01294b</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="green">#28B463</color>
+    <color name="yellow">#E1D215</color>
+
+</resources>
