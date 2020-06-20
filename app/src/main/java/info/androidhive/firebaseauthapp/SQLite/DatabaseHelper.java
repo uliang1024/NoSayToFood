@@ -1,4 +1,4 @@
-package info.androidhive.firebaseauthapp;
+package info.androidhive.firebaseauthapp.SQLite;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -18,6 +18,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public static final String COL_3 = "Date";
     public static final String COL_4 = "Amount";
     public static final String COL_5 = "Uid";
+    public static final String COL_6 = "Meal";
 
 
     public DatabaseHelper(Context context) {
@@ -26,7 +27,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table " + TABLE_NAME +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME TEXT,DATE TEXT,AMOUNT TEXT,UID TEXT)");
+        db.execSQL("create table " + TABLE_NAME +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME TEXT,DATE TEXT,AMOUNT TEXT,UID TEXT,MEAL INTEGER)");
     }
 
     @Override
@@ -35,13 +36,14 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String date,String name,String amount,String uid) {
+    public boolean insertData(String date,String name,String amount,String uid,Integer meal) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_2,name);
         contentValues.put(COL_3,date);
         contentValues.put(COL_4,amount);
         contentValues.put(COL_5,uid);
+        contentValues.put(COL_6,meal);
         long result = db.insert(TABLE_NAME,null ,contentValues);
         if(result == -1)
             return false;

@@ -2,7 +2,6 @@ package info.androidhive.firebaseauthapp.ui.dashboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 
-import android.annotation.SuppressLint;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.widget.ListView;
@@ -16,7 +15,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import info.androidhive.firebaseauthapp.DatabaseHelper;
+import info.androidhive.firebaseauthapp.SQLite.DatabaseHelper;
 import info.androidhive.firebaseauthapp.R;
 
 public class Food_Record extends AppCompatActivity {
@@ -45,7 +44,6 @@ public class Food_Record extends AppCompatActivity {
         }
         List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
         Map<String, Object> item1 = new HashMap<String, Object>();
-        item1.put("date", "新增時間");
         item1.put("Name", "食物名稱(熱量攝取量)");
         item1.put("Amount", "份量");
         items.add(item1);
@@ -53,8 +51,7 @@ public class Food_Record extends AppCompatActivity {
         while (res.moveToNext()) {
             if(uid.equals(res.getString(4))){
                     Map<String, Object> item = new HashMap<String, Object>();
-                    item.put("Name", res.getString(1));
-                    item.put("date", res.getString(2));
+                    item.put("Name", res.getString(2));
                     item.put("Amount", res.getString(3));
                     items.add(item);
             }
@@ -62,7 +59,7 @@ public class Food_Record extends AppCompatActivity {
 
         simpleAdapter = new SimpleAdapter(this,
                 items, R.layout.today_food, new String[]{"Name","date", "Amount"},
-                new int[]{R.id.name, R.id.date, R.id.amount});
+                new int[]{R.id.name, R.id.amount});
         listView.setAdapter(simpleAdapter);
     }
 }

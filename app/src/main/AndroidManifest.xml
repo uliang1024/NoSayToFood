@@ -23,9 +23,9 @@
         <activity android:name=".food.Meat" />
         <activity android:name=".food.Milk" />
         <activity android:name=".food.SugarSaltOil" />
-        <activity android:name=".Weight_scale" />
+        <activity android:name=".BodyInformation.Weight_scale" />
         <activity android:name=".HomeActivity" />
-        <activity android:name=".foodClassification" />
+        <activity android:name=".food.foodClassification" />
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

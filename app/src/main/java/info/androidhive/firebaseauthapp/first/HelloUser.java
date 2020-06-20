@@ -5,7 +5,6 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
-import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -26,8 +25,6 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
-import android.widget.RelativeLayout;
-import android.widget.SeekBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -40,8 +37,6 @@ import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.LargeValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
-import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -58,18 +53,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
-import info.androidhive.firebaseauthapp.DatabaseHelper;
-import info.androidhive.firebaseauthapp.HomeActivity;
 import info.androidhive.firebaseauthapp.MainActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.SQLite.BodyRecord;
 import info.androidhive.firebaseauthapp.SQLite.PersonalInformation;
-import info.androidhive.firebaseauthapp.Weight_scale;
 import info.androidhive.firebaseauthapp.fasting.FirstFasting;
-import info.androidhive.firebaseauthapp.foodClassification;
-import info.androidhive.firebaseauthapp.ui.dashboard.DashboardFragment;
-import info.androidhive.firebaseauthapp.ui.home.Frag1;
-import info.androidhive.firebaseauthapp.ui.profile.ProfileFragment;
 
 public class HelloUser extends AppCompatActivity {
 
