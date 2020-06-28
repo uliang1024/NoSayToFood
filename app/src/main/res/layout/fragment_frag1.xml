@@ -79,6 +79,13 @@
             android:layout_centerInParent="true"
             android:layout_above="@+id/textPercentage"
             android:textSize="20sp" />
+        <TextView
+            android:id="@+id/start"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_below="@+id/textPercentage"
+            android:textSize="15sp" />
 
         <Button
             android:id="@+id/end_fasting"

@@ -1,4 +1,4 @@
-package info.androidhive.firebaseauthapp;
+package info.androidhive.firebaseauthapp.BodyInformation;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -11,21 +11,25 @@ import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.XAxis.XAxisPosition;
 import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.ChartData;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 
 import java.util.ArrayList;
 import java.util.Calendar;
 
+import info.androidhive.firebaseauthapp.R;
+
 public class LineChartItem extends ChartItem {
 
     private final Typeface mTf;
     private ArrayList<String> date = new ArrayList<>();
-    public LineChartItem(LineData cd, Context c) {
+    public LineChartItem(ChartData<?> cd, Context c) {
         super(cd);
 
         mTf = Typeface.createFromAsset(c.getAssets(), "OpenSans-Regular.ttf");
     }
+
 
     @Override
     public int getItemType() {
@@ -36,7 +40,7 @@ public class LineChartItem extends ChartItem {
     @Override
     public View getView(int position, View convertView, Context c) {
 
-        for(int i = -5;i<2;i++){
+        for(int i = -30;i<3;i++){
             Calendar calendar = Calendar.getInstance();
             calendar.add(Calendar.DAY_OF_MONTH,i);
             int day = calendar.get(Calendar.DAY_OF_MONTH);
@@ -51,10 +55,11 @@ public class LineChartItem extends ChartItem {
             holder = new ViewHolder();
 
             convertView = LayoutInflater.from(c).inflate(
-                    R.layout.list_item_linechart, null);
+                    R.layout.linechart_kg, null);
             holder.chart = convertView.findViewById(R.id.chart);
 
             convertView.setTag(holder);
+
 
         } else {
             holder = (ViewHolder) convertView.getTag();
@@ -68,8 +73,11 @@ public class LineChartItem extends ChartItem {
         XAxis xAxis = holder.chart.getXAxis();
         xAxis.setPosition(XAxisPosition.BOTTOM);
         xAxis.setTypeface(mTf);
+        xAxis.setDrawGridLines(false);//不顯示每個座標點對應X軸的線 (預設顯示)
         xAxis.setDrawGridLines(false);
         xAxis.setDrawAxisLine(true);
+        xAxis.setSpaceMin(0.5f);//折線起點距離左側Y軸距離
+        xAxis.setSpaceMax(0.5f);//折線終點距離右側Y軸距離
         xAxis.setValueFormatter(new IAxisValueFormatter() {
             @Override
             public String getFormattedValue(float value, AxisBase axis) {

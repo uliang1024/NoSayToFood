@@ -51,13 +51,11 @@ public class BodyRecord extends SQLiteOpenHelper {
         return res;
     }
 
-    public boolean updateData(Integer id, long start_time, long end_time, Integer off_day,String uid,long now_time,Integer day) {
+    public boolean updateData(Integer id, Float kg) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1,id);
-        contentValues.put(COL_2,start_time);
-        contentValues.put(COL_3,end_time);
-        contentValues.put(COL_4,off_day);
+        contentValues.put(COL_3,kg);
         db.update(TABLE_NAME, contentValues, "ID = ?",new String[] {String.valueOf(id)});
         return true;
     }

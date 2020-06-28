@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -19,9 +18,7 @@ import android.widget.TextView;
 
 import java.util.Arrays;
 
-import info.androidhive.firebaseauthapp.HomeActivity;
 import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.foodClassification;
 
 public class Fruit extends AppCompatActivity {
 
@@ -31,7 +28,6 @@ public class Fruit extends AppCompatActivity {
     private Bundle bundle = new Bundle();
     private String[] Name = {"柑橘類","蘋果類","瓜類"};
     private String[] Content = {"", "", ""};
-    //注意，字符数组不要写成{{"A1,A2,A3,A4"}, {"B1,B2,B3,B4，B5"}, {"C1,C2,C3,C4"}}
     private String[][] childs = {{"柳丁1個(60)", "椪柑1個(60)", "葡萄柚1個(120)"},
             {"蘋果1個(60)", "蘋果派1個(430)"},
             {"哈密瓜1個(240)","木瓜1個(240)","香瓜1個(120)","紅西瓜1片(60)"},};

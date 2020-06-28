@@ -16,11 +16,9 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 
 import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.foodClassification;
 
 public class SugarSaltOil extends AppCompatActivity {
 

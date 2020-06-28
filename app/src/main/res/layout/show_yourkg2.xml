@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="vertical"
+    android:layout_gravity="center_horizontal"
+    android:background="@drawable/kggggggggggg"
+    android:padding="20sp">
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:layout_gravity="center">
+    <EditText
+        android:gravity="center"
+        android:id="@+id/editText1"
+        android:layout_width="150dp"
+        android:layout_height="80dp"
+        android:layout_marginTop="35dp"
+        android:background="@drawable/kgkgkgkg"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="kg"
+        android:layout_gravity="bottom"
+        android:textSize="50sp"/>
+
+</LinearLayout>
+
+    <TextView
+        android:layout_gravity="center"
+        android:id="@+id/date_picker"
+        android:layout_width="100dp"
+        android:layout_height="50dp"
+        android:background="@drawable/kgkgkgkg"
+        android:layout_margin="25sp"
+        android:gravity="center"
+        />
+
+    <Button
+        android:id="@+id/kg_ok"
+        android:layout_marginTop="75dp"
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:text="OK"
+        android:textSize="50dp"/>
+
+</LinearLayout>

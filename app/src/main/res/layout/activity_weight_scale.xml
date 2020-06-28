@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Weight_scale"
+    tools:context=".BodyInformation.Weight_scale"
     android:id="@+id/rl_padding">
     <TextView
         android:layout_marginTop="30sp"
@@ -82,8 +82,6 @@
 
 
             </LinearLayout>
-
-
             <Button
                 android:id="@+id/bt_KG"
                 android:layout_width="match_parent"
@@ -93,7 +91,6 @@
                 android:layout_marginLeft="10dp"
                 android:layout_marginRight="10dp"
                 android:text="新增體重"/>
-
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="700dp">

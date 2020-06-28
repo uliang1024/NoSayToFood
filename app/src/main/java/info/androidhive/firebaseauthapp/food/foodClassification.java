@@ -1,23 +1,15 @@
-package info.androidhive.firebaseauthapp;
+package info.androidhive.firebaseauthapp.food;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
-import android.graphics.Canvas;
-import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Path;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
-import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -30,18 +22,15 @@ import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import info.androidhive.firebaseauthapp.food.Fruit;
-import info.androidhive.firebaseauthapp.food.Grain;
-import info.androidhive.firebaseauthapp.food.Meat;
-import info.androidhive.firebaseauthapp.food.Milk;
-import info.androidhive.firebaseauthapp.food.SugarSaltOil;
-import info.androidhive.firebaseauthapp.food.Vegetables;
-import info.androidhive.firebaseauthapp.ui.home.Frag1;
+import info.androidhive.firebaseauthapp.HomeActivity;
+import info.androidhive.firebaseauthapp.R;
+import info.androidhive.firebaseauthapp.SQLite.DatabaseHelper;
 import info.androidhive.firebaseauthapp.ui.home.HomeFragment;
 
 public class foodClassification extends AppCompatActivity {
@@ -52,6 +41,7 @@ public class foodClassification extends AppCompatActivity {
     private String[] Name = {"食物名稱(熱量攝取量)"};
     private String[] Amount = {"份量"};
     private Button bt_milk,bt_fruit,bt_vegetables,bt_meet,bt_grain,bt_oil,button;
+    ArrayList<Integer> meal = new ArrayList<Integer>();
     DatabaseHelper myDb;
 
     @Override
@@ -161,16 +151,37 @@ public class foodClassification extends AppCompatActivity {
                                 if (user != null) {
                                     uid = user.getUid();
                                 }
+                                @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
+                                @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy年MM月dd日");
+                                Date curDate = new Date(System.currentTimeMillis()) ; // 獲取當前時間
+                                String str = formatter2.format(curDate);
+                                Cursor res = myDb.getAllData();
+                                while (res.moveToNext()) {
+                                    if(uid.equals(res.getString(4))){
+                                        if(res.getString(1).substring(0, 11).equals(str)){
+                                            meal.add(res.getInt(5));
+                                        }
+                                    }
+                                }
+                                int highest = 0;
+                                if (meal.size()> 0) {
+                                    highest = meal.get(0);
 
+                                    for (int s = 1; s < meal.size(); s++) {
+                                        int curValue = meal.get(s);
+                                        if (curValue > highest) {
+                                            highest = curValue;
+                                        }
+                                    }
+                                }
                                 boolean isInserted = false;
                                 for(int i=1; i<Name.length;i++){
-                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
-                                    Date curDate = new Date(System.currentTimeMillis()) ; // 獲取當前時間
-                                    String str = formatter.format(curDate);
+
                                     isInserted = myDb.insertData(Name[i],
                                             str,
                                             Amount[i],
-                                            uid);
+                                            uid,
+                                            highest+1);
                                 }
                                 if(isInserted)
                                     Toast.makeText(foodClassification.this,"Data Inserted",Toast.LENGTH_LONG).show();

@@ -9,7 +9,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
@@ -20,7 +19,6 @@ import android.widget.TextView;
 import java.util.Arrays;
 
 import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.foodClassification;
 
 public class Vegetables extends AppCompatActivity {
 

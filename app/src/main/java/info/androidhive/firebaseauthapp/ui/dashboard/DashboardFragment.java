@@ -6,22 +6,21 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 
 import androidx.fragment.app.Fragment;
 
 import javax.annotation.Nullable;
 
-import info.androidhive.firebaseauthapp.MainActivity;
 import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.Weight_scale;
-import info.androidhive.firebaseauthapp.ui.profile.ProfileFragment;
+import info.androidhive.firebaseauthapp.BodyInformation.Weight_scale;
 
 /**
  * Created by Belal on 1/23/2018.
  */
 
 public class DashboardFragment extends Fragment {
-    private ImageView show2,show;
+    private LinearLayout show2,show;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -45,7 +44,7 @@ public class DashboardFragment extends Fragment {
         return fragment_dashboard;
     }
     private void init(View v) {
-        show2 = (ImageView)v.findViewById(R.id.show2);
-        show = (ImageView)v.findViewById(R.id.show);
+        show2 = (LinearLayout)v.findViewById(R.id.show2);
+        show = (LinearLayout)v.findViewById(R.id.show);
     }
 }

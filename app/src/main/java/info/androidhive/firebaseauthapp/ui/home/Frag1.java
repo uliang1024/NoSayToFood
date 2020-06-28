@@ -23,6 +23,7 @@ import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -41,7 +42,7 @@ public class Frag1 extends Fragment {
     private int series1Index;
     private DecoView decoView;
     private SeriesItem seriesItem;
-    private TextView textPercentage,status;
+    private TextView textPercentage,status,start;
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private ArrayList<Long> start_time = new ArrayList<>();
     private ArrayList<Long> end_time = new ArrayList<>();
@@ -407,6 +408,7 @@ public class Frag1 extends Fragment {
         textPercentage = (TextView) v.findViewById(R.id.textPercentage);
         decoView = (DecoView) v.findViewById(R.id.dynamicArcView);
         status = (TextView) v.findViewById(R.id.status);
+        start = (TextView) v.findViewById(R.id.start);
         horizontalStepView = (HorizontalStepView)v.findViewById(R.id.horizontalStepView);
         plan1 = (LinearLayout)v.findViewById(R.id.plan1);
         plan2 = (LinearLayout)v.findViewById(R.id.plan2);
@@ -441,26 +443,48 @@ public class Frag1 extends Fragment {
 
     private final Runnable updateTimer = new Runnable() {
         public void run() {
-            handler.postDelayed(this, 0);
+            handler.postDelayed(this, 0);  //**
 
             Date date=new Date();
             long now_time =  date.getTime();
 
             for(int i =0; i<7;i++){
+
                 if(now_time<start_time.get(0)){
                     status.setText("進食時間喔!");
+                    SimpleDateFormat sdf= new SimpleDateFormat("HH:mm:ss");
+                    java.util.Date date1 = new Date(start_time.get(0) - now_time - 8*60*60*1000);
+                    java.util.Date start_date = new Date(start_time.get(0));
+                    String str = sdf.format(date1);
+                    String str2 = sdf.format(start_date);
+                    textPercentage.setText(str);
+                    start.setText("在"+str2+"開始斷食");
                 }else if(now_time<start_time.get(i) && now_time>=end_time.get(i-1)){
                     status.setText("進食時間喔!");
+                    SimpleDateFormat sdf= new SimpleDateFormat("HH:mm:ss");
+                    java.util.Date date1 = new Date(start_time.get(i) - now_time - 8*60*60*1000);
+                    java.util.Date start_date = new Date(start_time.get(i));
+                    String str = sdf.format(date1);
+                    String str2 = sdf.format(start_date);
+                    textPercentage.setText(str);
+                    start.setText("在"+str2+"開始斷食");
                 }
+
                 if(now_time>=start_time.get(i)&&now_time<=(start_time.get(i)+1000)&& off_day.get(i)==1){
                     drawing();
                 }
+
                 if(now_time>start_time.get(i)&&now_time<end_time.get(i)&& off_day.get(i)==1){
                     decoView.addEvent(new DecoEvent.Builder(now_time)
                     .setIndex(series1Index)
                     .build());
                     String percent = String.format("%.0f%%",(((float)now_time-(float)start_time.get(i))/((float)end_time.get(i)-(float)start_time.get(i)))* 100f);
                     textPercentage.setText(percent);
+
+                    SimpleDateFormat sdf= new SimpleDateFormat("HH:mm");
+                    java.util.Date start_date = new Date(end_time.get(i));
+                    String str2 = sdf.format(start_date);
+                    start.setText("在"+str2+"斷食結束");
 
                     break;
                 }
