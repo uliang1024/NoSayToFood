@@ -30,6 +30,7 @@ import info.androidhive.firebaseauthapp.ui.dashboard.DashboardFragment;
 import info.androidhive.firebaseauthapp.ui.home.HomeFragment;
 import info.androidhive.firebaseauthapp.ui.notifications.NotificationsFragment;
 import info.androidhive.firebaseauthapp.ui.profile.ProfileFragment;
+import info.androidhive.firebaseauthapp.ui.social.notifications.SocialFragment;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
@@ -78,7 +79,9 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
             case R.id.navigation_notifications:
                 fragment = new NotificationsFragment();
                 break;
-
+            case R.id.navigation_social:
+                fragment = new SocialFragment();
+                break;
             case R.id.navigation_profile:
                 fragment = new ProfileFragment();
                 break;
