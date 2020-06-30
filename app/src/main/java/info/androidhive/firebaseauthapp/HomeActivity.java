@@ -3,7 +3,6 @@ package info.androidhive.firebaseauthapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 
 import android.content.DialogInterface;
@@ -12,7 +11,6 @@ import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 
-import com.github.mikephil.charting.data.Entry;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -21,16 +19,14 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-
 import java.util.HashMap;
 import java.util.Map;
 
-import info.androidhive.firebaseauthapp.first.HelloUser;
 import info.androidhive.firebaseauthapp.ui.dashboard.DashboardFragment;
 import info.androidhive.firebaseauthapp.ui.home.HomeFragment;
 import info.androidhive.firebaseauthapp.ui.notifications.NotificationsFragment;
 import info.androidhive.firebaseauthapp.ui.profile.ProfileFragment;
-import info.androidhive.firebaseauthapp.ui.social.notifications.SocialFragment;
+import info.androidhive.firebaseauthapp.ui.social.SocialFragment;
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 

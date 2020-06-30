@@ -1,4 +1,4 @@
-package info.androidhive.firebaseauthapp.ui.social.notifications;
+package info.androidhive.firebaseauthapp.ui.social;
 
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
