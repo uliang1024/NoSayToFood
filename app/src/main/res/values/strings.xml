@@ -5,11 +5,10 @@
     <string name="red">AuthenticatorApp</string>
     <string name="blue">AuthenticatorApp</string>
     <string name="title_activity_main">MainActivity</string>
-    <string name="title_home">主頁</string>
-    <string name="title_dashboard">紀錄</string>
-    <string name="title_workout">運動</string>
-    <string name="title_social">社交</string>
-    <string name="title_profile">個人檔案</string>
+    <string name="title_home">Home</string>
+    <string name="title_dashboard">Dashboard</string>
+    <string name="title_notifications">Notifications</string>
+    <string name="title_profile">Profile</string>
 
     <string name="tab_text_1">斷食計畫</string>
     <string name="tab_text_2">吃飯紀錄</string>
