@@ -22,12 +22,16 @@
         android:id="@+id/navigation_notifications"
         android:name="info.androidhive.firebaseauthapp.ui.notifications.NotificationsFragment"
 <<<<<<< HEAD
+<<<<<<< HEAD
         android:label="@string/title_workout"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/navigation_social"
         android:name="info.androidhive.firebaseauthapp.ui.social.social.SocialFragment"
         android:label="@string/title_social"
+=======
+        android:label="@string/title_notifications"
+>>>>>>> parent of c27ebd7... add new buttom navigation tab
 =======
         android:label="@string/title_notifications"
 >>>>>>> parent of c27ebd7... add new buttom navigation tab

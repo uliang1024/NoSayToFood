@@ -17,9 +17,12 @@ import info.androidhive.firebaseauthapp.ui.dashboard.DashboardFragment;
 import info.androidhive.firebaseauthapp.ui.home.HomeFragment;
 import info.androidhive.firebaseauthapp.ui.notifications.NotificationsFragment;
 import info.androidhive.firebaseauthapp.ui.profile.ProfileFragment;
+<<<<<<< HEAD
 
 import info.androidhive.firebaseauthapp.ui.social.SocialFragment;
 
+=======
+>>>>>>> parent of c27ebd7... add new buttom navigation tab
 
 public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
@@ -65,9 +68,12 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
                 fragment = new DashboardFragment();
                 break;
 
+<<<<<<< HEAD
             case R.id.navigation_social:
                 fragment = new SocialFragment();
                 break;
+=======
+>>>>>>> parent of c27ebd7... add new buttom navigation tab
             case R.id.navigation_notifications:
                 fragment = new NotificationsFragment();
                 break;
