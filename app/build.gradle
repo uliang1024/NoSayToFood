@@ -9,7 +9,7 @@ android {
     buildToolsVersion "29.0.2"
     defaultConfig {
         applicationId "info.androidhive.firebaseauthapp"
-        minSdkVersion 21
+        minSdkVersion 26
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -21,6 +21,10 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
+    }
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_8
+        targetCompatibility JavaVersion.VERSION_1_8
     }
 }
 
@@ -57,6 +61,20 @@ dependencies {
     implementation 'io.github.yuweiguocn:GreenDaoUpgradeHelper:v2.2.1'
     implementation 'com.github.baoyachi:StepView:1.9'
     implementation 'me.itangqi.waveloadingview:library:0.3.5'
+
+    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha04'
+    implementation 'com.shuyu:GSYVideoPlayer-exo2:7.1.4'
+    implementation 'com.shuyu:gsyVideoPlayer-java:7.1.4'
+    implementation 'com.shuyu:gsyVideoPlayer-armv5:7.1.4'
+    implementation 'com.shuyu:gsyVideoPlayer-armv7a:7.1.4'
+    implementation 'com.shuyu:gsyVideoPlayer-arm64:7.1.4'
+    implementation 'com.shuyu:gsyVideoPlayer-x64:7.1.4'
+    implementation 'com.shuyu:gsyVideoPlayer-x86:7.1.4'
+    implementation 'com.jakewharton:butterknife:10.2.1'
+    annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
+
+    implementation 'com.github.bumptech.glide:glide:4.11.0'
 
 }
 apply plugin: 'com.google.gms.google-services'
