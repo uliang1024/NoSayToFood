@@ -1,6 +1,7 @@
 package info.androidhive.firebaseauthapp.ui.social;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
@@ -22,6 +23,8 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
+import info.androidhive.firebaseauthapp.MainActivity;
+import info.androidhive.firebaseauthapp.PostingPageActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.adapter.PicturePostAdapter;
 import info.androidhive.firebaseauthapp.models.Item;
@@ -34,7 +37,11 @@ import info.androidhive.firebaseauthapp.util.ScrollCalculatorHelper;
  * Created by Belal on 1/23/2018.
  */
 
-public class SocialFragment extends Fragment {
+public class SocialFragment extends Fragment implements PicturePostAdapter.OnItemClickedListener {
+
+    public static final String POSTING_TYPE="posting_type";
+    public static final String POSTING_TITLE="posting_title";
+
     List<Item> items = new ArrayList<>();
     RecyclerView mRecyclerView;
     boolean mFull = false;
@@ -59,6 +66,8 @@ public class SocialFragment extends Fragment {
         layoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(layoutManager);
         final PicturePostAdapter adapter = new PicturePostAdapter(mContext,items);
+        adapter.setOnItemClickedListener(this);
+        //adapter.setOnItemClickedListener(this::onItemClicked);
         mRecyclerView.setAdapter(adapter);
 
         mRecyclerView.addOnScrollListener(new RecyclerView.OnScrollListener() {
@@ -166,5 +175,31 @@ public class SocialFragment extends Fragment {
         PicturePost p10 = new PicturePost(R.drawable.deno,R.drawable.police,"bob10","big pp","s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,");
         items.add(new Item(0,p10));
 
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+        Intent postingIntent = new Intent(getActivity(), PostingPageActivity.class);
+        if (items.get(position).getObject() instanceof TextPost){
+            TextPost textPost = (TextPost)items.get(position).getObject();
+            postingIntent.putExtra(POSTING_TYPE,items.get(position).getType());
+            postingIntent.putExtra(POSTING_TITLE,textPost.getTitle());
+
+            startActivity(postingIntent);
+        }
+        else if (items.get(position).getObject() instanceof PicturePost){
+            PicturePost picturePost = (PicturePost)items.get(position).getObject();
+            postingIntent.putExtra(POSTING_TYPE,items.get(position).getType());
+            postingIntent.putExtra(POSTING_TITLE,picturePost.getTitle());
+
+            startActivity(postingIntent);
+        }
+        else if (items.get(position).getObject() instanceof VideoPost){
+            VideoPost videoPost = (VideoPost)items.get(position).getObject();
+            postingIntent.putExtra(POSTING_TYPE,items.get(position).getType());
+            postingIntent.putExtra(POSTING_TITLE,videoPost.getTitle());
+
+            startActivity(postingIntent);
+        }
     }
 }
