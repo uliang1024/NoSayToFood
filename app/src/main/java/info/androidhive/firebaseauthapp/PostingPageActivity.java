@@ -6,8 +6,9 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.TextView;
 
-import static info.androidhive.firebaseauthapp.ui.social.SocialFragment.POSTING_TITLE;
-import static info.androidhive.firebaseauthapp.ui.social.SocialFragment.POSTING_TYPE;
+import static info.androidhive.firebaseauthapp.ui.social.Frag_posting.POSTING_TITLE;
+import static info.androidhive.firebaseauthapp.ui.social.Frag_posting.POSTING_TYPE;
+
 
 public class PostingPageActivity extends AppCompatActivity {
     private TextView postingType,postingTitle;

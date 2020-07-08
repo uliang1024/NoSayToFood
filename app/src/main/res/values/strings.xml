@@ -13,6 +13,8 @@
 
     <string name="tab_text_1">斷食計畫</string>
     <string name="tab_text_2">吃飯紀錄</string>
+    <string name="social_tab_text_1">po文</string>
+    <string name="social_tab_text_2">文章</string>
     <string name="title_activity_main2">Main2Activity</string>
 
     <!-- TODO: Remove or change this placeholder text -->
