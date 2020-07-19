@@ -25,7 +25,9 @@
         <activity android:name=".food.Milk" />
         <activity android:name=".food.SugarSaltOil" />
         <activity android:name=".BodyInformation.Weight_scale" />
-        <activity android:name=".HomeActivity" />
+        <activity android:name=".HomeActivity"
+            android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
+            android:screenOrientation="portrait"/>
         <activity android:name=".food.foodClassification" />
         <activity android:name=".MainActivity">
             <intent-filter>

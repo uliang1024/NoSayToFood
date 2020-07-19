@@ -259,11 +259,11 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                     .setCacheWithPlay(true)
                     .setRotateViewAuto(true)
-                    .setLockLand(true)
+                    .setLockLand(false)
                     .setPlayTag(TAG)
                     .setMapHeadData(header)
                     .setShowFullAnimation(true)
-                    .setNeedLockFull(true)
+                    .setNeedLockFull(false)
                     .setPlayPosition(position)
                     .setVideoAllCallBack(new GSYSampleCallBack() {
                         @Override

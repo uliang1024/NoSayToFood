@@ -15,6 +15,9 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.utils.CommonUtil;
 
@@ -37,6 +40,8 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
     public static final String POSTING_TYPE="posting_type";
     public static final String POSTING_TITLE="posting_title";
 
+    private DatabaseReference myRef;
+
     List<Item> items = new ArrayList<>();
     RecyclerView mRecyclerView;
     boolean mFull = false;
@@ -50,6 +55,7 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
 
         //INIT VIEWS
         init(fragment_social);
+        ClearAll();
         addData();
 
         int playTop = CommonUtil.getScreenHeight(mContext) / 2 - CommonUtil.dip2px(mContext, 200);
@@ -137,9 +143,12 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
     private void init(View v) {
         mRecyclerView = v.findViewById(R.id.recycler_view);
         mContext = v.getContext();
+        myRef = FirebaseDatabase.getInstance().getReference();
     }
 
     private void addData() {
+
+
         VideoPost v = new VideoPost(R.drawable.police,"dicc4",R.drawable.deno,"http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4","demo","ppppppppppppppppppppppp",3);
         items.add(new Item(2,v));
         TextPost t = new TextPost(R.drawable.police,"bob0","888","666");
@@ -170,6 +179,13 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
         PicturePost p10 = new PicturePost(R.drawable.deno,R.drawable.police,"bob10","big pp","s simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries,");
         items.add(new Item(0,p10));
 
+    }
+
+    public void ClearAll(){
+        if (items != null){
+            items.clear();
+        }
+        items = new ArrayList<>();
     }
 
     @Override
