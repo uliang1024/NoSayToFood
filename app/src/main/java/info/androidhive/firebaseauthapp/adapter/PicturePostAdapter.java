@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
@@ -129,8 +130,8 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class pictuerPostViewHolder extends RecyclerView.ViewHolder{
 
         private ImageView img_posting,img_user;
-        private TextView tv_username_pic, tv_picPost,tv_des_picPost;
-
+        private TextView tv_username_pic, tv_picPost;
+        private ExpandableTextView tv_des_picPost;
         //在建構子內宣告
         public pictuerPostViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -138,7 +139,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             img_user = itemView.findViewById(R.id.img_user_picpost);
             tv_username_pic = itemView.findViewById(R.id.tv_user_picpost);
             tv_picPost = itemView.findViewById(R.id.tv_title_picpost);
-            tv_des_picPost = itemView.findViewById(R.id.tv_content_picpost);
+            tv_des_picPost = itemView.findViewById(R.id.expand_text_view);
              itemView.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
@@ -165,15 +166,15 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public class TextPostViewHolder extends RecyclerView.ViewHolder {
 
         private ImageView img_user_text;
-        private TextView tv_username_text, tv_textPost, tv_des_textPost;
-
+        private TextView tv_username_text, tv_textPost;
+        private ExpandableTextView tv_des_textPost;
         public TextPostViewHolder(@NonNull View itemView) {
             super(itemView);
 
             img_user_text = itemView.findViewById(R.id.img_user_textpost);
             tv_username_text = itemView.findViewById(R.id.tv_user_textpost);
             tv_textPost = itemView.findViewById(R.id.tv_title_textpost);
-            tv_des_textPost = itemView.findViewById(R.id.tv_content_textpost);
+            tv_des_textPost = itemView.findViewById(R.id.expand_text_view_textpost);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -208,9 +209,9 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         ImageView imageView;
         private ImageView img_user_video;
-        private TextView tv_username_video, tv_videoPost, tv_des_videoPost;
+        private TextView tv_username_video, tv_videoPost;
         GSYVideoOptionBuilder gsyVideoOptionBuilder;
-
+        private ExpandableTextView tv_des_videoPost;
         public RecyclerItemNormalHolder(Context context, View v) {
             super(v);
             this.context = context;
@@ -219,7 +220,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             img_user_video = itemView.findViewById(R.id.img_user_videopost);
             tv_username_video = itemView.findViewById(R.id.tv_user_videopost);
             tv_videoPost = itemView.findViewById(R.id.tv_title_videopost);
-            tv_des_videoPost = itemView.findViewById(R.id.tv_content_videopost);
+            tv_des_videoPost = itemView.findViewById(R.id.expand_text_view_videopost);
             gsyVideoOptionBuilder = new GSYVideoOptionBuilder();
 
             v.setOnClickListener(new View.OnClickListener() {
@@ -259,6 +260,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                     .setCacheWithPlay(true)
                     .setRotateViewAuto(true)
+                    .setRotateWithSystem(true)
                     .setLockLand(false)
                     .setPlayTag(TAG)
                     .setMapHeadData(header)
