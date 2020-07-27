@@ -76,9 +76,11 @@ dependencies {
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 
     implementation 'com.github.bumptech.glide:glide:4.11.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.11.0'
 
     implementation 'com.ms-square:expandableTextView:0.1.4'
     implementation 'com.felipecsl.asymmetricgridview:library:2.0.1'
+    implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
 
 }
 apply plugin: 'com.google.gms.google-services'

@@ -19,6 +19,8 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
+import com.nostra13.universalimageloader.core.ImageLoader;
+import com.nostra13.universalimageloader.core.ImageLoaderConfiguration;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.utils.CommonUtil;
 
@@ -37,6 +39,8 @@ import info.androidhive.firebaseauthapp.models.TextPost;
 import info.androidhive.firebaseauthapp.models.VideoPost;
 import info.androidhive.firebaseauthapp.ui.home.SectionsPagerAdapter;
 import info.androidhive.firebaseauthapp.util.ScrollCalculatorHelper;
+
+import static com.facebook.FacebookSdk.getApplicationContext;
 
 /**
  * Created by Belal on 1/23/2018.

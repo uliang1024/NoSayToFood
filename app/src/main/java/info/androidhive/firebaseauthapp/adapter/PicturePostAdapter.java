@@ -25,12 +25,16 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import info.androidhive.firebaseauthapp.Assymetric.AsymmetricRecyclerView;
+import info.androidhive.firebaseauthapp.Assymetric.AsymmetricRecyclerViewAdapter;
+import info.androidhive.firebaseauthapp.Assymetric.Utils;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.models.Item;
 import info.androidhive.firebaseauthapp.models.PicturePost;
 import info.androidhive.firebaseauthapp.models.TextPost;
 import info.androidhive.firebaseauthapp.models.VideoPost;
 import info.androidhive.firebaseauthapp.util.SampleCoverVideo;
+import info.androidhive.firebaseauthapp.util.SpacesItemDecoration;
 
 //Adapter
 public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -41,6 +45,8 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //private RequestManager requestManager;
     private Context context = null;
     private GSYVideoHelper smallVideoHelper;
+    private int mDisplay= 0;
+    private int mTotal= 0;
     private  OnItemClickedListener mListener;
 
     //先寫一個interface OnItemClickedListener
@@ -54,9 +60,11 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private GSYVideoHelper.GSYVideoHelperBuilder gsySmallVideoHelperBuilder;
-    public PicturePostAdapter(Context context,List<Item> items ) {
+    public PicturePostAdapter(Context context,List<Item> items, int max_display, int mTotal_size ) {
         this.items = items;
         this.context = context;
+        mDisplay = max_display;
+        mTotal = mTotal_size;
     }
 
     @NonNull
@@ -95,7 +103,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         if(getItemViewType(position)==0){
             //picturePost代表在items裡面第n個位置的物件，並將其轉型為PicturePost
             PicturePost picturePost = (PicturePost)items.get(position).getObject();
-            ((pictuerPostViewHolder)holder).set_picPost_Content(picturePost);
+            ((pictuerPostViewHolder)holder).set_picPost_Content(picturePost,position ,holder);
         }
         //如果第n個位置傳過來的getItemViewType是1
         else if(getItemViewType(position)==1){
@@ -128,14 +136,20 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     //===========================ViewHolders===============================//
     public class pictuerPostViewHolder extends RecyclerView.ViewHolder{
-
+        public AsymmetricRecyclerView recyclerView;
         private ImageView img_posting,img_user;
         private TextView tv_username_pic, tv_picPost;
         private ExpandableTextView tv_des_picPost;
         //在建構子內宣告
         public pictuerPostViewHolder(@NonNull View itemView) {
             super(itemView);
-            img_posting = itemView.findViewById(R.id.img_posting_picpost);
+            recyclerView = itemView.findViewById(R.id.recyclerView2);
+            recyclerView.setRequestedColumnCount(3);
+            recyclerView.setDebugging(true);
+            recyclerView.setRequestedHorizontalSpacing(Utils.dpToPx(context, 3));
+            recyclerView.addItemDecoration(
+                    new SpacesItemDecoration(context.getResources().getDimensionPixelSize(R.dimen.recycler_padding)));
+            //img_posting = itemView.findViewById(R.id.img_posting_picpost);
             img_user = itemView.findViewById(R.id.img_user_picpost);
             tv_username_pic = itemView.findViewById(R.id.tv_user_picpost);
             tv_picPost = itemView.findViewById(R.id.tv_title_picpost);
@@ -154,12 +168,9 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                  }
              });
         }
-        void set_picPost_Content(PicturePost p){
-            img_posting.setImageResource(p.getPicImg());
-            img_user.setImageResource(p.getUser_avatar());
-            tv_username_pic.setText(p.getUser_name());
-            tv_picPost.setText(p.getTitle());
-            tv_des_picPost.setText(p.getDescription());
+        void set_picPost_Content(PicturePost p,int position ,RecyclerView.ViewHolder holder){
+            ChildAdapter adapter = new ChildAdapter(p.getImages(),context,mDisplay,mTotal);
+            recyclerView.setAdapter(new AsymmetricRecyclerViewAdapter<>(context,recyclerView, adapter));
         }
     }
 
