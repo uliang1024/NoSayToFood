@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -65,7 +66,6 @@ class ChildAdapter extends AGVRecyclerViewAdapter<ViewHolder> {
 class ViewHolder extends RecyclerView.ViewHolder {
     private final ImageView mImageView;
     private final TextView textView;
-    ImageLoader imageLoader = ImageLoader.getInstance();
 
     public ViewHolder(ViewGroup parent, int viewType, List<PicturePostGridImage> items) {
         super(LayoutInflater.from(parent.getContext()).inflate(
@@ -80,9 +80,17 @@ class ViewHolder extends RecyclerView.ViewHolder {
 
 
     public void bind(List<PicturePostGridImage> item,Context context, int position, int mDisplay, int mTotal) {
-        Glide.with(context).load(String.valueOf(item.get(position).getImagePath())).into(mImageView);
-        //imageLoader.displayImage(String.valueOf(item.get(position).getImagePath()), mImageView);
-        textView.setText("+"+(mTotal-mDisplay));
+        Glide.with(context).load(String.valueOf(item.get(position).getImagePath())).centerCrop().into(mImageView);
+        //mTotal:總共有幾張照片
+        //mDisplay:總共有幾張已被展出
+        textView.setText("+"+(mTotal - mDisplay+1));
+        mImageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Toast.makeText(context, "Item " + position + " clicked", Toast.LENGTH_SHORT).show();
+            }
+        });
+        //如果照片總數大於展出的照片數
         if(mTotal > mDisplay)
         {
             if(position  == mDisplay-1) {
@@ -94,6 +102,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
                 mImageView.setImageAlpha(255);
             }
         }
+        //如果照片總數小於展出的照片數
         else
         {
             mImageView.setImageAlpha(255);

@@ -6,41 +6,70 @@ import android.os.Parcelable;
 import java.util.ArrayList;
 
 public class PicturePost implements Parcelable {
+    private String user_avatar;
+    private String user_name;
+
+    private String title;
+    private String description;
     private int ItemID;
     private String ItemName;
     private ArrayList<PicturePostGridImage> Images;
 
-    public PicturePost(int itemID, String itemName,
-                ArrayList<PicturePostGridImage> itemImages) {
+
+    public PicturePost(int itemID,
+                ArrayList<PicturePostGridImage> itemImages,String user_avatar,String user_name, String title, String description) {
         super();
-        ItemID = itemID;
-        ItemName = itemName;
-        Images = itemImages;
+        this.ItemID = itemID;
 
+        this.Images = itemImages;
+        this.user_avatar = user_avatar;
+        this.user_name = user_name;
+        this.title = title;
+        this.description = description;
 
     }
 
 
-    public int getProductID() {
-        return ItemID;
-    }
 
-    public void setProductID(int productID) {
-        ItemID = productID;
-    }
-
-
-    public String getItemName() {
-        return ItemName;
-    }
 
     public void setItemName(String itemName) {
         ItemName = itemName;
     }
 
-
     public ArrayList<PicturePostGridImage> getImages() {
         return Images;
+    }
+
+    public String getUser_avatar() {
+        return user_avatar;
+    }
+
+    public void setUser_avatar(String user_avatar) {
+        this.user_avatar = user_avatar;
+    }
+
+    public String getUser_name() {
+        return user_name;
+    }
+
+    public void setUser_name(String user_name) {
+        this.user_name = user_name;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 
     public void setImages(ArrayList<PicturePostGridImage> images) {

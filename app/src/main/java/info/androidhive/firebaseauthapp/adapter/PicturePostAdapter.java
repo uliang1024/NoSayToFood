@@ -12,6 +12,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
@@ -137,22 +138,33 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //===========================ViewHolders===============================//
     public class pictuerPostViewHolder extends RecyclerView.ViewHolder{
         public AsymmetricRecyclerView recyclerView;
-        private ImageView img_posting,img_user;
-        private TextView tv_username_pic, tv_picPost;
+        private ImageView img_user;
+        private TextView tv_username_pic, tv_title_picpost;
         private ExpandableTextView tv_des_picPost;
         //在建構子內宣告
         public pictuerPostViewHolder(@NonNull View itemView) {
             super(itemView);
+
             recyclerView = itemView.findViewById(R.id.recyclerView2);
-            recyclerView.setRequestedColumnCount(3);
+            //設置橫向有幾個元素展出
+            int colCount ;
+            if (mDisplay>=6){
+                colCount = 3;
+            }else if(mDisplay>=3&&mDisplay<6){
+                colCount = 2;
+            }else {
+                colCount = mDisplay;
+            }
+            recyclerView.setRequestedColumnCount(colCount);
+
             recyclerView.setDebugging(true);
-            recyclerView.setRequestedHorizontalSpacing(Utils.dpToPx(context, 3));
+            recyclerView.setRequestedHorizontalSpacing(Utils.dpToPx(context, 5));
             recyclerView.addItemDecoration(
                     new SpacesItemDecoration(context.getResources().getDimensionPixelSize(R.dimen.recycler_padding)));
-            //img_posting = itemView.findViewById(R.id.img_posting_picpost);
+
             img_user = itemView.findViewById(R.id.img_user_picpost);
             tv_username_pic = itemView.findViewById(R.id.tv_user_picpost);
-            tv_picPost = itemView.findViewById(R.id.tv_title_picpost);
+            tv_title_picpost = itemView.findViewById(R.id.tv_title_picpost);
             tv_des_picPost = itemView.findViewById(R.id.expand_text_view);
              itemView.setOnClickListener(new View.OnClickListener() {
                  @Override
@@ -163,14 +175,20 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                         if(position!= RecyclerView.NO_POSITION){
                             mListener.onItemClicked(position);
+                            Toast.makeText(context, "mDisplay"+mDisplay+"column count" + colCount , Toast.LENGTH_SHORT).show();
                         }
                      }
                  }
              });
         }
         void set_picPost_Content(PicturePost p,int position ,RecyclerView.ViewHolder holder){
+            Glide.with(context).load(p.getUser_avatar()).centerCrop().into(img_user);
+            tv_username_pic.setText(p.getUser_name());
+            tv_title_picpost.setText(p.getTitle());
+            tv_des_picPost.setText(p.getDescription());
             ChildAdapter adapter = new ChildAdapter(p.getImages(),context,mDisplay,mTotal);
             recyclerView.setAdapter(new AsymmetricRecyclerViewAdapter<>(context,recyclerView, adapter));
+
         }
     }
 
@@ -201,7 +219,8 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         }
 
         void set_textPost_Content(TextPost t) {
-            img_user_text.setImageResource(t.getUser_avatar());
+            Glide.with(context).load(t.getUser_avatar()).centerCrop().into(img_user_text);
+
             tv_username_text.setText(t.getUser_name());
             tv_textPost.setText(t.getTitle());
             tv_des_textPost.setText(t.getDescription());
@@ -253,12 +272,12 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         public void onBind(final int position, VideoPost v) {
 
-            img_user_video.setImageResource(v.getUser_avatar());
+            Glide.with(context).load(v.getUser_avatar()).centerCrop().into(img_user_video);
             tv_username_video.setText(v.getUser_name());
             tv_videoPost.setText(v.getTitle());
             tv_des_videoPost.setText(v.getDescription());
+            Glide.with(context).load(v.getThumbnail_img()).centerCrop().into(imageView);
 
-            imageView.setImageResource(v.getThumbnail_img());
             Map<String, String> header = new HashMap<>();
             header.put("ee", "33");
 
@@ -319,7 +338,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
             });
 
-            gsyVideoPlayer.loadCoverImageBy(v.getThumbnail_img(), v.getThumbnail_img());
+            //gsyVideoPlayer.loadCoverImageBy(v.getThumbnail_img(), v.getThumbnail_img());
         }
 
         /**

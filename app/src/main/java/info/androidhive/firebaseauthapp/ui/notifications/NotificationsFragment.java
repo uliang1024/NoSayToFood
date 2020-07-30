@@ -23,8 +23,8 @@ import info.androidhive.firebaseauthapp.R;
 
 public class NotificationsFragment extends Fragment {
     GridView gridView;
-    String[] numbers = {"one","two","three","four","five","six","seven",};
-    int [] pics ={R.drawable.one,R.drawable.two,R.drawable.three,R.drawable.four,R.drawable.five,R.drawable.six,R.drawable.seven};
+    String[] numbers = {"在家輕鬆動","啞鈴鍊肌","重量訓練","有氧瑜珈","暖身操"};
+    int [] pics ={R.drawable.exercise,R.drawable.gym,R.drawable.gym2,R.drawable.healthy,R.drawable.workout};
 
     @Nullable
     @Override

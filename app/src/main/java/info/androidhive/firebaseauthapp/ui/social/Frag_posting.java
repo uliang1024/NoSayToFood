@@ -46,14 +46,10 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
     public static final String POSTING_TYPE="posting_type";
     public static final String POSTING_TITLE="posting_title";
     //recyclerview讀取此地資料
-    public String Image1 = "https://rs1054.pbsrc.com/albums/s499/vadimzbanok/1327.jpg~c200";
-    public String Image2 = "https://rs1054.pbsrc.com/albums/s499/vadimzbanok/1327.jpg~c200";
-    public String Image3 = "https://rs1054.pbsrc.com/albums/s499/vadimzbanok/1327.jpg~c200";
-    public String Image4 = "https://rs1054.pbsrc.com/albums/s499/vadimzbanok/1327.jpg~c200";
-
+    public String Image1 = "https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F5.jpg?alt=media&token=d471627d-35d1-4e43-a8e8-57c0e9857833";
     int currentOffset = 0;
-    //決定一個cardview中有多少張相片被展出
-    int mMaxDisplay_Size = 3;
+    //決定一個cardview中有多少張相片可見
+    int mMaxDisplay_Size = 0;
     int mTotal_Size = 0;
     private DatabaseReference myRef;
 
@@ -71,14 +67,13 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragment_social = inflater.inflate(R.layout.social_frag_posting, container, false);
-        ImageLoaderConfiguration config = new ImageLoaderConfiguration.Builder(getApplicationContext()).build();
-        ImageLoader.getInstance().init(config);
+
         //INIT VIEWS
         init(fragment_social);
         ClearAll();
         //addData();
 
-        for(int k = 0; k < 10;k++) {
+        for(int k = 0; k < 100;k++) {
             //prepareMovieData(k);
             addData(k);
         }
@@ -91,8 +86,9 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
         scrollCalculatorHelper = new ScrollCalculatorHelper(R.id.video_item_player, playTop, playBottom);
         layoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(layoutManager);
-
+        //mTotal_Size是image總數取決於有幾個PicturePostGridImage被加到裡面
         mTotal_Size = Pathitems.size();
+        //max_display是一個cardview所展示的image數，mTotal_Size是image總數
         final PicturePostAdapter adapter = new PicturePostAdapter(mContext,items,mMaxDisplay_Size,mTotal_Size);
 
         adapter.setOnItemClickedListener(this);
@@ -183,10 +179,10 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
             case 0:
                 prepareMovieData(k);
             case 1:
-                TextPost t = new TextPost(R.drawable.police,"bob","Lorem Ipsum","is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was po");
+                TextPost t = new TextPost("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F8.jpg?alt=media&token=f1d63bbb-85db-488e-bd64-a23347140ab7","bob","Lorem Ipsum","is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was po");
                 items.add(new Item(1,t));
             case 2:
-                VideoPost v = new VideoPost(R.drawable.police,"peter",R.drawable.deno,"http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4","demo","is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was po",3);
+                VideoPost v = new VideoPost("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F9.jpg?alt=media&token=5464b71f-bc4f-4896-bc37-a77e4e90ae22","peter","https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F6.jpg?alt=media&token=9f59d48a-8023-457a-b99e-ccfc5bd1f29d","http://9890.vod.myqcloud.com/9890_4e292f9a3dd011e6b4078980237cc3d3.f20.mp4","demo","is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was po",3);
                 items.add(new Item(2,v));
         }
     }
@@ -229,102 +225,106 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
         ArrayList<PicturePostGridImage> mPathitems = new ArrayList<>();
         boolean isCol2Avail = false;
 
-        //創建一個itemImage=====================================
-        PicturePostGridImage i1 = new PicturePostGridImage(1,Image1,Image1);
-        int colSpan1 = Math.random() < 0.2f ? 2 : 1;
-        //int colSpan1 = 2;
-        int rowSpan1 = colSpan1;
-        if(colSpan1 == 2 && !isCol2Avail)
-            isCol2Avail = true;
-        else if(colSpan1 == 2 && isCol2Avail)
-            colSpan1 = 1;
-
-        i1.setColumnSpan(colSpan1);
-        i1.setRowSpan(rowSpan1);
-        i1.setPosition( currentOffset + 0);
-        //=====================================================
-
-
-        PicturePostGridImage i2 = new PicturePostGridImage(2,Image2,Image2);
-        int colSpan2 = Math.random() < 0.2f ? 2 : 1;
-        if(colSpan2 == 2 && !isCol2Avail)
-            isCol2Avail = true;
-        else if(colSpan2 == 2 && isCol2Avail)
-            colSpan2 = 1;
-
-        int rowSpan2 = colSpan2;
-        i2.setColumnSpan(colSpan2);
-        i2.setRowSpan(rowSpan2);
-        i2.setPosition( currentOffset + 1);
-
-
-        PicturePostGridImage i3 = new PicturePostGridImage(3,Image3,Image3);
-        int colSpan3 = Math.random() < 0.2f ? 2 : 1;
-        if(colSpan3 == 2 && !isCol2Avail)
-            isCol2Avail = true;
-        else if(colSpan3 == 2 && isCol2Avail)
-            colSpan3 = 1;
-
-        int rowSpan3 = colSpan3;
-        i3.setColumnSpan(colSpan3);
-        i3.setRowSpan(rowSpan3);
-        i3.setPosition( currentOffset + 2);
-
-        PicturePostGridImage i4 = new PicturePostGridImage(4,Image4,Image4);
-        int colSpan4 = Math.random() < 0.2f ? 2 : 1;
-        if(colSpan4 == 2 && !isCol2Avail)
-            isCol2Avail = true;
-        else if(colSpan4 == 2 && isCol2Avail)
-            colSpan4 = 1;
-
-        int rowSpan4 = colSpan4;
-        i4.setColumnSpan(colSpan4);
-        i4.setRowSpan(rowSpan4);
-        i4.setPosition( currentOffset + 3);
-
-        PicturePostGridImage i5 = new PicturePostGridImage(5,Image1,Image1);
-        int colSpan5 = Math.random() < 0.2f ? 2 : 1;
-        if(colSpan5 == 2 && !isCol2Avail)
-            isCol2Avail = true;
-        else if(colSpan5 == 2 && isCol2Avail)
-            colSpan5 = 1;
-
-        int rowSpan5 = colSpan5;
-        i5.setColumnSpan(colSpan5);
-        i5.setRowSpan(rowSpan5);
-        i5.setPosition( currentOffset + 4);
-
-        PicturePostGridImage i6 = new PicturePostGridImage(6,Image2,Image2);
-        int colSpan6 = Math.random() < 0.2f ? 2 : 1;
-
-        if(colSpan6 == 2 && !isCol2Avail)
-            isCol2Avail = true;
-        else if(colSpan6 == 2 && isCol2Avail)
-            colSpan6 = 1;
-
-        int rowSpan6 = colSpan6;
-        i6.setColumnSpan(colSpan6);
-        i6.setRowSpan(rowSpan6);
-        i6.setPosition( currentOffset + 5);
+//        //創建一個itemImage=====================================
+//        PicturePostGridImage i1 = new PicturePostGridImage(1,Image1,Image1);
+//        //int colSpan1 = Math.random() < 0.2f ? 2 : 1;
+//        int colSpan1 = 1;
+//        int rowSpan1 = colSpan1;
+//        if(colSpan1 == 2 && !isCol2Avail)
+//            isCol2Avail = true;
+//        else if(colSpan1 == 2 && isCol2Avail)
+//            colSpan1 = 1;
+//
+//        i1.setColumnSpan(colSpan1);
+//        i1.setRowSpan(rowSpan1);
+//        i1.setPosition( currentOffset + 0);
+//        //=====================================================
+//
+//
+//        PicturePostGridImage i2 = new PicturePostGridImage(2,Image2,Image2);
+//        //int colSpan2 = Math.random() < 0.2f ? 2 : 1;
+//        int colSpan2 = 1;
+//        if(colSpan2 == 2 && !isCol2Avail)
+//            isCol2Avail = true;
+//        else if(colSpan2 == 2 && isCol2Avail)
+//            colSpan2 = 1;
+//
+//        int rowSpan2 = colSpan2;
+//        i2.setColumnSpan(colSpan2);
+//        i2.setRowSpan(rowSpan2);
+//        i2.setPosition( currentOffset + 1);
+//
+//
+//        PicturePostGridImage i3 = new PicturePostGridImage(3,Image3,Image3);
+//        //int colSpan3 = Math.random() < 0.2f ? 2 : 1;
+//        int colSpan3 = 2;
+//        if(colSpan3 == 2 && !isCol2Avail)
+//            isCol2Avail = true;
+//        else if(colSpan3 == 2 && isCol2Avail)
+//            colSpan3 = 1;
+//
+//        int rowSpan3 = colSpan3;
+//        i3.setColumnSpan(colSpan3);
+//        i3.setRowSpan(rowSpan3);
+//        i3.setPosition( currentOffset + 2);
+//
+//        PicturePostGridImage i4 = new PicturePostGridImage(4,Image4,Image4);
+//        int colSpan4 = Math.random() < 0.2f ? 2 : 1;
+//        if(colSpan4 == 2 && !isCol2Avail)
+//            isCol2Avail = true;
+//        else if(colSpan4 == 2 && isCol2Avail)
+//            colSpan4 = 1;
+//
+//        int rowSpan4 = colSpan4;
+//        i4.setColumnSpan(colSpan4);
+//        i4.setRowSpan(rowSpan4);
+//        i4.setPosition( currentOffset + 3);
 
         Pathitems.clear();
 
-        Pathitems.add(i1);
-        Pathitems.add(i2);
-        Pathitems.add(i3);
-        Pathitems.add(i4);
-        Pathitems.add(i5);
-        Pathitems.add(i6);
+//        Pathitems.add(i1);
+//        Pathitems.add(i2);
+//        Pathitems.add(i3);
+//        Pathitems.add(i4);
 
+
+        Random ran = new Random();
+        int type =ran.nextInt(5);
+        for (int i = 0;i<5;i++){
+            //創建一個itemImage=====================================
+            PicturePostGridImage i1 = new PicturePostGridImage(i+1,Image1,Image1);
+            //int colSpan = Math.random() < 0.2f ? 2 : 1;
+            int colSpan = 2;
+            int rowSpan = colSpan;
+
+            i1.setColumnSpan(1);
+            i1.setRowSpan(1);
+            i1.setPosition( currentOffset + i);
+            //=====================================================
+            Pathitems.add(i1);
+
+        }
+        mMaxDisplay_Size = Pathitems.size();
+        //依據使用者的照片數量來決定mMaxDisplay_Size 數字
+        //如果是1張的話mMaxDisplay_Size=1(展示1張照片)
+        //如果是2張的話mMaxDisplay_Size=2(展示2張照片)
+        //如果是3~n張的話mMaxDisplay_Size=3(展示3張照片)
+        if (mMaxDisplay_Size>=4&&mMaxDisplay_Size<6){
+            mMaxDisplay_Size =4;
+        }
+        if (mMaxDisplay_Size>=6){
+            mMaxDisplay_Size = 6;
+        }
 
         for(int i = 0; i < mMaxDisplay_Size;i++)
         {
             mPathitems.add(Pathitems.get(i));
         }
 
-        PicturePost item = new PicturePost(k,"User "+(k),mPathitems);
+        PicturePost item = new PicturePost(k,mPathitems,"https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F7.jpg?alt=media&token=6d0bbae6-7bbc-451a-9164-a188fcc614e5","frank","i posted a picture!","is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown prin");
         items.add(new Item(0,item));
         currentOffset += mPathitems.size();
 
     }
+
 }
