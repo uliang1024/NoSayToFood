@@ -65,13 +65,7 @@ dependencies {
 
     implementation 'com.google.android.material:material:1.1.0'
     implementation 'androidx.recyclerview:recyclerview:1.2.0-alpha05'
-    implementation 'com.shuyu:GSYVideoPlayer-exo2:7.1.4'
-    implementation 'com.shuyu:gsyVideoPlayer-java:7.1.4'
-    implementation 'com.shuyu:gsyVideoPlayer-armv5:7.1.4'
-    implementation 'com.shuyu:gsyVideoPlayer-armv7a:7.1.4'
-    implementation 'com.shuyu:gsyVideoPlayer-arm64:7.1.4'
-    implementation 'com.shuyu:gsyVideoPlayer-x64:7.1.4'
-    implementation 'com.shuyu:gsyVideoPlayer-x86:7.1.4'
+    implementation 'com.shuyu:GSYVideoPlayer:7.1.5'
     implementation 'com.jakewharton:butterknife:10.2.1'
     annotationProcessor 'com.jakewharton:butterknife-compiler:10.2.1'
 

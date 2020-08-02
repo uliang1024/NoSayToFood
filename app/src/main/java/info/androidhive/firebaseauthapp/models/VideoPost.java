@@ -11,16 +11,19 @@ public class VideoPost {
     private String title;
     private String description;
 
-    int index;
 
-    public VideoPost(String user_avatar, String user_name, String thumbnail_img, String video_url, String title, String description, int index ) {
+    public VideoPost() {
+
+    }
+
+    public VideoPost(String user_avatar, String user_name, String thumbnail_img, String video_url, String title, String description ) {
         this.user_avatar = user_avatar;
         this.user_name = user_name;
         this.thumbnail_img = thumbnail_img;
         this.video_url = video_url;
         this.title = title;
         this.description = description;
-        this.index = index;
+
 
     }
 
@@ -49,9 +52,7 @@ public class VideoPost {
     }
 
 
-    public int getIndex() {
-        return index;
-    }
+
 
     public void setUser_avatar(String user_avatar) {
         this.user_avatar = user_avatar;
@@ -77,7 +78,5 @@ public class VideoPost {
         this.description = description;
     }
 
-    public void setIndex(int index) {
-        this.index = index;
-    }
+
 }

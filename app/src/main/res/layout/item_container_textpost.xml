@@ -2,6 +2,7 @@
 <androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cardview_textpost"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_margin="8dp"
@@ -9,6 +10,7 @@
     app:cardElevation="4dp">
 
     <LinearLayout
+        android:id="@+id/textpost_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
@@ -17,14 +19,15 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
+
             <com.christophesmet.android.views.maskableframelayout.MaskableFrameLayout
                 android:id="@+id/frm_mask_animated"
                 android:layout_width="50dp"
                 android:layout_height="50dp"
                 android:layout_margin="10dp"
-                app:porterduffxfermode="DST_IN"
                 app:mask="@drawable/mask_round"
-                >
+                app:porterduffxfermode="DST_IN">
+
                 <ImageView
                     android:id="@+id/img_user_textpost"
                     android:layout_width="50dp"
@@ -36,14 +39,13 @@
             </com.christophesmet.android.views.maskableframelayout.MaskableFrameLayout>
 
 
-
             <TextView
                 android:id="@+id/tv_user_textpost"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:text="username"
-                android:textSize="20sp"/>
+                android:textSize="20sp" />
 
         </LinearLayout>
 
@@ -60,32 +62,34 @@
                 android:text="title"
                 android:textSize="22sp" />
 
-            <com.ms.square.android.expandabletextview.ExpandableTextView
-                xmlns:android="http://schemas.android.com/apk/res/android"
+            <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/expand_text_view_textpost"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                expandableTextView:maxCollapsedLines="3"
-                expandableTextView:animDuration="200">
+                expandableTextView:animDuration="200"
+                expandableTextView:maxCollapsedLines="3">
+
                 <TextView
                     android:id="@id/expandable_text"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
-                    android:textSize="16sp"
-                    android:textColor="#666666" />
+                    android:textColor="#666666"
+                    android:textSize="16sp" />
+
                 <ImageButton
                     android:id="@id/expand_collapse"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
                     android:layout_gravity="right|bottom"
-                    android:background="@android:color/transparent"/>
+                    android:background="@android:color/transparent"
+                    android:padding="16dp" />
             </com.ms.square.android.expandabletextview.ExpandableTextView>
 
         </LinearLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"

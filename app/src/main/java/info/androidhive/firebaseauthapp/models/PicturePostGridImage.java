@@ -4,24 +4,20 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class PicturePostGridImage extends PicturePostImagePosition {
-    private int ItemImageId;
+
     private String ImagePath;
-    private String Thumb;
 
-
-    public PicturePostGridImage(int itemImageId, String imagePath, String thumb) {
-        super();
-        ItemImageId = itemImageId;
-        ImagePath = imagePath;
-        Thumb = thumb;
+    public PicturePostGridImage( ) {
 
     }
 
-    protected PicturePostGridImage(Parcel in) {
-        ItemImageId = in.readInt();
-        ImagePath = in.readString();
-        Thumb = in.readString();
+    public PicturePostGridImage( String imagePath) {
+        super();
+        ImagePath = imagePath;
+    }
 
+    protected PicturePostGridImage(Parcel in) {
+        ImagePath = in.readString();
     }
 
     @Override
@@ -31,36 +27,22 @@ public class PicturePostGridImage extends PicturePostImagePosition {
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
-        dest.writeInt(ItemImageId);
+
         dest.writeString(ImagePath);
-        dest.writeString(Thumb);
+
 
     }
 
     @Override
     public String toString() {
         return "ItemImage{" +
-                "ItemImageId=" + ItemImageId +
+
                 ", ImagePath='" + ImagePath + '\'' +
-                ", Thumb='" + Thumb + '\'' +
+                 +
                 '}';
     }
 
-    public String getThumb() {
-        return Thumb;
-    }
 
-    public void setThumb(String thumb) {
-        Thumb = thumb;
-    }
-
-    public int getItemImageId() {
-        return ItemImageId;
-    }
-
-    public void setItemImageId(int itemImageId) {
-        ItemImageId = itemImageId;
-    }
 
     public String getImagePath() {
         return ImagePath;

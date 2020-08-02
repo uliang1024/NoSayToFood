@@ -20,7 +20,6 @@ public class PicturePost implements Parcelable {
                 ArrayList<PicturePostGridImage> itemImages,String user_avatar,String user_name, String title, String description) {
         super();
         this.ItemID = itemID;
-
         this.Images = itemImages;
         this.user_avatar = user_avatar;
         this.user_name = user_name;
@@ -29,8 +28,8 @@ public class PicturePost implements Parcelable {
 
     }
 
-
-
+    public PicturePost() {
+    }
 
     public void setItemName(String itemName) {
         ItemName = itemName;

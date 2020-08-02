@@ -5,6 +5,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -26,13 +27,14 @@ import java.util.HashMap;
 import java.util.Map;
 
 import info.androidhive.firebaseauthapp.first.HelloUser;
+
 import info.androidhive.firebaseauthapp.ui.dashboard.DashboardFragment;
 import info.androidhive.firebaseauthapp.ui.home.HomeFragment;
 import info.androidhive.firebaseauthapp.ui.notifications.NotificationsFragment;
 import info.androidhive.firebaseauthapp.ui.profile.ProfileFragment;
 import info.androidhive.firebaseauthapp.ui.social.SocialFragment;
 
-public class HomeActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
+public class HomeActivity extends FragmentActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
 
 
@@ -90,6 +92,8 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         return loadFragment(fragment);
     }
 
+
+
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
@@ -123,5 +127,6 @@ public class HomeActivity extends AppCompatActivity implements BottomNavigationV
         }
         return true;
     }
+
 
 }

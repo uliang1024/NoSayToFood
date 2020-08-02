@@ -9,11 +9,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toolbar;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
@@ -60,7 +61,7 @@ public class SocialFragment extends Fragment{
         SocialSectionPagerAdapter sectionsPagerAdapter;
         sectionsPagerAdapter = new SocialSectionPagerAdapter(this, getChildFragmentManager());
 
-        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((FragmentActivity) getActivity()).setActionBar(toolbar);
         viewPager.setAdapter(sectionsPagerAdapter);
         tabLayout.setupWithViewPager(viewPager);
 

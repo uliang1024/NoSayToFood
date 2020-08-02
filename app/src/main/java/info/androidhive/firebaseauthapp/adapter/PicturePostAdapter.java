@@ -5,11 +5,13 @@ import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -49,7 +51,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private int mDisplay= 0;
     private int mTotal= 0;
     private  OnItemClickedListener mListener;
-
+    private int AnimId = R.anim.left_to_right;
     //先寫一個interface OnItemClickedListener
     public interface OnItemClickedListener{
         void onItemClicked(int position);
@@ -137,6 +139,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     //===========================ViewHolders===============================//
     public class pictuerPostViewHolder extends RecyclerView.ViewHolder{
+        private CardView cardView_picpost;
         public AsymmetricRecyclerView recyclerView;
         private ImageView img_user;
         private TextView tv_username_pic, tv_title_picpost;
@@ -161,7 +164,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             recyclerView.setRequestedHorizontalSpacing(Utils.dpToPx(context, 5));
             recyclerView.addItemDecoration(
                     new SpacesItemDecoration(context.getResources().getDimensionPixelSize(R.dimen.recycler_padding)));
-
+            cardView_picpost = itemView.findViewById(R.id.cardview_picpost);
             img_user = itemView.findViewById(R.id.img_user_picpost);
             tv_username_pic = itemView.findViewById(R.id.tv_user_picpost);
             tv_title_picpost = itemView.findViewById(R.id.tv_title_picpost);
@@ -182,6 +185,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
              });
         }
         void set_picPost_Content(PicturePost p,int position ,RecyclerView.ViewHolder holder){
+            cardView_picpost.setAnimation(AnimationUtils.loadAnimation(context,AnimId));
             Glide.with(context).load(p.getUser_avatar()).centerCrop().into(img_user);
             tv_username_pic.setText(p.getUser_name());
             tv_title_picpost.setText(p.getTitle());
@@ -193,13 +197,13 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     public class TextPostViewHolder extends RecyclerView.ViewHolder {
-
+        private CardView cardView_textpost;
         private ImageView img_user_text;
         private TextView tv_username_text, tv_textPost;
         private ExpandableTextView tv_des_textPost;
         public TextPostViewHolder(@NonNull View itemView) {
             super(itemView);
-
+            cardView_textpost =itemView.findViewById(R.id.cardview_textpost);
             img_user_text = itemView.findViewById(R.id.img_user_textpost);
             tv_username_text = itemView.findViewById(R.id.tv_user_textpost);
             tv_textPost = itemView.findViewById(R.id.tv_title_textpost);
@@ -220,7 +224,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         void set_textPost_Content(TextPost t) {
             Glide.with(context).load(t.getUser_avatar()).centerCrop().into(img_user_text);
-
+            cardView_textpost.setAnimation(AnimationUtils.loadAnimation(context,AnimId));
             tv_username_text.setText(t.getUser_name());
             tv_textPost.setText(t.getTitle());
             tv_des_textPost.setText(t.getDescription());
@@ -236,7 +240,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         @BindView(R.id.video_item_player)
         SampleCoverVideo gsyVideoPlayer;
-
+        private CardView cardView_videopost;
         ImageView imageView;
         private ImageView img_user_video;
         private TextView tv_username_video, tv_videoPost;
@@ -247,6 +251,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             this.context = context;
             ButterKnife.bind(this, v);
             imageView = new ImageView(context);
+            cardView_videopost =v.findViewById(R.id.cardview_videopost);
             img_user_video = itemView.findViewById(R.id.img_user_videopost);
             tv_username_video = itemView.findViewById(R.id.tv_user_videopost);
             tv_videoPost = itemView.findViewById(R.id.tv_title_videopost);
@@ -273,6 +278,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         public void onBind(final int position, VideoPost v) {
 
             Glide.with(context).load(v.getUser_avatar()).centerCrop().into(img_user_video);
+            cardView_videopost.setAnimation(AnimationUtils.loadAnimation(context,AnimId));
             tv_username_video.setText(v.getUser_name());
             tv_videoPost.setText(v.getTitle());
             tv_des_videoPost.setText(v.getDescription());

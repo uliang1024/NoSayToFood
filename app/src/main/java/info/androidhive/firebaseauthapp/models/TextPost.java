@@ -3,6 +3,10 @@ public class TextPost {
 
     private String user_avatar,user_name,title,description;
 
+    public TextPost() {
+
+    }
+
     public TextPost(String user_avatar, String user_name, String title, String description) {
         this.user_avatar = user_avatar;
         this.user_name = user_name;
