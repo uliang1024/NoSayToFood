@@ -8,8 +8,6 @@ import java.util.ArrayList;
 public class PicturePost implements Parcelable {
     private String user_avatar;
     private String user_name;
-
-    private String title;
     private String description;
     private int ItemID;
     private String ItemName;
@@ -17,13 +15,12 @@ public class PicturePost implements Parcelable {
 
 
     public PicturePost(int itemID,
-                ArrayList<PicturePostGridImage> itemImages,String user_avatar,String user_name, String title, String description) {
+                ArrayList<PicturePostGridImage> itemImages,String user_avatar,String user_name, String description) {
         super();
         this.ItemID = itemID;
         this.Images = itemImages;
         this.user_avatar = user_avatar;
         this.user_name = user_name;
-        this.title = title;
         this.description = description;
 
     }
@@ -55,13 +52,7 @@ public class PicturePost implements Parcelable {
         this.user_name = user_name;
     }
 
-    public String getTitle() {
-        return title;
-    }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
     public String getDescription() {
         return description;

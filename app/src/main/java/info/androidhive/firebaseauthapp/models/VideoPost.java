@@ -8,7 +8,6 @@ public class VideoPost {
     private String thumbnail_img;
 
     private String video_url;
-    private String title;
     private String description;
 
 
@@ -21,7 +20,7 @@ public class VideoPost {
         this.user_name = user_name;
         this.thumbnail_img = thumbnail_img;
         this.video_url = video_url;
-        this.title = title;
+
         this.description = description;
 
 
@@ -43,9 +42,6 @@ public class VideoPost {
         return video_url;
     }
 
-    public String getTitle() {
-        return title;
-    }
 
     public String getDescription() {
         return description;
@@ -68,10 +64,6 @@ public class VideoPost {
 
     public void setVideo_url(String video_url) {
         this.video_url = video_url;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
     }
 
     public void setDescription(String description) {

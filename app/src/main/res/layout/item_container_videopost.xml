@@ -54,14 +54,6 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-            <TextView
-                android:id="@+id/tv_title_videopost"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_margin="10dp"
-                android:text="title"
-                android:textSize="22sp" />
-
             <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
                 android:id="@+id/expand_text_view_videopost"
@@ -106,7 +98,7 @@
 
             <LinearLayout
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="114dp"
+                android:layout_width="172dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="true"
@@ -114,12 +106,13 @@
 
                 <ImageView
 
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginRight="10dp"
                     android:background="#0000"
                     android:clickable="false"
-                    android:src="@drawable/ic_like" />
+
+                    android:src="@drawable/ic_like_thicc" />
 
                 <TextView
 
@@ -133,16 +126,16 @@
 
             <LinearLayout
                 style="?android:attr/buttonBarButtonStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
+                android:layout_width="172dp"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:clickable="true"
                 android:orientation="horizontal">
 
                 <ImageView
 
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
                     android:layout_marginRight="10dp"
                     android:background="#0000"
                     android:clickable="false"
@@ -152,9 +145,10 @@
 
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:background="#0000"
+                    android:background="#00C52B2B"
                     android:clickable="false"
-                    android:text="comment" />
+                    android:text="comment"
+                    android:textSize="14sp" />
             </LinearLayout>
             <!-- more attributes ... -->
             />

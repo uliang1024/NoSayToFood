@@ -18,7 +18,9 @@ import com.bumptech.glide.Glide;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
+import com.shuyu.gsyvideoplayer.cache.CacheFactory;
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
+import com.shuyu.gsyvideoplayer.player.PlayerFactory;
 import com.shuyu.gsyvideoplayer.utils.GSYVideoHelper;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
 
@@ -38,6 +40,8 @@ import info.androidhive.firebaseauthapp.models.TextPost;
 import info.androidhive.firebaseauthapp.models.VideoPost;
 import info.androidhive.firebaseauthapp.util.SampleCoverVideo;
 import info.androidhive.firebaseauthapp.util.SpacesItemDecoration;
+import tv.danmaku.ijk.media.exo2.Exo2PlayerManager;
+import tv.danmaku.ijk.media.exo2.ExoPlayerCacheManager;
 
 //Adapter
 public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
@@ -52,6 +56,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     private int mTotal= 0;
     private  OnItemClickedListener mListener;
     private int AnimId = R.anim.left_to_right;
+
     //先寫一個interface OnItemClickedListener
     public interface OnItemClickedListener{
         void onItemClicked(int position);
@@ -167,7 +172,6 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             cardView_picpost = itemView.findViewById(R.id.cardview_picpost);
             img_user = itemView.findViewById(R.id.img_user_picpost);
             tv_username_pic = itemView.findViewById(R.id.tv_user_picpost);
-            tv_title_picpost = itemView.findViewById(R.id.tv_title_picpost);
             tv_des_picPost = itemView.findViewById(R.id.expand_text_view);
              itemView.setOnClickListener(new View.OnClickListener() {
                  @Override
@@ -188,7 +192,6 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             cardView_picpost.setAnimation(AnimationUtils.loadAnimation(context,AnimId));
             Glide.with(context).load(p.getUser_avatar()).centerCrop().into(img_user);
             tv_username_pic.setText(p.getUser_name());
-            tv_title_picpost.setText(p.getTitle());
             tv_des_picPost.setText(p.getDescription());
             ChildAdapter adapter = new ChildAdapter(p.getImages(),context,mDisplay,mTotal);
             recyclerView.setAdapter(new AsymmetricRecyclerViewAdapter<>(context,recyclerView, adapter));
@@ -206,7 +209,6 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             cardView_textpost =itemView.findViewById(R.id.cardview_textpost);
             img_user_text = itemView.findViewById(R.id.img_user_textpost);
             tv_username_text = itemView.findViewById(R.id.tv_user_textpost);
-            tv_textPost = itemView.findViewById(R.id.tv_title_textpost);
             tv_des_textPost = itemView.findViewById(R.id.expand_text_view_textpost);
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -226,7 +228,6 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             Glide.with(context).load(t.getUser_avatar()).centerCrop().into(img_user_text);
             cardView_textpost.setAnimation(AnimationUtils.loadAnimation(context,AnimId));
             tv_username_text.setText(t.getUser_name());
-            tv_textPost.setText(t.getTitle());
             tv_des_textPost.setText(t.getDescription());
         }
 
@@ -254,7 +255,6 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             cardView_videopost =v.findViewById(R.id.cardview_videopost);
             img_user_video = itemView.findViewById(R.id.img_user_videopost);
             tv_username_video = itemView.findViewById(R.id.tv_user_videopost);
-            tv_videoPost = itemView.findViewById(R.id.tv_title_videopost);
             tv_des_videoPost = itemView.findViewById(R.id.expand_text_view_videopost);
             gsyVideoOptionBuilder = new GSYVideoOptionBuilder();
 
@@ -280,20 +280,21 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             Glide.with(context).load(v.getUser_avatar()).centerCrop().into(img_user_video);
             cardView_videopost.setAnimation(AnimationUtils.loadAnimation(context,AnimId));
             tv_username_video.setText(v.getUser_name());
-            tv_videoPost.setText(v.getTitle());
             tv_des_videoPost.setText(v.getDescription());
             Glide.with(context).load(v.getThumbnail_img()).centerCrop().into(imageView);
 
             Map<String, String> header = new HashMap<>();
             header.put("ee", "33");
-
+            //使用exo內核
+            PlayerFactory.setPlayManager(Exo2PlayerManager.class);
+            //使用exo緩存方式
+            CacheFactory.setCacheManager(ExoPlayerCacheManager.class);
             //防止错位，离开释放
             //gsyVideoPlayer.initUIState();
             gsyVideoOptionBuilder
                     .setIsTouchWiget(false)
                     .setThumbImageView(imageView)
                     .setUrl(v.getVideo_url())
-
                     .setCacheWithPlay(true)
                     .setRotateViewAuto(true)
                     .setRotateWithSystem(true)

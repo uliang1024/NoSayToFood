@@ -182,11 +182,6 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
 
     private void addData() {
 
-
-
-        Random ran = new Random();
-        int type =ran.nextInt(3);
-
         myRef.child("posting").addListenerForSingleValueEvent (new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -200,7 +195,6 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                             PicturePost p = new PicturePost();
                             String user_name = postSnapShot.child("user_name").getValue().toString();
                             String user_avatar = postSnapShot.child("user_avatar").getValue().toString();
-                            String title = postSnapShot.child("title").getValue().toString();
                             String description = postSnapShot.child("description").getValue().toString();
                             //==================================================================================
                             ArrayList<String> imageItems = new ArrayList<>();
@@ -247,9 +241,8 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                                 mPathitems.add(Pathitems.get(i));
                             }
                             currentOffset += mPathitems.size();
-                            Toast.makeText(mContext, "maxDisplay:"+ mMaxDisplay_Size+"mtotal"+mTotal_Size, Toast.LENGTH_LONG).show();
+                            //Toast.makeText(mContext, "maxDisplay:"+ mMaxDisplay_Size+"mtotal"+mTotal_Size, Toast.LENGTH_LONG).show();
                             p.setDescription(description);
-                            p.setTitle(title);
                             p.setImages(mPathitems);
                             p.setUser_name(user_name);
                             p.setUser_avatar(user_avatar);
@@ -261,7 +254,6 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                             TextPost t = new TextPost();
                             String user_name = postSnapShot.child("user_name").getValue().toString();
                             String user_avatar = postSnapShot.child("user_avatar").getValue().toString();
-                            String title = postSnapShot.child("title").getValue().toString();
                             String description = postSnapShot.child("description").getValue().toString();
 //                            Toast.makeText(mContext, "type ="+type+"\n"
 //                                    +"username = "+user_name+"\n"
@@ -272,7 +264,6 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
 
                             t.setUser_name(user_name);
                             t.setUser_avatar(user_avatar);
-                            t.setTitle(title);
                             t.setDescription(description);
 
                             items.add(new Item(1,t));
@@ -281,13 +272,11 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                             VideoPost v = new VideoPost();
                             String user_name = postSnapShot.child("user_name").getValue().toString();
                             String user_avatar = postSnapShot.child("user_avatar").getValue().toString();
-                            String title = postSnapShot.child("title").getValue().toString();
                             String description = postSnapShot.child("description").getValue().toString();
                             String thumbnail_img = postSnapShot.child("thumbnail_img").getValue().toString();
                             String video_url = postSnapShot.child("video_url").getValue().toString();
                             v.setUser_name(user_name);
                             v.setUser_avatar(user_avatar);
-                            v.setTitle(title);
                             v.setDescription(description);
                             v.setThumbnail_img(thumbnail_img);
                             v.setVideo_url(video_url);
@@ -310,27 +299,7 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
 
             }
         });
-//        switch (type){
-//                        case 0:
-//                            prepareMovieData();
-//                        case 1:
-//                            TextPost t = new TextPost();
-//                            t.setDescription("oooo");
-//                            t.setTitle("fffff");
-//                            t.setUser_avatar("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F9.jpg?alt=media&token=5464b71f-bc4f-4896-bc37-a77e4e90ae22");
-//                            t.setUser_name("bob");
-//                            items.add(new Item(1,t));
-//                        case 2:
-//                            VideoPost v = new VideoPost();
-//                            v.setDescription("okokokoko");
-//                            v.setTitle("ttt");
-//                            v.setUser_name("g胖");
-//                            v.setThumbnail_img("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F5.jpg?alt=media&token=d471627d-35d1-4e43-a8e8-57c0e9857833");
-//                            v.setUser_avatar("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F6.jpg?alt=media&token=9f59d48a-8023-457a-b99e-ccfc5bd1f29d");
-//                            v.setVideo_url("http://7xjmzj.com1.z0.glb.clouddn.com/20171026175005_JObCxCE2.mp4");
-//
-//                            items.add(new Item(2,v));
-//                    }
+
     }
 
     public void ClearAll(){
@@ -346,7 +315,6 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
         if (items.get(position).getObject() instanceof TextPost){
             TextPost textPost = (TextPost)items.get(position).getObject();
             postingIntent.putExtra(POSTING_TYPE,items.get(position).getType());
-            postingIntent.putExtra(POSTING_TITLE,textPost.getTitle());
 
             startActivity(postingIntent);
         }
@@ -360,13 +328,12 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
         else if (items.get(position).getObject() instanceof VideoPost){
             VideoPost videoPost = (VideoPost)items.get(position).getObject();
             postingIntent.putExtra(POSTING_TYPE,items.get(position).getType());
-            postingIntent.putExtra(POSTING_TITLE,videoPost.getTitle());
 
             startActivity(postingIntent);
         }
     }
 
-
+//參考code
 //    private void preparePictureData() {
 //
 //        //創建一arraylist儲存 ItemImage
