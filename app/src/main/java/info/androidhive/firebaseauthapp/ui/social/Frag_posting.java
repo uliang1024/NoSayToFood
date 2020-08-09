@@ -12,6 +12,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.view.animation.LayoutAnimationController;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -38,6 +39,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
+import info.androidhive.firebaseauthapp.Assymetric.AsymmetricRecyclerView;
 import info.androidhive.firebaseauthapp.PostingPageActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.adapter.PicturePostAdapter;
@@ -49,15 +51,22 @@ import info.androidhive.firebaseauthapp.models.TextPost;
 import info.androidhive.firebaseauthapp.models.VideoPost;
 import info.androidhive.firebaseauthapp.util.ScrollCalculatorHelper;
 
-import static com.facebook.FacebookSdk.getApplicationContext;
+import static info.androidhive.firebaseauthapp.util.Constants.DESCRIPTION;
+import static info.androidhive.firebaseauthapp.util.Constants.ITEM_IMAGES;
+import static info.androidhive.firebaseauthapp.util.Constants.POST_TYPE;
+import static info.androidhive.firebaseauthapp.util.Constants.USER_AVATAR;
+import static info.androidhive.firebaseauthapp.util.Constants.USER_NAME;
+import static info.androidhive.firebaseauthapp.util.Constants.VIDEO_THUMBNAIL;
+import static info.androidhive.firebaseauthapp.util.Constants.VIDEO_URL;
+
+import info.androidhive.firebaseauthapp.util.Constants;
 
 public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemClickedListener  {
 
     public static final String POSTING_TYPE="posting_type";
     public static final String POSTING_TITLE="posting_title";
     int currentOffset = 0;
-    int mMaxDisplay_Size = 0;
-    int mTotal_Size = 0;
+
     private DatabaseReference myRef;
 
     //圖片gridview的item
@@ -72,6 +81,7 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
     Context mContext;
     PicturePostAdapter adapter;
     PicturePostAdapter.OnItemClickedListener clickedListener;
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -81,6 +91,7 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
         init(fragment_social);
         ClearAll();
         addData();
+
 
 
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -118,9 +129,9 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                 firstVisibleItem   = layoutManager.findFirstVisibleItemPosition();
                 lastVisibleItem = layoutManager.findLastVisibleItemPosition();
                 int position = GSYVideoManager.instance().getPlayPosition();
-                Log.e("playing",""+position);
-                Log.e("firstplay",""+firstVisibleItem);
-                Log.e("lastplay",""+lastVisibleItem);
+//                Log.e("playing",""+position);
+//                Log.e("firstplay",""+firstVisibleItem);
+//                Log.e("lastplay",""+lastVisibleItem);
                 //这是滑动自动播放的代码
                 if (!mFull) {
                     scrollCalculatorHelper.onScroll(recyclerView, firstVisibleItem, lastVisibleItem, lastVisibleItem - firstVisibleItem);
@@ -187,20 +198,22 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ClearAll();
                 //Toast.makeText(mContext, "count"+count , Toast.LENGTH_SHORT).show();
+                int mMaxDisplay_Size = 0;
+                int mTotal_Size = 0;
                 for(DataSnapshot postSnapShot:dataSnapshot.getChildren()){
 
-                    if(postSnapShot.hasChild("post_type")){
-                        int type = Integer.parseInt(postSnapShot.child("post_type").getValue().toString());
+                    if(postSnapShot.hasChild(POST_TYPE)){
+                        int type = Integer.parseInt(postSnapShot.child(POST_TYPE).getValue().toString());
                         if(type ==0){
                             PicturePost p = new PicturePost();
-                            String user_name = postSnapShot.child("user_name").getValue().toString();
-                            String user_avatar = postSnapShot.child("user_avatar").getValue().toString();
-                            String description = postSnapShot.child("description").getValue().toString();
+                            String user_name = postSnapShot.child(USER_NAME).getValue().toString();
+                            String user_avatar = postSnapShot.child(USER_AVATAR).getValue().toString();
+                            String description = postSnapShot.child(DESCRIPTION).getValue().toString();
                             //==================================================================================
                             ArrayList<String> imageItems = new ArrayList<>();
-                            for(DataSnapshot imageSnapShot:postSnapShot.child("itemImages").getChildren()){
-                                if(imageSnapShot.hasChild("url")){
-                                    String url = imageSnapShot.child("url").getValue().toString();
+                            for(DataSnapshot imageSnapShot:postSnapShot.child(ITEM_IMAGES).getChildren()){
+                                if(imageSnapShot.hasChild("imagePath")){
+                                    String url = imageSnapShot.child("imagePath").getValue().toString();
                                     imageItems.add(url);
 
                                 }else{
@@ -218,12 +231,14 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                                 i1.setPosition( currentOffset + i);
                                 //=====================================================
                                 Pathitems.add(i1);
-                                //Toast.makeText(mContext, "imagecount:"+imageItems.get(i), Toast.LENGTH_LONG).show();
+
                             }
                             //mTotal_Size是image總數取決於有幾個PicturePostGridImage被加到裡面
                             //max_display是一個cardview所展示的image數，mTotal_Size是image總數
-                            mMaxDisplay_Size = Pathitems.size();
+
+
                             mTotal_Size = Pathitems.size();
+                            mMaxDisplay_Size = mTotal_Size;
                             //依據使用者的照片數量來決定mMaxDisplay_Size 數字
                             //如果是1張的話mMaxDisplay_Size=1(展示1張照片)
                             //如果是2張的話mMaxDisplay_Size=2(展示2張照片)
@@ -241,20 +256,20 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                                 mPathitems.add(Pathitems.get(i));
                             }
                             currentOffset += mPathitems.size();
-                            //Toast.makeText(mContext, "maxDisplay:"+ mMaxDisplay_Size+"mtotal"+mTotal_Size, Toast.LENGTH_LONG).show();
+
                             p.setDescription(description);
                             p.setImages(mPathitems);
                             p.setUser_name(user_name);
-                            p.setUser_avatar(user_avatar);
-                            //Toast.makeText(mContext, "images:"+images, Toast.LENGTH_SHORT).show();
+                            p.setmDisplay(mMaxDisplay_Size);
+                            p.setmTotal(mTotal_Size);
                             items.add(new Item(0,p));
                         }
                         if(type==1){
 
                             TextPost t = new TextPost();
-                            String user_name = postSnapShot.child("user_name").getValue().toString();
-                            String user_avatar = postSnapShot.child("user_avatar").getValue().toString();
-                            String description = postSnapShot.child("description").getValue().toString();
+                            String user_name = postSnapShot.child(USER_NAME).getValue().toString();
+                            String user_avatar = postSnapShot.child(USER_AVATAR).getValue().toString();
+                            String description = postSnapShot.child(DESCRIPTION).getValue().toString();
 //                            Toast.makeText(mContext, "type ="+type+"\n"
 //                                    +"username = "+user_name+"\n"
 //                                    +"user_avatar = "+user_avatar+"\n"
@@ -270,11 +285,11 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                         }
                         else if(type==2){
                             VideoPost v = new VideoPost();
-                            String user_name = postSnapShot.child("user_name").getValue().toString();
-                            String user_avatar = postSnapShot.child("user_avatar").getValue().toString();
-                            String description = postSnapShot.child("description").getValue().toString();
-                            String thumbnail_img = postSnapShot.child("thumbnail_img").getValue().toString();
-                            String video_url = postSnapShot.child("video_url").getValue().toString();
+                            String user_name = postSnapShot.child(USER_NAME).getValue().toString();
+                            String user_avatar = postSnapShot.child(USER_AVATAR).getValue().toString();
+                            String description = postSnapShot.child(DESCRIPTION).getValue().toString();
+                            String thumbnail_img = postSnapShot.child(VIDEO_THUMBNAIL).getValue().toString();
+                            String video_url = postSnapShot.child(VIDEO_URL).getValue().toString();
                             v.setUser_name(user_name);
                             v.setUser_avatar(user_avatar);
                             v.setDescription(description);
@@ -282,16 +297,18 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                             v.setVideo_url(video_url);
                             items.add(new Item(2,v));
                         }
+                        adapter = new PicturePostAdapter(mContext,items);
+                        adapter.setOnItemClickedListener(clickedListener);
+                        adapter.notifyDataSetChanged(); //notify
+                        mRecyclerView.setAdapter(adapter);
                     }
+
 
                     else{
                         Toast.makeText(mContext, "no..." , Toast.LENGTH_SHORT).show();
                     }
                 }
-                adapter = new PicturePostAdapter(mContext,items,mMaxDisplay_Size,mTotal_Size);
-                adapter.setOnItemClickedListener(clickedListener);
-                adapter.notifyDataSetChanged(); //notify
-                mRecyclerView.setAdapter(adapter);
+
             }
 
             @Override

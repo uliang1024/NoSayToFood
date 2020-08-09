@@ -87,10 +87,12 @@ class ViewHolder extends RecyclerView.ViewHolder {
         mImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(context, "Item " + position + " clicked", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(context, "total :" + mTotal + " visible :"+mDisplay, Toast.LENGTH_SHORT).show();
+                Toast.makeText(context, "clicked :"+position+" mDisplay-1 ="+(mDisplay-1), Toast.LENGTH_SHORT).show();
             }
         });
         //如果照片總數大於展出的照片數
+
         if(mTotal > mDisplay)
         {
             if(position  == mDisplay-1) {
@@ -108,7 +110,5 @@ class ViewHolder extends RecyclerView.ViewHolder {
             mImageView.setImageAlpha(255);
             textView.setVisibility(View.INVISIBLE);
         }
-
-        // textView.setText(String.valueOf(item.getPosition()));
     }
 }

@@ -16,10 +16,13 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.InputType;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.EditText;
@@ -47,17 +50,29 @@ import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
-
+import java.util.UUID;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
 import gun0912.tedbottompicker.TedBottomPicker;
+import info.androidhive.firebaseauthapp.models.PicturePost;
+import info.androidhive.firebaseauthapp.models.PicturePostGridImage;
+import info.androidhive.firebaseauthapp.models.TextPost;
+import info.androidhive.firebaseauthapp.models.VideoPost;
 import info.androidhive.firebaseauthapp.util.SampleCoverVideo;
 
+import static info.androidhive.firebaseauthapp.util.Constants.DESCRIPTION;
+import static info.androidhive.firebaseauthapp.util.Constants.ITEM_IMAGES;
+import static info.androidhive.firebaseauthapp.util.Constants.POST_TYPE;
+import static info.androidhive.firebaseauthapp.util.Constants.USER_AVATAR;
+import static info.androidhive.firebaseauthapp.util.Constants.USER_NAME;
+import static info.androidhive.firebaseauthapp.util.Constants.VIDEO_THUMBNAIL;
+import static info.androidhive.firebaseauthapp.util.Constants.VIDEO_URL;
+
 public class PostingActivity extends AppCompatActivity {
-    private List<Uri> selectedUriList;
+    private List<Uri> selectedUriList =new ArrayList<Uri>();
     private Uri selectedUri;
     private ImageView img_user,media_image_plus,media_video_plus,img_remove_video,img_remove_image;
     private TextView tv_user;
@@ -98,6 +113,9 @@ public class PostingActivity extends AppCompatActivity {
         firebaseAuth = FirebaseAuth.getInstance();
         //設置ActionBar
         setUpActionBar(toolbar_posting);
+        //設定edittext多行
+        et_content.setInputType(InputType.TYPE_TEXT_FLAG_MULTI_LINE);
+        et_content.setSingleLine(false);
 
         //得知螢幕的寬度以計算出一排可以放多少個相片
         DisplayMetrics metric = new DisplayMetrics();
@@ -236,39 +254,12 @@ public class PostingActivity extends AppCompatActivity {
                 selected_photos_container.addView(videoAddView);
                 //將 videourl 重置
                 selectedUri = null;
+                GSYVideoManager.releaseAllVideos();
             }
         });
 
     }
-    private void UploadVideo(){
-        if(selectedUri!= null){
-            StorageReference reference = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(System.currentTimeMillis()+"."+getVideoExt(selectedUri));
-            reference.putFile(selectedUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-                @Override
-                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-                        @Override
-                        public void onSuccess(Uri uri) {
-                            String url = uri.toString();
-                            Log.e("TED","your url is : "+url);
-                        }
-                    }).addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Log.e("TED","upload failed : "+e);
-                        }
-                    });
-                }
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(PostingActivity.this, "upload "+selectedUri.toString()+"fail", Toast.LENGTH_SHORT).show();
-                    Log.e("TED","upload failed : "+e);
-                }
-            });
 
-        }
-    }
 
     ////處理增加相片的方法
     private void setUpPhotoActivity() {
@@ -327,13 +318,6 @@ public class PostingActivity extends AppCompatActivity {
             selected_photos_container.addView(imageHolder);
         }
 
-        media_image_plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                setUpPhotoActivity();
-            }
-        });
-
         //再將"增加圖片"按鈕添加到gridLayout
         selected_photos_container.addView(imageAddView);
 
@@ -355,6 +339,106 @@ public class PostingActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.post_action,menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int id = item.getItemId();
+        int img_count = 1;
+        if (id==R.id.btn_post){
+            //按下發布紐，如果selectedUriList.size = 0,selectedUri = null為 textpost
+
+            Toast.makeText(PostingActivity.this, "UR url list is"+selectedUriList+"\n"+"UR video list is"+selectedUri, Toast.LENGTH_SHORT).show();
+            if (selectedUriList.size()==0 &&selectedUri ==null){
+                //String uuid = UUID.randomUUID().toString();
+                String pushId = databaseReference.push().getKey();
+                TextPost t = new TextPost();
+                t.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
+                t.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+                t.setDescription(et_content.getText().toString());
+                t.setPost_type(1);
+                databaseReference.child("posting").child(pushId).setValue(t);
+
+            }else if(selectedUriList.size()!=0&&selectedUri ==null)
+            //待處理，將本地url轉成https
+            {
+                ArrayList<PicturePostGridImage> images = new ArrayList<>();
+//                String uuid = UUID.randomUUID().toString();
+                String pushId = databaseReference.push().getKey();
+                PicturePost p = new PicturePost();
+                p.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
+                p.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+                p.setDescription(et_content.getText().toString());
+
+                p.setPost_type(0);
+                for(Uri uri :selectedUriList){
+                    PicturePostGridImage imageItem = new PicturePostGridImage();
+                    imageItem.setImagePath(uri.toString());
+                    images.add(imageItem);
+                }
+                p.setImages(images);
+//                int size = selectedUriList.size();
+//                if (size>=1&&size<=2){
+//                    p.setmDisplay(size);
+//                }else if (size>=3 ||size <=5){
+//                    p.setmDisplay(4);
+//                }else if(size>=6){
+//                    p.setmDisplay(6);
+//                }
+//                p.setmTotal(size);
+                databaseReference.child("posting").child(pushId).setValue(p);
+            }else{
+                UploadVideo();
+            }
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void UploadVideo(){
+        if(selectedUri!= null){
+            StorageReference reference = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(System.currentTimeMillis()+"."+getVideoExt(selectedUri));
+
+            reference.putFile(selectedUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                        @Override
+                        public void onSuccess(Uri uri) {
+                            String url = uri.toString();
+                            String pushId = databaseReference.push().getKey();
+                            VideoPost v = new VideoPost();
+                            v.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
+                            v.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+                            v.setDescription(et_content.getText().toString());
+                            v.setThumbnail_img("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F2.jpg?alt=media&token=254289ea-59ac-4d4c-80dd-f3720864af41");
+                            v.setVideo_url(url);
+                            v.setPost_type(2);
+                            databaseReference.child("posting").child(pushId).setValue(v);
+                            Log.e("TED","your url is : "+url);
+                        }
+                    }).addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            Log.e("TED","upload failed : "+e);
+                        }
+                    });
+                }
+            }).addOnFailureListener(new OnFailureListener() {
+                @Override
+                public void onFailure(@NonNull Exception e) {
+                    Toast.makeText(PostingActivity.this, "upload "+selectedUri.toString()+"fail", Toast.LENGTH_SHORT).show();
+                    Log.e("TED","upload failed : "+e);
+                }
+            });
+
+        }
+    }
+
     private void resolveFullBtn(final StandardGSYVideoPlayer standardGSYVideoPlayer) {
         standardGSYVideoPlayer.startWindowFullscreen(this, true, true);
     }

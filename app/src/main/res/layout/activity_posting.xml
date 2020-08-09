@@ -63,6 +63,10 @@
                 android:ems="10"
                 android:hint="說點什麼吧"
                 android:inputType="textPersonName"
+                android:maxLines="5"
+                android:minLines="2"
+                android:singleLine="false"
+                android:lines="2"
                 android:background="@android:color/transparent"/>
 
             <ScrollView

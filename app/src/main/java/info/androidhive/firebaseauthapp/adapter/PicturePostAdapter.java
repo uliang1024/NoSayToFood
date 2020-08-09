@@ -2,6 +2,7 @@ package info.androidhive.firebaseauthapp.adapter;
 
 
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,11 +53,9 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //private RequestManager requestManager;
     private Context context = null;
     private GSYVideoHelper smallVideoHelper;
-    private int mDisplay= 0;
-    private int mTotal= 0;
+
     private  OnItemClickedListener mListener;
     private int AnimId = R.anim.left_to_right;
-
     //先寫一個interface OnItemClickedListener
     public interface OnItemClickedListener{
         void onItemClicked(int position);
@@ -68,11 +67,13 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     }
 
     private GSYVideoHelper.GSYVideoHelperBuilder gsySmallVideoHelperBuilder;
-    public PicturePostAdapter(Context context,List<Item> items, int max_display, int mTotal_size ) {
+
+
+
+    public PicturePostAdapter(Context context, List<Item> items ) {
         this.items = items;
         this.context = context;
-        mDisplay = max_display;
-        mTotal = mTotal_size;
+
     }
 
     @NonNull
@@ -155,15 +156,6 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
             recyclerView = itemView.findViewById(R.id.recyclerView2);
             //設置橫向有幾個元素展出
-            int colCount ;
-            if (mDisplay>=6){
-                colCount = 3;
-            }else if(mDisplay>=3&&mDisplay<6){
-                colCount = 2;
-            }else {
-                colCount = mDisplay;
-            }
-            recyclerView.setRequestedColumnCount(colCount);
 
             recyclerView.setDebugging(true);
             recyclerView.setRequestedHorizontalSpacing(Utils.dpToPx(context, 5));
@@ -182,7 +174,6 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                         if(position!= RecyclerView.NO_POSITION){
                             mListener.onItemClicked(position);
-                            Toast.makeText(context, "mDisplay"+mDisplay+"column count" + colCount , Toast.LENGTH_SHORT).show();
                         }
                      }
                  }
@@ -193,7 +184,19 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             Glide.with(context).load(p.getUser_avatar()).centerCrop().into(img_user);
             tv_username_pic.setText(p.getUser_name());
             tv_des_picPost.setText(p.getDescription());
+            int mDisplay= p.getmDisplay();
+            int mTotal= p.getmTotal();
             ChildAdapter adapter = new ChildAdapter(p.getImages(),context,mDisplay,mTotal);
+            int colCount ;
+            if (mDisplay==6){
+                colCount = 3;
+            }else if(mDisplay>=3&&mDisplay<6){
+                colCount = 2;
+            }else {
+                colCount = mDisplay;
+            }
+            Log.e("adapter display","mMaxDisplay_Size :"+mDisplay+"mTotal_Size"+mTotal+"playing  item position is"+position);
+            recyclerView.setRequestedColumnCount(colCount);
             recyclerView.setAdapter(new AsymmetricRecyclerViewAdapter<>(context,recyclerView, adapter));
 
         }

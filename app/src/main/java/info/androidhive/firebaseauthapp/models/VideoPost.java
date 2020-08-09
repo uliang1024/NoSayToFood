@@ -6,7 +6,7 @@ public class VideoPost {
     private String user_avatar;
     private String user_name;
     private String thumbnail_img;
-
+    private int post_type;
     private String video_url;
     private String description;
 
@@ -47,8 +47,13 @@ public class VideoPost {
         return description;
     }
 
+    public int getPost_type() {
+        return post_type;
+    }
 
-
+    public void setPost_type(int post_type) {
+        this.post_type = post_type;
+    }
 
     public void setUser_avatar(String user_avatar) {
         this.user_avatar = user_avatar;

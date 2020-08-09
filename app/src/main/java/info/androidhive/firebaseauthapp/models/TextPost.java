@@ -2,7 +2,7 @@ package info.androidhive.firebaseauthapp.models;
 public class TextPost {
 
     private String user_avatar,user_name,description;
-
+    private int post_type;
     public TextPost() {
 
     }
@@ -12,6 +12,14 @@ public class TextPost {
         this.user_name = user_name;
 
         this.description = description;
+    }
+
+    public int getPost_type() {
+        return post_type;
+    }
+
+    public void setPost_type(int post_type) {
+        this.post_type = post_type;
     }
 
     public String getUser_avatar() {

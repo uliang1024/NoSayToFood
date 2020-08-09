@@ -9,9 +9,11 @@ public class PicturePost implements Parcelable {
     private String user_avatar;
     private String user_name;
     private String description;
-    private int ItemID;
+    private int ItemID,post_type;
     private String ItemName;
-    private ArrayList<PicturePostGridImage> Images;
+    private int mDisplay;
+    private int mTotal;
+    private ArrayList<PicturePostGridImage >Images;
 
 
     public PicturePost(int itemID,
@@ -23,6 +25,30 @@ public class PicturePost implements Parcelable {
         this.user_name = user_name;
         this.description = description;
 
+    }
+
+    public int getmDisplay() {
+        return mDisplay;
+    }
+
+    public void setmDisplay(int mDisplay) {
+        this.mDisplay = mDisplay;
+    }
+
+    public int getmTotal() {
+        return mTotal;
+    }
+
+    public void setmTotal(int mTotal) {
+        this.mTotal = mTotal;
+    }
+
+    public int getPost_type() {
+        return post_type;
+    }
+
+    public void setPost_type(int post_type) {
+        this.post_type = post_type;
     }
 
     public PicturePost() {

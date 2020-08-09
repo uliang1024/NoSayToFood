@@ -48,23 +48,22 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@drawable/ic_camera"
-            app:fabSize="mini" />
+            android:src="@drawable/ic_camera" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_post"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@drawable/ic_edit"
-            app:fabSize="mini" />
+            android:src="@drawable/ic_edit" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/fab_main"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_margin="5dp"
-            android:src="@drawable/ic_chat" />
+            android:src="@drawable/ic_chat"
+            app:fabCustomSize="70dp" />
     </LinearLayout>
     <LinearLayout
         android:id="@+id/linearLayout3"
