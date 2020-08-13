@@ -1,6 +1,9 @@
 package info.androidhive.firebaseauthapp.ui.notifications;
 
+import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,69 +14,105 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+
+import java.util.ArrayList;
 
 import javax.annotation.Nullable;
 
+import info.androidhive.firebaseauthapp.FitnessClassActivity;
 import info.androidhive.firebaseauthapp.R;
+import info.androidhive.firebaseauthapp.adapter.ClassAdapter;
+import info.androidhive.firebaseauthapp.classModels.FitClass;
 
 /**
  * Created by Belal on 1/23/2018.
  */
 
 public class NotificationsFragment extends Fragment {
-    GridView gridView;
+    RecyclerView gridView;
+    private DatabaseReference myRef;
     String[] numbers = {"在家輕鬆動","啞鈴鍊肌","重量訓練","有氧瑜珈","暖身操"};
     int [] pics ={R.drawable.exercise,R.drawable.gym,R.drawable.gym2,R.drawable.healthy,R.drawable.workout};
+    ArrayList<FitClass> classes = new ArrayList<>();
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragment_notifications = inflater.inflate(R.layout.fragment_notifications, container, false);
+        Context context = fragment_notifications.getContext();
         //INIT VIEWS
         init(fragment_notifications);
 
-        CustomAdapter adapter = new CustomAdapter();
-        gridView.setAdapter(adapter);
-        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+        FitClass class1 = new FitClass();
+        class1.setClassName(numbers[0]);
+        FitClass class2 = new FitClass();
+        class2.setClassName(numbers[1]);
+        FitClass class3 = new FitClass();
+        class3.setClassName(numbers[2]);
+        FitClass class4 = new FitClass();
+        class4.setClassName(numbers[3]);
+        FitClass class5 = new FitClass();
+        class5.setClassName(numbers[4]);
+        classes.add(class1);
+        classes.add(class2);
+        classes.add(class3);
+        classes.add(class4);
+        classes.add(class5);
+        myRef.child("fitness").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(getActivity(),"pointing item: "+numbers[position],Toast.LENGTH_SHORT).show();
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                ClearAll();
+                for(DataSnapshot fitSnapShop:dataSnapshot.getChildren()){
+                    if(fitSnapShop.hasChild("classImage")){
+                        FitClass fitClass = fitSnapShop.getValue(FitClass.class);
+                        Log.e("className",""+fitClass.getClassName());
+                        Log.e("classImage",""+fitClass.getClassImage());
+                        classes.add(fitClass);
+
+                    }else{
+
+                    }
+                    ClassAdapter adapter = new ClassAdapter(context,classes);
+                    GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2, GridLayoutManager.VERTICAL,false);
+                    gridView.setLayoutManager(gridLayoutManager);
+                    gridView.setAdapter(adapter);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
+
+
+
         return fragment_notifications;
     }
+
+    public void ClearAll(){
+        if (classes != null){
+            classes.clear();
+        }
+        classes = new ArrayList<>();
+    }
     private void init(View v) {
+        myRef = FirebaseDatabase.getInstance().getReference();
         gridView = v.findViewById(R.id.grid_view);
     }
 
-    private class CustomAdapter extends BaseAdapter {
-        @Override
-        public int getCount() {
-            return numbers.length;
-        }
 
-        @Override
-        public Object getItem(int position) {
-            return null;
-        }
 
-        @Override
-        public long getItemId(int position) {
-            return 0;
-        }
-
-        @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            View view = getLayoutInflater().inflate(R.layout.raw_data,null);
-            TextView tv_grid_item = view.findViewById(R.id.tv_grid_item);
-            ImageView img_grid_item = view.findViewById(R.id.img_grid_item);
-
-            tv_grid_item.setText(numbers[position]);
-            img_grid_item.setImageResource(pics[position]);
-
-            return  view;
-        }
-    }
 }

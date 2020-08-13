@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import android.Manifest;
+import android.app.ProgressDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -36,12 +37,16 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.RequestManager;
 import com.bumptech.glide.request.RequestOptions;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.gun0912.tedpermission.PermissionListener;
@@ -55,6 +60,7 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import gun0912.tedbottompicker.TedBottomPicker;
 import info.androidhive.firebaseauthapp.models.PicturePost;
@@ -72,6 +78,8 @@ import static info.androidhive.firebaseauthapp.util.Constants.VIDEO_THUMBNAIL;
 import static info.androidhive.firebaseauthapp.util.Constants.VIDEO_URL;
 
 public class PostingActivity extends AppCompatActivity {
+    ArrayList<PicturePostGridImage> savedImageUrls = new ArrayList<>();
+    int counter;
     private List<Uri> selectedUriList =new ArrayList<Uri>();
     private Uri selectedUri;
     private ImageView img_user,media_image_plus,media_video_plus,img_remove_video,img_remove_image;
@@ -108,7 +116,7 @@ public class PostingActivity extends AppCompatActivity {
         //相片的item
 
         //firebase
-        storageReference = FirebaseStorage.getInstance().getReference("posted_video");
+        storageReference = FirebaseStorage.getInstance().getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference();
         firebaseAuth = FirebaseAuth.getInstance();
         //設置ActionBar
@@ -367,31 +375,54 @@ public class PostingActivity extends AppCompatActivity {
             }else if(selectedUriList.size()!=0&&selectedUri ==null)
             //待處理，將本地url轉成https
             {
-                ArrayList<PicturePostGridImage> images = new ArrayList<>();
-//                String uuid = UUID.randomUUID().toString();
-                String pushId = databaseReference.push().getKey();
-                PicturePost p = new PicturePost();
-                p.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
-                p.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
-                p.setDescription(et_content.getText().toString());
-
-                p.setPost_type(0);
+                ProgressDialog progressDialog = new ProgressDialog(this);
+                progressDialog.setMessage("upload 0/"+selectedUriList.size());
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.setCancelable(false);
+                progressDialog.show();
+                StorageReference reference = storageReference.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("posted_images").child(System.currentTimeMillis()+"");
                 for(Uri uri :selectedUriList){
-                    PicturePostGridImage imageItem = new PicturePostGridImage();
-                    imageItem.setImagePath(uri.toString());
-                    images.add(imageItem);
+
+                    reference.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                        @Override
+                        public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
+                            if (task.isSuccessful()){
+                                reference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Uri> task) {
+                                        //只要完成了一輪loop，無論task是否成功都要++
+                                        counter++;
+                                        progressDialog.setMessage("upload "+counter+"/"+selectedUriList.size());
+                                        if(task.isSuccessful()){
+
+                                            String url = task.getResult().toString();
+                                            PicturePostGridImage imageItem = new PicturePostGridImage();
+                                            imageItem.setImagePath(url);
+                                            Log.e("get downUrls : ",url);
+                                            //將我們拿到的url存到廣域的arraylist : savedImageUrls中
+                                            savedImageUrls.add(imageItem);
+
+                                        }else{
+                                            //失敗了必須將檔案刪掉
+                                            reference.delete();
+                                            Log.e("get downUrls error","something wrong");
+                                        }
+                                        //如果loop次數達到selectedUriList.size()
+                                        if(counter==selectedUriList.size()){
+                                            //呼叫
+                                            uploadImages(progressDialog);
+                                        }
+                                    }
+                                });
+                            }else{
+                                //只要完成了一輪loop，無論task是否成功都要++
+                                counter++;
+                                Log.e("upload files error","something wrong");
+                            }
+                        }
+                    });
                 }
-                p.setImages(images);
-//                int size = selectedUriList.size();
-//                if (size>=1&&size<=2){
-//                    p.setmDisplay(size);
-//                }else if (size>=3 ||size <=5){
-//                    p.setmDisplay(4);
-//                }else if(size>=6){
-//                    p.setmDisplay(6);
-//                }
-//                p.setmTotal(size);
-                databaseReference.child("posting").child(pushId).setValue(p);
+
             }else{
                 UploadVideo();
             }
@@ -399,11 +430,52 @@ public class PostingActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
     }
 
+    private void uploadImages(ProgressDialog progressDialog) {
+        String pushId = databaseReference.push().getKey();
+        PicturePost p = new PicturePost();
+        p.setImages(savedImageUrls);
+        p.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
+        p.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+        p.setDescription(et_content.getText().toString());
+
+        p.setPost_type(0);
+        int size = selectedUriList.size();
+        if (size>=4&&size<6){
+            p.setmDisplay(4);
+        }
+        else if (size>=6){
+            p.setmDisplay(6);
+        }else{
+            p.setmDisplay(size);
+        }
+        p.setmTotal(size);
+
+        Log.e("upload images","upload complete");
+
+        databaseReference.child("posting").child(pushId).setValue(p);
+        progressDialog.dismiss();
+
+    }
+
+
+
     private void UploadVideo(){
         if(selectedUri!= null){
-            StorageReference reference = storageReference.child(firebaseAuth.getCurrentUser().getUid()).child(System.currentTimeMillis()+"."+getVideoExt(selectedUri));
+            StorageReference reference = storageReference.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("posted_video").child(System.currentTimeMillis()+"."+getVideoExt(selectedUri));
+            ProgressDialog progressDialog = new ProgressDialog(this);
+            progressDialog.setMessage("upload 0%");
+            progressDialog.setCanceledOnTouchOutside(false);
+            progressDialog.setCancelable(false);
+            progressDialog.show();
+            UploadTask uploadTask = reference.putFile(selectedUri);
 
-            reference.putFile(selectedUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
+                @Override
+                public void onProgress(@NonNull UploadTask.TaskSnapshot taskSnapshot) {
+                    double progress = (100*taskSnapshot.getBytesTransferred())/taskSnapshot.getTotalByteCount();
+                    progressDialog.setMessage("upload "+progress+"%");
+                }
+            }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
                 @Override
                 public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                     reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
@@ -419,6 +491,7 @@ public class PostingActivity extends AppCompatActivity {
                             v.setVideo_url(url);
                             v.setPost_type(2);
                             databaseReference.child("posting").child(pushId).setValue(v);
+                            progressDialog.dismiss();
                             Log.e("TED","your url is : "+url);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -431,10 +504,41 @@ public class PostingActivity extends AppCompatActivity {
             }).addOnFailureListener(new OnFailureListener() {
                 @Override
                 public void onFailure(@NonNull Exception e) {
-                    Toast.makeText(PostingActivity.this, "upload "+selectedUri.toString()+"fail", Toast.LENGTH_SHORT).show();
-                    Log.e("TED","upload failed : "+e);
+
                 }
             });
+//            addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//                @Override
+//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+//                        @Override
+//                        public void onSuccess(Uri uri) {
+//                            String url = uri.toString();
+//                            String pushId = databaseReference.push().getKey();
+//                            VideoPost v = new VideoPost();
+//                            v.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
+//                            v.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+//                            v.setDescription(et_content.getText().toString());
+//                            v.setThumbnail_img("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F2.jpg?alt=media&token=254289ea-59ac-4d4c-80dd-f3720864af41");
+//                            v.setVideo_url(url);
+//                            v.setPost_type(2);
+//                            databaseReference.child("posting").child(pushId).setValue(v);
+//                            Log.e("TED","your url is : "+url);
+//                        }
+//                    }).addOnFailureListener(new OnFailureListener() {
+//                        @Override
+//                        public void onFailure(@NonNull Exception e) {
+//                            Log.e("TED","upload failed : "+e);
+//                        }
+//                    });
+//                }
+//            }).addOnFailureListener(new OnFailureListener() {
+//                @Override
+//                public void onFailure(@NonNull Exception e) {
+//                    Toast.makeText(PostingActivity.this, "upload "+selectedUri.toString()+"fail", Toast.LENGTH_SHORT).show();
+//                    Log.e("TED","upload failed : "+e);
+//                }
+//            });
 
         }
     }

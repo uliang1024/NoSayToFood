@@ -205,96 +205,17 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                     if(postSnapShot.hasChild(POST_TYPE)){
                         int type = Integer.parseInt(postSnapShot.child(POST_TYPE).getValue().toString());
                         if(type ==0){
-                            PicturePost p = new PicturePost();
-                            String user_name = postSnapShot.child(USER_NAME).getValue().toString();
-                            String user_avatar = postSnapShot.child(USER_AVATAR).getValue().toString();
-                            String description = postSnapShot.child(DESCRIPTION).getValue().toString();
-                            //==================================================================================
-                            ArrayList<String> imageItems = new ArrayList<>();
-                            for(DataSnapshot imageSnapShot:postSnapShot.child(ITEM_IMAGES).getChildren()){
-                                if(imageSnapShot.hasChild("imagePath")){
-                                    String url = imageSnapShot.child("imagePath").getValue().toString();
-                                    imageItems.add(url);
-
-                                }else{
-                                    Toast.makeText(mContext, "no", Toast.LENGTH_SHORT).show();
-                                }
-//
-                            }
-                            ArrayList<PicturePostGridImage> mPathitems = new ArrayList<>();
-                            Pathitems.clear();
-                            for (int i = 0;i<imageItems.size();i++){
-                                //創建一個itemImage=====================================
-                                PicturePostGridImage i1 = new PicturePostGridImage(imageItems.get(i));
-                                i1.setColumnSpan(1);
-                                i1.setRowSpan(1);
-                                i1.setPosition( currentOffset + i);
-                                //=====================================================
-                                Pathitems.add(i1);
-
-                            }
-                            //mTotal_Size是image總數取決於有幾個PicturePostGridImage被加到裡面
-                            //max_display是一個cardview所展示的image數，mTotal_Size是image總數
-
-
-                            mTotal_Size = Pathitems.size();
-                            mMaxDisplay_Size = mTotal_Size;
-                            //依據使用者的照片數量來決定mMaxDisplay_Size 數字
-                            //如果是1張的話mMaxDisplay_Size=1(展示1張照片)
-                            //如果是2張的話mMaxDisplay_Size=2(展示2張照片)
-                            //如果是3~5張的話mMaxDisplay_Size=4(展示4張照片)
-                            //如果是6~n張的話mMaxDisplay_Size=6(展示6張照片)
-                            if (mMaxDisplay_Size>=4&&mMaxDisplay_Size<6){
-                                mMaxDisplay_Size =4;
-                            }
-                            if (mMaxDisplay_Size>=6){
-                                mMaxDisplay_Size = 6;
-                            }
-
-                            for(int i = 0; i < mMaxDisplay_Size;i++)
-                            {
-                                mPathitems.add(Pathitems.get(i));
-                            }
-                            currentOffset += mPathitems.size();
-
-                            p.setDescription(description);
-                            p.setImages(mPathitems);
-                            p.setUser_name(user_name);
-                            p.setmDisplay(mMaxDisplay_Size);
-                            p.setmTotal(mTotal_Size);
+                            PicturePost p = postSnapShot.getValue(PicturePost.class);
                             items.add(new Item(0,p));
                         }
                         if(type==1){
 
-                            TextPost t = new TextPost();
-                            String user_name = postSnapShot.child(USER_NAME).getValue().toString();
-                            String user_avatar = postSnapShot.child(USER_AVATAR).getValue().toString();
-                            String description = postSnapShot.child(DESCRIPTION).getValue().toString();
-//                            Toast.makeText(mContext, "type ="+type+"\n"
-//                                    +"username = "+user_name+"\n"
-//                                    +"user_avatar = "+user_avatar+"\n"
-//                                    +"title = "+title+"\n"
-//                                    +"description = "+description+"\n"
-//                                    , Toast.LENGTH_SHORT).show();
-
-                            t.setUser_name(user_name);
-                            t.setUser_avatar(user_avatar);
-                            t.setDescription(description);
-
+                            TextPost t = postSnapShot.getValue(TextPost.class);
                             items.add(new Item(1,t));
                         }
                         else if(type==2){
-                            VideoPost v = new VideoPost();
-                            String user_name = postSnapShot.child(USER_NAME).getValue().toString();
-                            String user_avatar = postSnapShot.child(USER_AVATAR).getValue().toString();
-                            String description = postSnapShot.child(DESCRIPTION).getValue().toString();
-                            String thumbnail_img = postSnapShot.child(VIDEO_THUMBNAIL).getValue().toString();
-                            String video_url = postSnapShot.child(VIDEO_URL).getValue().toString();
-                            v.setUser_name(user_name);
-                            v.setUser_avatar(user_avatar);
-                            v.setDescription(description);
-                            v.setThumbnail_img(thumbnail_img);
-                            v.setVideo_url(video_url);
+                            VideoPost v = postSnapShot.getValue(VideoPost.class);
+
                             items.add(new Item(2,v));
                         }
                         adapter = new PicturePostAdapter(mContext,items);

@@ -3,8 +3,8 @@
     package="info.androidhive.firebaseauthapp">
 
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"></uses-permission>
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"></uses-permission>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
         android:allowBackup="true"
@@ -13,9 +13,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".PostingActivity"
+        <activity android:name=".FitnessClassActivity"></activity>
+        <activity
+            android:name=".PostingActivity"
             android:parentActivityName=".HomeActivity"
-            android:value="fully qualified path to Activity Class Name"></activity>
+            android:value="fully qualified path to Activity Class Name" />
         <activity android:name=".PostingPageActivity" />
         <activity android:name=".fasting.Fasting_Complete" />
         <activity android:name=".HeyYou" />
@@ -33,8 +35,7 @@
         <activity
             android:name=".HomeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
-            android:screenOrientation="portrait"
-            />
+            android:screenOrientation="portrait" />
         <activity android:name=".food.foodClassification" />
         <activity android:name=".MainActivity">
             <intent-filter>

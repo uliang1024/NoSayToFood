@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.nostra13.universalimageloader.core.ImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import info.androidhive.firebaseauthapp.Assymetric.AGVRecyclerViewAdapter;
@@ -40,8 +41,7 @@ class ChildAdapter extends AGVRecyclerViewAdapter<ViewHolder> {
 
     @Override public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Log.d("RecyclerViewActivity", "onCreateView");
-
-        return new ViewHolder(parent, viewType,items);
+        return new ViewHolder(parent);
     }
 
     @Override public void onBindViewHolder(ViewHolder holder, int position) {
@@ -58,7 +58,7 @@ class ChildAdapter extends AGVRecyclerViewAdapter<ViewHolder> {
     }
 
     @Override public int getItemViewType(int position) {
-        return position % 2 == 0 ? 1 : 0;
+        return 0;
     }
 }
 
@@ -67,7 +67,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
     private final ImageView mImageView;
     private final TextView textView;
 
-    public ViewHolder(ViewGroup parent, int viewType, List<PicturePostGridImage> items) {
+    public ViewHolder(ViewGroup parent) {
         super(LayoutInflater.from(parent.getContext()).inflate(
                 R.layout.adapter_item, parent, false));
 
@@ -78,8 +78,9 @@ class ViewHolder extends RecyclerView.ViewHolder {
 
     }
 
-
+    //item 長度有多少 這整段 bind 就會跑幾次
     public void bind(List<PicturePostGridImage> item,Context context, int position, int mDisplay, int mTotal) {
+//        Log.e("in child adapter","bind has run ="+position+" times");
         Glide.with(context).load(String.valueOf(item.get(position).getImagePath())).centerCrop().into(mImageView);
         //mTotal:總共有幾張照片
         //mDisplay:總共有幾張已被展出
@@ -92,7 +93,7 @@ class ViewHolder extends RecyclerView.ViewHolder {
             }
         });
         //如果照片總數大於展出的照片數
-
+//        Log.e("in child adapter","mTotal ="+mTotal+"mDisplay ="+mDisplay);
         if(mTotal > mDisplay)
         {
             if(position  == mDisplay-1) {
