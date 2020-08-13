@@ -1,6 +1,8 @@
 package info.androidhive.firebaseauthapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,6 +17,7 @@ import com.bumptech.glide.Glide;
 
 import java.util.List;
 
+import info.androidhive.firebaseauthapp.FitnessClassActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.classModels.FitClass;
 import info.androidhive.firebaseauthapp.models.PicturePost;
@@ -58,7 +61,15 @@ public class ClassAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext(),""+classes.get(getAbsoluteAdapterPosition()).getClassName(),Toast.LENGTH_SHORT).show();
+                    String className = classes.get(getAbsoluteAdapterPosition()).getClassName();
+                    Toast.makeText(v.getContext(),className,Toast.LENGTH_SHORT).show();
+
+                    Intent intent = new Intent(context, FitnessClassActivity.class);
+                    Bundle bundle = new Bundle();
+                    bundle.putString("className",className);
+                    intent.putExtras(bundle);
+                    context.startActivity(intent);
+
                 }
             });
         }
@@ -68,4 +79,5 @@ public class ClassAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
             className.setText(fitClass.getClassName());
         }
     }
+
 }

@@ -54,21 +54,6 @@ public class NotificationsFragment extends Fragment {
         //INIT VIEWS
         init(fragment_notifications);
 
-        FitClass class1 = new FitClass();
-        class1.setClassName(numbers[0]);
-        FitClass class2 = new FitClass();
-        class2.setClassName(numbers[1]);
-        FitClass class3 = new FitClass();
-        class3.setClassName(numbers[2]);
-        FitClass class4 = new FitClass();
-        class4.setClassName(numbers[3]);
-        FitClass class5 = new FitClass();
-        class5.setClassName(numbers[4]);
-        classes.add(class1);
-        classes.add(class2);
-        classes.add(class3);
-        classes.add(class4);
-        classes.add(class5);
         myRef.child("fitness").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -81,7 +66,7 @@ public class NotificationsFragment extends Fragment {
                         classes.add(fitClass);
 
                     }else{
-
+                        Log.e("classImage","no such class");
                     }
                     ClassAdapter adapter = new ClassAdapter(context,classes);
                     GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2, GridLayoutManager.VERTICAL,false);

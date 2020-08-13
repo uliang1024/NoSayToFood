@@ -1,22 +1,40 @@
 package info.androidhive.firebaseauthapp.classModels;
 
 public class ClassdataEntity {
-    private String movename;
-    private String moveimage;
+    private String unit;
+    private int moveTimes;
+    private String moveName;
+    private String moveImage;
 
-    public String getMovename() {
-        return movename;
+    public int getMoveTimes() {
+        return moveTimes;
     }
 
-    public void setMovename(String movename) {
-        this.movename = movename;
+    public void setMoveTimes(int moveTimes) {
+        this.moveTimes = moveTimes;
     }
 
-    public String getMoveimage() {
-        return moveimage;
+    public String getMoveName() {
+        return moveName;
     }
 
-    public void setMoveimage(String moveimage) {
-        this.moveimage = moveimage;
+    public void setMoveName(String moveName) {
+        this.moveName = moveName;
+    }
+
+    public String getMoveImage() {
+        return moveImage;
+    }
+
+    public void setMoveImage(String moveImage) {
+        this.moveImage = moveImage;
+    }
+
+    public String getUnit() {
+        return unit;
+    }
+
+    public void setUnit(String unit) {
+        this.unit = unit;
     }
 }
