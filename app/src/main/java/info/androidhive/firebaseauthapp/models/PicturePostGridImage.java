@@ -11,39 +11,6 @@ public class PicturePostGridImage extends PicturePostImagePosition {
 
     }
 
-    public PicturePostGridImage( String imagePath) {
-        super();
-        ImagePath = imagePath;
-    }
-
-    protected PicturePostGridImage(Parcel in) {
-        ImagePath = in.readString();
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-
-        dest.writeString(ImagePath);
-
-
-    }
-
-    @Override
-    public String toString() {
-        return "ItemImage{" +
-
-                ", ImagePath='" + ImagePath + '\'' +
-                 +
-                '}';
-    }
-
-
-
     public String getImagePath() {
         return ImagePath;
     }
@@ -52,17 +19,4 @@ public class PicturePostGridImage extends PicturePostImagePosition {
         ImagePath = imagePath;
     }
 
-
-
-    public static final Parcelable.Creator<PicturePostGridImage> CREATOR = new Parcelable.Creator<PicturePostGridImage>() {
-        @Override
-        public PicturePostGridImage createFromParcel(Parcel in) {
-            return new PicturePostGridImage(in);
-        }
-
-        @Override
-        public PicturePostGridImage[] newArray(int size) {
-            return new PicturePostGridImage[size];
-        }
-    };
 }

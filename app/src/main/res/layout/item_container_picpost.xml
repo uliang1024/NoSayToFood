@@ -82,12 +82,10 @@
                     android:padding="16dp" />
             </com.ms.square.android.expandabletextview.ExpandableTextView>
 
-            <info.androidhive.firebaseauthapp.Assymetric.AsymmetricRecyclerView
+            <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recyclerView2"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
-
-            </info.androidhive.firebaseauthapp.Assymetric.AsymmetricRecyclerView>
+                android:layout_height="300dp" />
 
         </LinearLayout>
 

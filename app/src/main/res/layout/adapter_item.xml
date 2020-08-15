@@ -3,26 +3,25 @@
     android:id="@+id/rlImages"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:background="#99000000">
+    android:background="#D2000000">
 
     <ImageView
         android:id="@+id/mImageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        />
+        android:layout_alignParentTop="true" />
 
     <TextView
         android:id="@+id/tvCount"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBottom="@+id/mImageView"
         android:layout_alignLeft="@+id/mImageView"
+        android:layout_alignTop="@+id/mImageView"
+        android:layout_alignRight="@+id/mImageView"
+        android:layout_alignBottom="@+id/mImageView"
         android:layout_centerInParent="true"
         android:gravity="center"
-        android:layout_alignRight="@+id/mImageView"
-        android:layout_alignTop="@+id/mImageView"
+        android:text="+6"
         android:textColor="@android:color/white"
-        android:textSize="20sp"
-        android:text="+6" />
+        android:textSize="20sp" />
 </RelativeLayout>

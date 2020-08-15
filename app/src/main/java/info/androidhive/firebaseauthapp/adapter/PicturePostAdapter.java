@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -148,7 +149,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //===========================ViewHolders===============================//
     public class pictuerPostViewHolder extends RecyclerView.ViewHolder{
         private CardView cardView_picpost;
-        public AsymmetricRecyclerView recyclerView;
+        public RecyclerView recyclerView;
         private ImageView img_user;
         private TextView tv_username_pic, tv_title_picpost;
         private ExpandableTextView tv_des_picPost;
@@ -159,8 +160,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             recyclerView = itemView.findViewById(R.id.recyclerView2);
             //設置橫向有幾個元素展出
 
-            recyclerView.setDebugging(true);
-            recyclerView.setRequestedHorizontalSpacing(Utils.dpToPx(context, 5));
+
             recyclerView.addItemDecoration(
                     new SpacesItemDecoration(context.getResources().getDimensionPixelSize(R.dimen.recycler_padding)));
             cardView_picpost = itemView.findViewById(R.id.cardview_picpost);
@@ -188,24 +188,25 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tv_username_pic.setText(p.getUser_name());
             tv_des_picPost.setText(p.getDescription());
             int mDisplay= p.getmDisplay();
-            int mTotal= p.getmTotal();
             //傳遞給ChildAdapter的 Arraylist 的 arraylist應該只取前mDisplay個
             ArrayList<PicturePostGridImage> display_item =new ArrayList<>();
             for(int i=0;i<mDisplay;i++){
                 display_item.add(p.getImages().get(i));
             }
-            ChildAdapter adapter = new ChildAdapter(display_item,context,mDisplay,mTotal);
+            ChildAdapter adapter = new ChildAdapter(context, p,display_item);
             int colCount ;
-            if (mDisplay==6){
+            if (mDisplay>=6){
                 colCount = 3;
             }else if(mDisplay>2&&mDisplay<6){
                 colCount = 2;
             }else {
                 colCount = mDisplay;
             }
-            Log.e("adapter display","column count is "+colCount+"  playing  item position is"+position);
-            recyclerView.setAdapter(new AsymmetricRecyclerViewAdapter<>(context,recyclerView, adapter));
-            recyclerView.setRequestedColumnCount(colCount);
+            Log.e("adapter display","");
+            Log.e("adapter display","column count is "+colCount+"mDisplay is"+mDisplay);
+            GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2, GridLayoutManager.VERTICAL,false);
+            recyclerView.setLayoutManager(gridLayoutManager);
+            recyclerView.setAdapter(adapter);
 
 
         }
