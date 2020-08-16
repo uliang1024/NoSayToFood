@@ -76,8 +76,8 @@
 
         <ImageView
             android:id="@+id/fullscreen"
-            android:layout_width="wrap_content"
-            android:layout_height="fill_parent"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
             android:paddingRight="16dp"
             android:scaleType="center"
             android:src="@drawable/video_enlarge" />
@@ -103,14 +103,14 @@
     <LinearLayout
         android:id="@+id/layout_top"
         android:layout_width="match_parent"
-        android:layout_height="48dp"
+        android:layout_height="60dp"
         android:background="@drawable/video_title_bg"
         android:gravity="center_vertical">
 
         <ImageView
             android:id="@+id/back"
-            android:layout_width="48dp"
-            android:layout_height="48dp"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
             android:paddingLeft="10dp"
             android:scaleType="centerInside"
             android:src="@drawable/video_back" />

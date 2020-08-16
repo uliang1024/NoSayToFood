@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
@@ -33,9 +34,6 @@ import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import info.androidhive.firebaseauthapp.Assymetric.AsymmetricRecyclerView;
-import info.androidhive.firebaseauthapp.Assymetric.AsymmetricRecyclerViewAdapter;
-import info.androidhive.firebaseauthapp.Assymetric.Utils;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.models.Item;
 import info.androidhive.firebaseauthapp.models.PicturePost;
@@ -149,23 +147,23 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //===========================ViewHolders===============================//
     public class pictuerPostViewHolder extends RecyclerView.ViewHolder{
         private CardView cardView_picpost;
-        public RecyclerView recyclerView;
+        public ViewPager image_slider;
         private ImageView img_user;
-        private TextView tv_username_pic, tv_title_picpost;
+        private TextView tv_username_pic, tv_img_count;
         private ExpandableTextView tv_des_picPost;
         //在建構子內宣告
         public pictuerPostViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            recyclerView = itemView.findViewById(R.id.recyclerView2);
+            image_slider = itemView.findViewById(R.id.view_pager);
             //設置橫向有幾個元素展出
 
 
-            recyclerView.addItemDecoration(
-                    new SpacesItemDecoration(context.getResources().getDimensionPixelSize(R.dimen.recycler_padding)));
+
             cardView_picpost = itemView.findViewById(R.id.cardview_picpost);
             img_user = itemView.findViewById(R.id.img_user_picpost);
             tv_username_pic = itemView.findViewById(R.id.tv_user_picpost);
+            tv_img_count = itemView.findViewById(R.id.tv_img_count);
             tv_des_picPost = itemView.findViewById(R.id.expand_text_view);
 //            cardView_picpost.setAnimation(AnimationUtils.loadAnimation(context,AnimId));
              itemView.setOnClickListener(new View.OnClickListener() {
@@ -187,27 +185,32 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             Glide.with(context).load(p.getUser_avatar()).centerCrop().into(img_user);
             tv_username_pic.setText(p.getUser_name());
             tv_des_picPost.setText(p.getDescription());
-            int mDisplay= p.getmDisplay();
-            //傳遞給ChildAdapter的 Arraylist 的 arraylist應該只取前mDisplay個
-            ArrayList<PicturePostGridImage> display_item =new ArrayList<>();
-            for(int i=0;i<mDisplay;i++){
-                display_item.add(p.getImages().get(i));
-            }
-            ChildAdapter adapter = new ChildAdapter(context, p,display_item);
-            int colCount ;
-            if (mDisplay>=6){
-                colCount = 3;
-            }else if(mDisplay>2&&mDisplay<6){
-                colCount = 2;
+            if (p.getImages().size() ==1){
+                tv_img_count.setVisibility(View.GONE);
             }else {
-                colCount = mDisplay;
+                tv_img_count.setText("1/"+p.getImages().size());
             }
-            Log.e("adapter display","");
-            Log.e("adapter display","column count is "+colCount+"mDisplay is"+mDisplay);
-            GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2, GridLayoutManager.VERTICAL,false);
-            recyclerView.setLayoutManager(gridLayoutManager);
-            recyclerView.setAdapter(adapter);
 
+            ImagePagerAdapter adapter = new ImagePagerAdapter(context,p.getImages());
+
+            image_slider.setAdapter(adapter);
+            image_slider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+
+                }
+
+                @Override
+                public void onPageSelected(int position) {
+                    Log.e("viewPager","on page "+position);
+                    tv_img_count.setText((position+1)+"/"+p.getImages().size());
+                }
+
+                @Override
+                public void onPageScrollStateChanged(int state) {
+
+                }
+            });
 
         }
     }
@@ -276,7 +279,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     int position = getAbsoluteAdapterPosition();
-                    Toast.makeText(context,String.valueOf(position),Toast.LENGTH_SHORT);
+//                    Toast.makeText(context,String.valueOf(position),Toast.LENGTH_SHORT);
                     if(mListener!= null){
                         //在此捕捉一個點及動作，然後藉由interface傳到activity
 

@@ -3,7 +3,7 @@ package info.androidhive.firebaseauthapp.models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-public class PicturePostGridImage extends PicturePostImagePosition {
+public class PicturePostGridImage  {
 
     private String ImagePath;
 

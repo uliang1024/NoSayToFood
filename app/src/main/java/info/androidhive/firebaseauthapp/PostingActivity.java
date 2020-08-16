@@ -8,6 +8,7 @@ package info.androidhive.firebaseauthapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.fragment.app.FragmentManager;
 
 import android.Manifest;
 import android.app.ProgressDialog;
@@ -67,6 +68,7 @@ import info.androidhive.firebaseauthapp.models.PicturePost;
 import info.androidhive.firebaseauthapp.models.PicturePostGridImage;
 import info.androidhive.firebaseauthapp.models.TextPost;
 import info.androidhive.firebaseauthapp.models.VideoPost;
+import info.androidhive.firebaseauthapp.ui.social.Frag_posting;
 import info.androidhive.firebaseauthapp.util.SampleCoverVideo;
 
 import static info.androidhive.firebaseauthapp.util.Constants.DESCRIPTION;
@@ -164,7 +166,9 @@ public class PostingActivity extends AppCompatActivity {
                 startActivityForResult(i, SELECT_VIDEO);
             }
         });
-
+        //設定使用者姓名頭像
+        Glide.with(getApplicationContext()).load(firebaseAuth.getCurrentUser().getPhotoUrl().toString()).into(img_user);
+        tv_user.setText(firebaseAuth.getCurrentUser().getDisplayName());
 
         selected_photos_container.addView(imageAddView);
         selected_photos_container.addView(videoAddView);
@@ -361,7 +365,7 @@ public class PostingActivity extends AppCompatActivity {
         if (id==R.id.btn_post){
             //按下發布紐，如果selectedUriList.size = 0,selectedUri = null為 textpost
 
-            Toast.makeText(PostingActivity.this, "UR url list is"+selectedUriList+"\n"+"UR video list is"+selectedUri, Toast.LENGTH_SHORT).show();
+//            Toast.makeText(PostingActivity.this, "UR url list is"+selectedUriList+"\n"+"UR video list is"+selectedUri, Toast.LENGTH_SHORT).show();
             if (selectedUriList.size()==0 &&selectedUri ==null){
                 //String uuid = UUID.randomUUID().toString();
                 String pushId = databaseReference.push().getKey();
@@ -370,7 +374,21 @@ public class PostingActivity extends AppCompatActivity {
                 t.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
                 t.setDescription(et_content.getText().toString());
                 t.setPost_type(1);
-                databaseReference.child("posting").child(pushId).setValue(t);
+                databaseReference.child("posting").child(pushId).setValue(t).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if(task.isSuccessful()){
+                            startIntent();
+
+                        }else{
+                            Toast.makeText(getApplicationContext(),"something wrong",Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+
+
+
+
 
             }else if(selectedUriList.size()!=0&&selectedUri ==null)
             //待處理，將本地url轉成https
@@ -380,10 +398,11 @@ public class PostingActivity extends AppCompatActivity {
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.setCancelable(false);
                 progressDialog.show();
-                StorageReference reference = storageReference.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("posted_images").child(System.currentTimeMillis()+"");
+//                StorageReference reference = storageReference.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("posted_images").child(System.currentTimeMillis()+"");
                 for(Uri uri :selectedUriList){
-
-                    reference.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
+                    Log.e("get downUrls ",uri.toString());
+                    StorageReference reference = storageReference.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("posted_images").child(System.currentTimeMillis()+"");
+                     reference.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                         @Override
                         public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
                             if (task.isSuccessful()){
@@ -395,10 +414,10 @@ public class PostingActivity extends AppCompatActivity {
                                         progressDialog.setMessage("upload "+counter+"/"+selectedUriList.size());
                                         if(task.isSuccessful()){
 
-                                            String url = task.getResult().toString();
+                                            String myurl = task.getResult().toString();
                                             PicturePostGridImage imageItem = new PicturePostGridImage();
-                                            imageItem.setImagePath(url);
-                                            Log.e("get downUrls : ",url);
+                                            imageItem.setImagePath(myurl);
+                                            Log.e("get downUrls ",myurl);
                                             //將我們拿到的url存到廣域的arraylist : savedImageUrls中
                                             savedImageUrls.add(imageItem);
 
@@ -439,21 +458,11 @@ public class PostingActivity extends AppCompatActivity {
         p.setDescription(et_content.getText().toString());
 
         p.setPost_type(0);
-        int size = selectedUriList.size();
-        if (size>=4&&size<6){
-            p.setmDisplay(4);
-        }
-        else if (size>=6){
-            p.setmDisplay(6);
-        }else{
-            p.setmDisplay(size);
-        }
-        p.setmTotal(size);
-
         Log.e("upload images","upload complete");
 
         databaseReference.child("posting").child(pushId).setValue(p);
         progressDialog.dismiss();
+        startIntent();
 
     }
 
@@ -492,6 +501,7 @@ public class PostingActivity extends AppCompatActivity {
                             v.setPost_type(2);
                             databaseReference.child("posting").child(pushId).setValue(v);
                             progressDialog.dismiss();
+                            startIntent();
                             Log.e("TED","your url is : "+url);
                         }
                     }).addOnFailureListener(new OnFailureListener() {
@@ -545,6 +555,13 @@ public class PostingActivity extends AppCompatActivity {
 
     private void resolveFullBtn(final StandardGSYVideoPlayer standardGSYVideoPlayer) {
         standardGSYVideoPlayer.startWindowFullscreen(this, true, true);
+    }
+
+    private  void startIntent(){
+        //上船完成，重新導向到HomeActivity
+        Intent intent = new Intent(getApplicationContext(),HomeActivity.class);
+        intent.putExtra("id", 1);
+        startActivity(intent);
     }
 
 }

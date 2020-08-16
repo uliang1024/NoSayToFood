@@ -6,10 +6,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 
@@ -32,37 +35,60 @@ import info.androidhive.firebaseauthapp.ui.dashboard.DashboardFragment;
 import info.androidhive.firebaseauthapp.ui.home.HomeFragment;
 import info.androidhive.firebaseauthapp.ui.notifications.NotificationsFragment;
 import info.androidhive.firebaseauthapp.ui.profile.ProfileFragment;
+import info.androidhive.firebaseauthapp.ui.social.Frag_posting;
 import info.androidhive.firebaseauthapp.ui.social.SocialFragment;
 
 public class HomeActivity extends FragmentActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
-
+    BottomNavigationView navigation;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
-
+        Log.e("run","執行onCreate");
 
         //loading the default fragment
         loadFragment(new HomeFragment());
 
         //getting bottom navigation view and attaching the listener
-        BottomNavigationView navigation = findViewById(R.id.navigation);
+        navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
 
     }
-    private boolean loadFragment(Fragment fragment) {
-        //switching fragment
-        if (fragment != null) {
-            getSupportFragmentManager()
-                    .beginTransaction()
-                    .replace(R.id.fragment_container, fragment)
-                    .commit();
-            return true;
+
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+
+        Log.e("run","執行onRestart");
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        //判斷(由各個Fragment)傳送過來的intent所挾帶的值為多少
+        Log.e("run","執行onResume");
+        Intent intent = getIntent();
+        int id = intent.getIntExtra("id",0);
+        Log.e("run","執行onResume，id = "+id);
+        //1的話，為PostingActivity上傳完貼文後的傳值
+        if(id == 1){
+            Fragment fragment = new SocialFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction=fragmentManager.beginTransaction();
+            transaction.replace(R.id.fragment_container,fragment);
+            transaction.commit();
+            //將導向到SocialFragment
+            Log.e("run","執行onResume，id = "+id);
+            //將ButtomVavigation的指標設到navigation_social
+            navigation.setSelectedItemId(R.id.navigation_social);
+            //重設intent夾帶的值
+            intent.putExtra("id", 0);
         }
-        return false;
     }
 
     @Override
@@ -92,7 +118,17 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
         return loadFragment(fragment);
     }
 
-
+    private boolean loadFragment(Fragment fragment) {
+        //switching fragment
+        if (fragment != null) {
+            getSupportFragmentManager()
+                    .beginTransaction()
+                    .replace(R.id.fragment_container, fragment)
+                    .commit();
+            return true;
+        }
+        return false;
+    }
 
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {

@@ -39,7 +39,7 @@ import java.util.Random;
 
 import javax.annotation.Nullable;
 
-import info.androidhive.firebaseauthapp.Assymetric.AsymmetricRecyclerView;
+
 import info.androidhive.firebaseauthapp.PostingPageActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.adapter.PicturePostAdapter;

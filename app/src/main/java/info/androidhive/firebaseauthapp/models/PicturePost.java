@@ -11,8 +11,7 @@ public class PicturePost implements Parcelable {
     private String description;
     private int ItemID,post_type;
     private String ItemName;
-    private int mDisplay;
-    private int mTotal;
+
     private ArrayList<PicturePostGridImage >Images;
 
 
@@ -27,21 +26,6 @@ public class PicturePost implements Parcelable {
 
     }
 
-    public int getmDisplay() {
-        return mDisplay;
-    }
-
-    public void setmDisplay(int mDisplay) {
-        this.mDisplay = mDisplay;
-    }
-
-    public int getmTotal() {
-        return mTotal;
-    }
-
-    public void setmTotal(int mTotal) {
-        this.mTotal = mTotal;
-    }
 
     public int getPost_type() {
         return post_type;

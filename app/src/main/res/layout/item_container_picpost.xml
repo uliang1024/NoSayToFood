@@ -5,7 +5,7 @@
     android:id="@+id/cardview_picpost"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="8dp"
+    android:layout_marginTop="8dp"
     app:cardCornerRadius="8dp"
     app:cardElevation="4dp">
 
@@ -54,15 +54,11 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
-
-
-            <com.ms.square.android.expandabletextview.ExpandableTextView xmlns:android="http://schemas.android.com/apk/res/android"
-                xmlns:expandableTextView="http://schemas.android.com/apk/res-auto"
+            <com.ms.square.android.expandabletextview.ExpandableTextView
                 android:id="@+id/expand_text_view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                expandableTextView:animDuration="200"
-                expandableTextView:maxCollapsedLines="3">
+                app:maxCollapsedLines="3">
 
                 <TextView
                     android:id="@id/expandable_text"
@@ -81,11 +77,32 @@
                     android:background="@android:color/transparent"
                     android:padding="16dp" />
             </com.ms.square.android.expandabletextview.ExpandableTextView>
+            <RelativeLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+                <androidx.viewpager.widget.ViewPager
+                    android:id="@+id/view_pager"
+                    android:layout_width="match_parent"
+                    android:layout_height="300dp" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recyclerView2"
-                android:layout_width="match_parent"
-                android:layout_height="300dp" />
+                <TextView
+                    android:id="@+id/tv_img_count"
+                    android:layout_width="wrap_content"
+                    android:layout_height="30dp"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginEnd="20dp"
+                    android:background="@drawable/radius_imgcount_background"
+                    android:gravity="center_horizontal|center_vertical"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:text="count"
+                    android:textColor="#FFFFFF"
+                    android:textSize="14sp" />
+            </RelativeLayout>
+
+
 
         </LinearLayout>
 
