@@ -1,6 +1,8 @@
 package info.androidhive.firebaseauthapp.adapter;
 
 import android.content.Context;
+import android.content.Intent;
+import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -13,14 +15,15 @@ import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
+import info.androidhive.firebaseauthapp.ImageViewPagerActivity;
 import info.androidhive.firebaseauthapp.models.PicturePostGridImage;
 
 public class ImagePagerAdapter extends PagerAdapter {
 
     private Context context;
-    private ArrayList<PicturePostGridImage> images ;
+    private ArrayList<String> images ;
 
-    public ImagePagerAdapter(Context context, ArrayList<PicturePostGridImage> images) {
+    public ImagePagerAdapter(Context context, ArrayList<String> images) {
         this.context = context;
         this.images = images;
     }
@@ -39,11 +42,17 @@ public class ImagePagerAdapter extends PagerAdapter {
     @Override
     public Object instantiateItem(@NonNull ViewGroup container, int position) {
         ImageView imageView = new ImageView(context);
-        Glide.with(context).load(images.get(position).getImagePath()).centerCrop().into(imageView);
+        Glide.with(context).load(images.get(position)).centerCrop().into(imageView);
         imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Toast.makeText(context,"u clicked"+position,Toast.LENGTH_SHORT).show();
+                Intent i = new Intent(context, ImageViewPagerActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putStringArrayList("images",images);
+                bundle.putInt("position",position);
+                i.putExtras(bundle);
+                context.startActivity(i);
             }
         });
         container.addView(imageView,0);

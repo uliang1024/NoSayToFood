@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar">
-        <activity android:name=".FitnessClassActivity"></activity>
+        <activity android:name=".ImageViewPagerActivity"></activity>
+        <activity android:name=".FitnessClassActivity" />
         <activity
             android:name=".PostingActivity"
             android:parentActivityName=".HomeActivity"

@@ -78,10 +78,12 @@ dependencies {
     implementation 'com.nostra13.universalimageloader:universal-image-loader:1.9.5'
     implementation 'com.github.christophesmet:android_maskable_layout:v1.3.1'
 
-    implementation 'com.google.android.material:material:1.1.0'
+    implementation 'com.google.android.material:material:1.2.0'
 
     implementation 'gun0912.ted:tedpermission:2.2.0'
     implementation 'gun0912.ted:tedbottompicker:2.0.1'
+
+    implementation 'ua.zabelnikiov:swipeLayout:1.0'
 
 }
 apply plugin: 'com.google.gms.google-services'

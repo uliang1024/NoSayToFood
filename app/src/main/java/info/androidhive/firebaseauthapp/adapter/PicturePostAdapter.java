@@ -190,8 +190,12 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }else {
                 tv_img_count.setText("1/"+p.getImages().size());
             }
+            ArrayList<String> imageList = new ArrayList<>();
+            for(PicturePostGridImage image:p.getImages()){
+                imageList.add(image.getImagePath());
+            }
 
-            ImagePagerAdapter adapter = new ImagePagerAdapter(context,p.getImages());
+            ImagePagerAdapter adapter = new ImagePagerAdapter(context,imageList);
 
             image_slider.setAdapter(adapter);
             image_slider.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {

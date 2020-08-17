@@ -142,7 +142,7 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
 
                     //对应的播放列表TAG
                     if ( (position < firstVisibleItem || position > lastVisibleItem)) {
-                        GSYVideoManager.onPause();
+                        GSYVideoManager.releaseAllVideos();
                         adapter.notifyItemChanged(position);
 
                     }
