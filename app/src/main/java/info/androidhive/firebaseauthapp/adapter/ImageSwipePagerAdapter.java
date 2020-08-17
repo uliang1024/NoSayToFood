@@ -1,29 +1,38 @@
 package info.androidhive.firebaseauthapp.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Matrix;
 import android.util.Log;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
+import android.view.ScaleGestureDetector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AlphaAnimation;
 import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 
 import com.bumptech.glide.Glide;
+import com.google.android.finsky.externalreferrer.IGetInstallReferrerService;
 
 import java.util.List;
 
 import info.androidhive.firebaseauthapp.R;
+import info.androidhive.firebaseauthapp.util.TouchImageView;
 import ua.zabelnikov.swipelayout.layout.frame.SwipeableLayout;
 import ua.zabelnikov.swipelayout.layout.listener.OnLayoutPercentageChangeListener;
 import ua.zabelnikov.swipelayout.layout.listener.OnLayoutSwipedListener;
 
-public class ImageSwipePagerAdapter extends PagerAdapter {
+public class ImageSwipePagerAdapter extends PagerAdapter  {
     public final List<String> items;
     private final Context context;
     private OnLayoutSwipedListener onLayoutSwipedListener;
+    //======================\\
 
     public ImageSwipePagerAdapter(Context context, List<String> photos) {
         this.context = context;
@@ -33,6 +42,7 @@ public class ImageSwipePagerAdapter extends PagerAdapter {
     public void setOnLayoutSwipedListener(OnLayoutSwipedListener onLayoutSwipedListener) {
         this.onLayoutSwipedListener = onLayoutSwipedListener;
     }
+
 
     @Override
     public View instantiateItem(ViewGroup container, final int position) {
@@ -95,4 +105,6 @@ public class ImageSwipePagerAdapter extends PagerAdapter {
     public boolean isViewFromObject(View view, Object o) {
         return view == o;
     }
+
 }
+

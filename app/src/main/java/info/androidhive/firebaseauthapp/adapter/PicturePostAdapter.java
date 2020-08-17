@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
@@ -308,11 +309,13 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             header.put("ee", "33");
             //使用exo內核
             PlayerFactory.setPlayManager(Exo2PlayerManager.class);
+
             //使用exo緩存方式
             CacheFactory.setCacheManager(ExoPlayerCacheManager.class);
             //防止错位，离开释放
             //gsyVideoPlayer.initUIState();
             gsyVideoOptionBuilder
+
                     .setIsTouchWiget(false)
                     .setThumbImageView(imageView)
                     .setUrl(v.getVideo_url())

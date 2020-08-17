@@ -9,12 +9,16 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.media.AudioManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.github.mikephil.charting.data.Entry;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -25,6 +29,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -41,7 +46,7 @@ import info.androidhive.firebaseauthapp.ui.social.SocialFragment;
 public class HomeActivity extends FragmentActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     BottomNavigationView navigation;
-
+    private int counter ;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -131,36 +136,79 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
     }
 
     @Override
+    public void onBackPressed() {
+        counter++;
+
+        if(counter==2){
+            final AlertDialog.Builder builder = new AlertDialog.Builder(this);
+            builder.setMessage("確定關機??");
+            builder.setCancelable(true);
+            builder.setNegativeButton("yes", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.cancel();
+                }
+            });
+            builder.setPositiveButton("close", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    Intent i = new Intent(Intent.ACTION_MAIN);
+                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                    i.addCategory(Intent.CATEGORY_HOME);
+                    startActivity(i);
+                }
+            });
+            AlertDialog alertDialog = builder.create();
+            alertDialog.show();
+            counter =0;
+        }else{
+            Toast.makeText(this, "我草你媽了個逼再按一次試試看操", Toast.LENGTH_SHORT).show();
+        }
+
+    }
+
+    @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
 
-        if (keyCode == KeyEvent.KEYCODE_BACK) { // 攔截返回鍵
-            new AlertDialog.Builder(HomeActivity.this)
-                    .setTitle("確認視窗")
-                    .setMessage("確定要結束應用程式嗎?")
-                    .setPositiveButton("確定",
-                            new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    Intent i = new Intent(Intent.ACTION_MAIN);
-                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                    i.addCategory(Intent.CATEGORY_HOME);
-                                    startActivity(i);
-                                }
-                            })
-                    .setNegativeButton("取消",
-                            new DialogInterface.OnClickListener() {
-
-                                @Override
-                                public void onClick(DialogInterface dialog,
-                                                    int which) {
-                                    // TODO Auto-generated method stub
-
-                                }
-                            }).show();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            return super.onKeyDown(keyCode, event);
         }
+//        switch (keyCode) {
+//            case KeyEvent.KEYCODE_MEDIA_PLAY:
+//                Toast.makeText(this, "KEYCODE_MEDIA_PLAY", Toast.LENGTH_SHORT).show();
+//                AudioManager amanager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
+//                amanager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, AudioManager.FLAG_SHOW_UI + AudioManager.FLAG_PLAY_SOUND,AudioManager.ADJUST_RAISE);
+//                return true;
+//        }
+
+//        if (keyCode == KeyEvent.KEYCODE_BACK) { // 攔截返回鍵
+//            new AlertDialog.Builder(HomeActivity.this)
+//                    .setTitle("確認視窗")
+//                    .setMessage("確定要結束應用程式嗎?")
+//                    .setPositiveButton("確定",
+//                            new DialogInterface.OnClickListener() {
+//
+//                                @Override
+//                                public void onClick(DialogInterface dialog,
+//                                                    int which) {
+//                                    Intent i = new Intent(Intent.ACTION_MAIN);
+//                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+//                                    i.addCategory(Intent.CATEGORY_HOME);
+//                                    startActivity(i);
+//                                }
+//                            })
+//                    .setNegativeButton("取消",
+//                            new DialogInterface.OnClickListener() {
+//
+//                                @Override
+//                                public void onClick(DialogInterface dialog,
+//                                                    int which) {
+//                                    // TODO Auto-generated method stub
+//
+//                                }
+//                            }).show();
+//        }
         return true;
     }
 
