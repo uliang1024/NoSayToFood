@@ -85,5 +85,13 @@ dependencies {
 
     implementation 'ua.zabelnikiov:swipeLayout:1.0'
 
+
+    //image editor
+    implementation 'info.androidhive:imagefilters:1.0.7'
+    implementation 'com.karumi:dexter:4.2.0'
+    implementation 'ja.burhanrashid52:photoeditor:1.0.0'
+    implementation 'io.github.rockerhieu:emojicon:v1.4.2'
+    implementation 'com.github.yalantis:ucrop:2.2.6-native'
+
 }
 apply plugin: 'com.google.gms.google-services'

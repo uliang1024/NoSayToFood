@@ -64,6 +64,7 @@ import java.util.List;
 import java.util.concurrent.CountDownLatch;
 
 import gun0912.tedbottompicker.TedBottomPicker;
+import info.androidhive.firebaseauthapp.ImageEdit.ImageEditActivity;
 import info.androidhive.firebaseauthapp.models.PicturePost;
 import info.androidhive.firebaseauthapp.models.PicturePostGridImage;
 import info.androidhive.firebaseauthapp.models.TextPost;
@@ -97,6 +98,7 @@ public class PostingActivity extends AppCompatActivity {
     private SampleCoverVideo sampleCoverVideo;
     GSYVideoOptionBuilder gsyVideoOptionBuilder;
     View imageAddView,videoAddView;
+    int position = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -172,6 +174,8 @@ public class PostingActivity extends AppCompatActivity {
 
         selected_photos_container.addView(imageAddView);
         selected_photos_container.addView(videoAddView);
+
+
     }
 
     @ Override
@@ -338,6 +342,22 @@ public class PostingActivity extends AppCompatActivity {
         if(uriList.size()==0){
             //再將"增加影片"按鈕添加到gridLayout
             selected_photos_container.addView(videoAddView);
+        }else{
+            int itemCount = selected_photos_container.getChildCount();
+            for (int i= 0; i < itemCount; i++) {
+                FrameLayout container = (FrameLayout) selected_photos_container.getChildAt(i);
+                int finalI = i;
+                container.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+
+                        Toast.makeText(PostingActivity.this, "image uri is"+ uriList.get(finalI).toString(), Toast.LENGTH_SHORT).show();
+                        // your click code here
+                        Intent intent = new Intent(PostingActivity.this, ImageEditActivity.class);
+                        intent.setData(uriList.get(finalI));
+                        startActivity(intent);
+                    }
+                });
+            }
         }
     }
     private void setUpActionBar(Toolbar toolbar_posting) {
@@ -517,38 +537,7 @@ public class PostingActivity extends AppCompatActivity {
 
                 }
             });
-//            addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-//                @Override
-//                public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-//                    reference.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
-//                        @Override
-//                        public void onSuccess(Uri uri) {
-//                            String url = uri.toString();
-//                            String pushId = databaseReference.push().getKey();
-//                            VideoPost v = new VideoPost();
-//                            v.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
-//                            v.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
-//                            v.setDescription(et_content.getText().toString());
-//                            v.setThumbnail_img("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F2.jpg?alt=media&token=254289ea-59ac-4d4c-80dd-f3720864af41");
-//                            v.setVideo_url(url);
-//                            v.setPost_type(2);
-//                            databaseReference.child("posting").child(pushId).setValue(v);
-//                            Log.e("TED","your url is : "+url);
-//                        }
-//                    }).addOnFailureListener(new OnFailureListener() {
-//                        @Override
-//                        public void onFailure(@NonNull Exception e) {
-//                            Log.e("TED","upload failed : "+e);
-//                        }
-//                    });
-//                }
-//            }).addOnFailureListener(new OnFailureListener() {
-//                @Override
-//                public void onFailure(@NonNull Exception e) {
-//                    Toast.makeText(PostingActivity.this, "upload "+selectedUri.toString()+"fail", Toast.LENGTH_SHORT).show();
-//                    Log.e("TED","upload failed : "+e);
-//                }
-//            });
+
 
         }
     }
