@@ -118,7 +118,6 @@ public class PostingActivity extends AppCompatActivity {
         videoAddView = LayoutInflater.from(this).inflate(R.layout.video_item_add, null);
         media_video_plus = videoAddView.findViewById(R.id.media_video_plus);
         //相片的item
-
         //firebase
         storageReference = FirebaseStorage.getInstance().getReference();
         databaseReference = FirebaseDatabase.getInstance().getReference();
@@ -176,33 +175,12 @@ public class PostingActivity extends AppCompatActivity {
         selected_photos_container.addView(videoAddView);
 
 
-    }
-
-    @ Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (resultCode == RESULT_OK) {
-            if (requestCode == SELECT_VIDEO) {
-                selectedUri = data.getData();
-                try {
-                    if (selectedUri == null) {
-                        Log.e("TED","selected video path = null!");
-                        finish();
-                    } else {
-
-                        //Uri uri = Uri.fromFile(new File(selectedVideoPath));
-                        Log.e("TED","selected video path ="+selectedUri);
-                        loadVideo();
-                        //UploadVideo();
-                    }
-                } catch (Exception e) {
-                    //#debug
-                    e.printStackTrace();
-                }
-            }
-        }
 
     }
+
+
+
+
     //取得檔案格式
     private String getVideoExt(Uri uri){
         ContentResolver contentResolver= getContentResolver();
@@ -353,13 +331,91 @@ public class PostingActivity extends AppCompatActivity {
                         Toast.makeText(PostingActivity.this, "image uri is"+ uriList.get(finalI).toString(), Toast.LENGTH_SHORT).show();
                         // your click code here
                         Intent intent = new Intent(PostingActivity.this, ImageEditActivity.class);
+                        intent.putExtra("position",finalI);
                         intent.setData(uriList.get(finalI));
-                        startActivity(intent);
+                        startActivityForResult(intent,2);
                     }
                 });
             }
         }
     }
+
+    @ Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == RESULT_OK) {
+            Log.e("request is",""+requestCode);
+            if (requestCode == SELECT_VIDEO) {
+                selectedUri = data.getData();
+                try {
+                    if (selectedUri == null) {
+                        Log.e("TED","selected video path = null!");
+                        finish();
+                    } else {
+
+                        //Uri uri = Uri.fromFile(new File(selectedVideoPath));
+                        Log.e("TED","selected video path ="+selectedUri);
+                        loadVideo();
+                        //UploadVideo();
+                    }
+                } catch (Exception e) {
+                    //#debug
+                    e.printStackTrace();
+                }
+            }
+            if (requestCode ==2){
+                int position = data.getIntExtra("position",-1);
+                String uri = data.getStringExtra("uri");
+                Log.e("get result","uri:"+uri+"posittion:"+position);
+
+                selectedUriList.set(position,Uri.parse(uri));
+
+                reloadUriList();
+            }
+        }
+
+    }
+
+    private void reloadUriList() {
+        selected_photos_container.removeAllViews();
+        for (Uri uri : selectedUriList) {
+            //初始化容器
+            View imageHolder = LayoutInflater.from(this).inflate(R.layout.image_item, null);
+            ImageView thumbnail = imageHolder.findViewById(R.id.media_image);
+            //將uri裝入容器
+            requestManager
+                    .load(uri.toString())
+                    .apply(new RequestOptions().centerCrop())
+                    .into(thumbnail);
+            //將容器添加到gridLayout
+            selected_photos_container.addView(imageHolder);
+        }
+
+        //再將"增加圖片"按鈕添加到gridLayout
+        selected_photos_container.addView(imageAddView);
+        if(selectedUriList.size()==0){
+            //再將"增加影片"按鈕添加到gridLayout
+            selected_photos_container.addView(videoAddView);
+        }else{
+            int itemCount = selected_photos_container.getChildCount();
+            for (int i= 0; i < itemCount; i++) {
+                FrameLayout container = (FrameLayout) selected_photos_container.getChildAt(i);
+                int finalI = i;
+                container.setOnClickListener(new View.OnClickListener() {
+                    public void onClick(View view) {
+
+                        Toast.makeText(PostingActivity.this, "image uri is"+ selectedUriList.get(finalI).toString(), Toast.LENGTH_SHORT).show();
+                        // your click code here
+                        Intent intent = new Intent(PostingActivity.this, ImageEditActivity.class);
+                        intent.putExtra("position",finalI);
+                        intent.setData(selectedUriList.get(finalI));
+                        startActivityForResult(intent,2);
+                    }
+                });
+            }
+        }
+    }
+
     private void setUpActionBar(Toolbar toolbar_posting) {
         setSupportActionBar(toolbar_posting);
         getSupportActionBar().setTitle("post something");

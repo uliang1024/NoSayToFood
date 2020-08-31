@@ -10,7 +10,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
@@ -35,6 +38,7 @@ import com.zomato.photofilters.imageprocessors.subfilters.SaturationSubfilter;
 import com.zomato.photofilters.utils.ThumbnailItem;
 import com.zomato.photofilters.utils.ThumbnailsManager;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -55,7 +59,9 @@ import info.androidhive.firebaseauthapp.ImageEdit.InterFace.FilterListFragmentLi
 import info.androidhive.firebaseauthapp.ImageEdit.InterFace.StickerFragmentListener;
 import info.androidhive.firebaseauthapp.ImageEdit.Utils.BitmapUtils;
 import info.androidhive.firebaseauthapp.ImageEdit.Utils.SpacesItemDecoration;
+import info.androidhive.firebaseauthapp.PostingActivity;
 import info.androidhive.firebaseauthapp.R;
+import ja.burhanrashid52.photoeditor.OnSaveBitmap;
 import ja.burhanrashid52.photoeditor.PhotoEditor;
 import ja.burhanrashid52.photoeditor.PhotoEditorView;
 
@@ -64,6 +70,8 @@ public class ImageEditActivity extends AppCompatActivity implements FilterListFr
     public static String pictureName = "flash.jpg";
     public static final int PERMISSION_PICK_IMAGE =1000;
     public static final int PERMISSION_INSERT_IMAGE =1001;
+
+    private int image_position;
 
     PhotoEditorView photoEditorView;
     PhotoEditor photoEditor;
@@ -99,6 +107,8 @@ public class ImageEditActivity extends AppCompatActivity implements FilterListFr
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_image_edit);
+
+        image_position = getIntent().getIntExtra("position",-1);
 
     //=====================init views and set actionbar=========================================//
 
@@ -260,6 +270,50 @@ public class ImageEditActivity extends AppCompatActivity implements FilterListFr
         }
         if(id == R.id.action_save){
             Toast.makeText(context, "u clicked action_save", Toast.LENGTH_SHORT).show();
+            photoEditor.saveAsBitmap(new OnSaveBitmap() {
+                @Override
+                public void onBitmapReady(Bitmap saveBitmap) {
+
+//                    ByteArrayOutputStream bytes = new ByteArrayOutputStream(); //also works
+//                    saveBitmap.compress(Bitmap.CompressFormat.JPEG, 100, bytes);
+//                    String path = MediaStore.Images.Media.insertImage(context.getContentResolver(), saveBitmap, "Title", null);
+//                    Log.e("saveBitmap",path+"");
+                    try {
+                        //取得 content://media/external/images/media/891062
+                        final String path = BitmapUtils.insertImage(getContentResolver(),saveBitmap,System.currentTimeMillis()+"_profile.jpg",null);
+                        Log.e("saved path is",path);
+                        String filePath;
+                        Uri _uri = Uri.parse(path);
+                        if (_uri != null && "content".equals(_uri.getScheme())) {
+                            Cursor cursor = getContentResolver().query(_uri, new String[] { android.provider.MediaStore.Images.ImageColumns.DATA }, null, null, null);
+                            cursor.moveToFirst();
+                            filePath = cursor.getString(0);//取得實體位址
+                            cursor.close();
+                        } else {
+                            filePath = _uri.getPath();
+                        }
+                        Log.e("Chosen path = ","Chosen path = "+ filePath);//實體位址
+                        Log.e("Chosen path = ","image position = "+ image_position);
+
+                        //將照片的位置及uri 放入
+                        Intent intent = new Intent();
+                        intent.putExtra("position",image_position);
+                        intent.putExtra("uri","file://"+filePath);
+
+                        setResult(RESULT_OK, intent);
+                        finish();
+//                        startActivity(intent);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+
+                }
+            });
             return true;
         }
         return super.onOptionsItemSelected(item);
@@ -269,16 +323,33 @@ public class ImageEditActivity extends AppCompatActivity implements FilterListFr
     private void loadImage() {
         Intent intent = getIntent();
         postingPictureUri = intent.getData();
-        try {
-            originalBitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), postingPictureUri);
-            Log.e("uri",""+postingPictureUri);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+
+        File file= new File(intent.getData().getPath());
+        String path = file.getAbsolutePath();
+        Log.e("file",path+",");
+
+        //將圖片壓縮
+        BitmapFactory.Options options = new BitmapFactory.Options();
+        options.inJustDecodeBounds= true;//拿到大圖後，先進行縮放
+        BitmapFactory.decodeFile(path,options);
+        options.inSampleSize = BitmapUtils.calculateInSampleSize(options,500,500);//恰當的inSampleSize可以使BitmapFactory分配更少的空間
+        options.inJustDecodeBounds = false;
+        //fix image orientation
+        int degree = BitmapUtils.readDegree(path);
+        Matrix matrix = new Matrix();
+        matrix.setRotate(degree);
+        //create fixed bitmap
+        Bitmap bitmap = BitmapFactory.decodeFile(path,options);
+        Bitmap fixedBitmap = Bitmap.createBitmap(bitmap,0,0,bitmap.getWidth(),bitmap.getHeight(),matrix,false);
+        originalBitmap = fixedBitmap;
+        Log.e("uri",""+postingPictureUri);
+
+        //copy originalBitmap to other bitmap
         filteredBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888,true);
         finalBitmap = originalBitmap.copy(Bitmap.Config.ARGB_8888,true);
 
         photoEditorView.getSource().setImageBitmap(originalBitmap);
+
     }
 
     public void displayThumbnail(final Bitmap bitmap) {
@@ -439,4 +510,6 @@ public class ImageEditActivity extends AppCompatActivity implements FilterListFr
 
         stickerFragment.dismiss();
     }
+
+
 }
