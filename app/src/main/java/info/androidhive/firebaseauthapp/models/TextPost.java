@@ -1,17 +1,59 @@
 package info.androidhive.firebaseauthapp.models;
+
+import java.util.ArrayList;
+
 public class TextPost {
 
+    private String PostID;
+    private long postTime;
     private String user_avatar,user_name,description;
+    private String user_ID;
     private int post_type;
+    private ArrayList<Comments > comments;
+    private ArrayList<Likes >likes;
+
     public TextPost() {
 
     }
 
-    public TextPost(String user_avatar, String user_name, String title, String description) {
-        this.user_avatar = user_avatar;
-        this.user_name = user_name;
+    public ArrayList<Comments> getComments() {
+        return comments;
+    }
 
-        this.description = description;
+    public void setComments(ArrayList<Comments> comments) {
+        this.comments = comments;
+    }
+
+    public ArrayList<Likes> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(ArrayList<Likes> likes) {
+        this.likes = likes;
+    }
+
+    public String getPostID() {
+        return PostID;
+    }
+
+    public void setPostID(String postID) {
+        PostID = postID;
+    }
+
+    public String getUser_ID() {
+        return user_ID;
+    }
+
+    public void setUser_ID(String user_ID) {
+        this.user_ID = user_ID;
+    }
+
+    public long getPostTime() {
+        return postTime;
+    }
+
+    public void setPostTime(long postTime) {
+        this.postTime = postTime;
     }
 
     public int getPost_type() {

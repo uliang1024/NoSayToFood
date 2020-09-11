@@ -92,8 +92,6 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
         ClearAll();
         addData();
 
-
-
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -198,8 +196,6 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 ClearAll();
                 //Toast.makeText(mContext, "count"+count , Toast.LENGTH_SHORT).show();
-                int mMaxDisplay_Size = 0;
-                int mTotal_Size = 0;
                 for(DataSnapshot postSnapShot:dataSnapshot.getChildren()){
 
                     if(postSnapShot.hasChild(POST_TYPE)){
@@ -215,7 +211,6 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                         }
                         else if(type==2){
                             VideoPost v = postSnapShot.getValue(VideoPost.class);
-
                             items.add(new Item(2,v));
                         }
                         adapter = new PicturePostAdapter(mContext,items);
@@ -270,56 +265,5 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
             startActivity(postingIntent);
         }
     }
-
-//參考code
-//    private void preparePictureData() {
-//
-//        //創建一arraylist儲存 ItemImage
-//        ArrayList<PicturePostGridImage> mPathitems = new ArrayList<>();
-//        boolean isCol2Avail = false;
-//
-//        Pathitems.clear();
-//        for (int i = 0;i<3;i++){
-//            //創建一個itemImage=====================================
-//            PicturePostGridImage i1 = new PicturePostGridImage(Image1);
-//            //int colSpan = Math.random() < 0.2f ? 2 : 1;
-//            int colSpan = 2;
-//            int rowSpan = colSpan;
-//
-//            i1.setColumnSpan(1);
-//            i1.setRowSpan(1);
-//            i1.setPosition( currentOffset + i);
-//            //=====================================================
-//            Pathitems.add(i1);
-//
-//        }
-//        mMaxDisplay_Size = Pathitems.size();
-//        //依據使用者的照片數量來決定mMaxDisplay_Size 數字
-//        //如果是1張的話mMaxDisplay_Size=1(展示1張照片)
-//        //如果是2張的話mMaxDisplay_Size=2(展示2張照片)
-//        //如果是3~5張的話mMaxDisplay_Size=4(展示4張照片)
-//        //如果是6~n張的話mMaxDisplay_Size=6(展示6張照片)
-//        if (mMaxDisplay_Size>=4&&mMaxDisplay_Size<6){
-//            mMaxDisplay_Size =4;
-//        }
-//        if (mMaxDisplay_Size>=6){
-//            mMaxDisplay_Size = 6;
-//        }
-//
-//        for(int i = 0; i < mMaxDisplay_Size;i++)
-//        {
-//            mPathitems.add(Pathitems.get(i));
-//        }
-//        PicturePost p = new PicturePost();
-//        p.setDescription("i posted a image");
-//        p.setTitle("check mate");
-//        p.setImages(mPathitems);
-//        p.setUser_name("hey");
-//        p.setUser_avatar("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F8.jpg?alt=media&token=f1d63bbb-85db-488e-bd64-a23347140ab7");
-//
-//        items.add(new Item(0,p));
-//        currentOffset += mPathitems.size();
-//
-//    }
 
 }

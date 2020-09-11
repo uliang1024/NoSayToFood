@@ -2,17 +2,64 @@ package info.androidhive.firebaseauthapp.models;
 
 import android.app.Activity;
 
+import java.util.ArrayList;
+
 public class VideoPost {
+
+    private String PostID;
+    private long postTime;
     private String user_avatar;
     private String user_name;
     private String thumbnail_img;
     private int post_type;
     private String video_url;
     private String description;
-
+    private String user_ID;
+    private ArrayList<Comments > comments;
+    private ArrayList<Likes >likes;
 
     public VideoPost() {
 
+    }
+
+    public ArrayList<Comments> getComments() {
+        return comments;
+    }
+
+    public void setComments(ArrayList<Comments> comments) {
+        this.comments = comments;
+    }
+
+    public ArrayList<Likes> getLikes() {
+        return likes;
+    }
+
+    public void setLikes(ArrayList<Likes> likes) {
+        this.likes = likes;
+    }
+
+    public String getPostID() {
+        return PostID;
+    }
+
+    public void setPostID(String postID) {
+        PostID = postID;
+    }
+
+    public String getUser_ID() {
+        return user_ID;
+    }
+
+    public void setUser_ID(String user_ID) {
+        this.user_ID = user_ID;
+    }
+
+    public long getPostTime() {
+        return postTime;
+    }
+
+    public void setPostTime(long postTime) {
+        this.postTime = postTime;
     }
 
     public VideoPost(String user_avatar, String user_name, String thumbnail_img, String video_url, String title, String description ) {

@@ -15,7 +15,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="horizontal">
@@ -44,10 +44,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="10dp"
+                android:layout_toEndOf="@id/frm_mask_animated"
                 android:text="username"
                 android:textSize="20sp" />
 
-        </LinearLayout>
+            <TextView
+                android:id="@+id/tv_time_textpost"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_user_textpost"
+                android:layout_marginStart="5dp"
+                android:layout_marginTop="5dp"
+                android:layout_toEndOf="@id/frm_mask_animated"
+                android:text="TextView" />
+
+        </RelativeLayout>
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -90,6 +103,7 @@
             android:orientation="horizontal">
 
             <LinearLayout
+                android:id="@+id/lv_text_like"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="172dp"
                 android:layout_height="wrap_content"
@@ -99,12 +113,13 @@
 
                 <ImageView
 
+                    android:id="@+id/btn_like_textpost"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginRight="10dp"
                     android:background="#0000"
-                    android:clickable="false"
 
+                    android:clickable="false"
                     android:src="@drawable/ic_like_thicc" />
 
                 <TextView
@@ -118,6 +133,7 @@
             </LinearLayout>
 
             <LinearLayout
+                android:id="@+id/lv_text_comment"
                 style="?android:attr/buttonBarButtonStyle"
                 android:layout_width="172dp"
                 android:layout_height="wrap_content"

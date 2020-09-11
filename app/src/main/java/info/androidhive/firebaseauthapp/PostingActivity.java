@@ -65,6 +65,7 @@ import java.util.concurrent.CountDownLatch;
 
 import gun0912.tedbottompicker.TedBottomPicker;
 import info.androidhive.firebaseauthapp.ImageEdit.ImageEditActivity;
+import info.androidhive.firebaseauthapp.models.Comments;
 import info.androidhive.firebaseauthapp.models.PicturePost;
 import info.androidhive.firebaseauthapp.models.PicturePostGridImage;
 import info.androidhive.firebaseauthapp.models.TextPost;
@@ -446,16 +447,20 @@ public class PostingActivity extends AppCompatActivity {
                 //String uuid = UUID.randomUUID().toString();
                 String pushId = databaseReference.push().getKey();
                 TextPost t = new TextPost();
+
                 t.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
                 t.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
                 t.setDescription(et_content.getText().toString());
                 t.setPost_type(1);
+                t.setPostID(pushId);
+                t.setPostTime(System.currentTimeMillis());
+                t.setUser_ID(firebaseAuth.getCurrentUser().getUid());
+
                 databaseReference.child("posting").child(pushId).setValue(t).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if(task.isSuccessful()){
                             startIntent();
-
                         }else{
                             Toast.makeText(getApplicationContext(),"something wrong",Toast.LENGTH_SHORT).show();
                         }
@@ -467,7 +472,7 @@ public class PostingActivity extends AppCompatActivity {
 
 
             }else if(selectedUriList.size()!=0&&selectedUri ==null)
-            //待處理，將本地url轉成https
+            //picturepost
             {
                 ProgressDialog progressDialog = new ProgressDialog(this);
                 progressDialog.setMessage("upload 0/"+selectedUriList.size());
@@ -528,12 +533,27 @@ public class PostingActivity extends AppCompatActivity {
     private void uploadImages(ProgressDialog progressDialog) {
         String pushId = databaseReference.push().getKey();
         PicturePost p = new PicturePost();
+
         p.setImages(savedImageUrls);
         p.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
         p.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
         p.setDescription(et_content.getText().toString());
-
+        p.setPostID(pushId);
+        p.setPostTime(System.currentTimeMillis());
+        p.setUser_ID(firebaseAuth.getCurrentUser().getUid());
         p.setPost_type(0);
+//        Comments comments = new Comments();
+//        comments.setComment("hi");
+//        comments.setCommentTime(System.currentTimeMillis());
+//        comments.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+//        comments.setUser_Id(firebaseAuth.getCurrentUser().getUid());
+//        comments.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
+//
+//        ArrayList<Comments> commentList = new ArrayList<>();
+//        commentList.add(comments);
+//
+//        p.setComments(commentList);
+
         Log.e("upload images","upload complete");
 
         databaseReference.child("posting").child(pushId).setValue(p);
@@ -575,6 +595,10 @@ public class PostingActivity extends AppCompatActivity {
                             v.setThumbnail_img("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F2.jpg?alt=media&token=254289ea-59ac-4d4c-80dd-f3720864af41");
                             v.setVideo_url(url);
                             v.setPost_type(2);
+                            v.setPostID(firebaseAuth.getCurrentUser().getUid());
+                            v.setPostID(pushId);
+                            v.setPostTime(System.currentTimeMillis());
+
                             databaseReference.child("posting").child(pushId).setValue(v);
                             progressDialog.dismiss();
                             startIntent();
