@@ -119,6 +119,40 @@
 
         </LinearLayout>
 
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/tv_likecount_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="10dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="16dp"
+                android:text="likes">
+
+            </TextView>
+
+            <TextView
+                android:id="@+id/tv_commentcount_pic"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="10dp"
+                android:layout_marginTop="20dp"
+                android:layout_marginEnd="20dp"
+                android:layout_marginBottom="10dp"
+                android:textSize="16dp"
+                android:text="comment">
+
+            </TextView>
+
+        </RelativeLayout>
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -137,12 +171,13 @@
 
                 <ImageView
 
+                    android:id="@+id/btn_like_picpost"
                     android:layout_width="30dp"
                     android:layout_height="30dp"
                     android:layout_marginRight="10dp"
                     android:background="#0000"
-                    android:clickable="false"
 
+                    android:clickable="false"
                     android:src="@drawable/ic_like_thicc" />
 
                 <TextView

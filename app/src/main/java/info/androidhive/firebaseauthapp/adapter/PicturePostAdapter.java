@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
+import com.facebook.shimmer.ShimmerFrameLayout;
 import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -77,11 +78,15 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //private RequestManager requestManager;
     private Context context = null;
     private GSYVideoHelper smallVideoHelper;
-    private DatabaseReference databaseReference;
-    private FirebaseAuth firebaseAuth;
+    private DatabaseReference databaseReference= FirebaseDatabase.getInstance().getReference();
+    private FirebaseAuth firebaseAuth= FirebaseAuth.getInstance();
     private  OnItemClickedListener mListener;
     private int AnimId = R.anim.left_to_right;
-    private boolean isliked = false;
+    ArrayList<Likes> likesArrayList = new ArrayList<>();
+
+    public boolean isShimmer = true;//judge if shimmer or not
+    int SHIMMER_ITEM_NUMBER = 5;//numbers of item shimmer
+
     //先寫一個interface OnItemClickedListener
     public interface OnItemClickedListener{
         void onItemClicked(int position);
@@ -124,60 +129,90 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                             ,false
                     )
             );
-        }else{
+        }else if (viewType ==2){
 
             View v = LayoutInflater.from(context).inflate(R.layout.item_container_videopost, parent, false);
             final RecyclerView.ViewHolder holder = new RecyclerItemNormalHolder(context, v);
             return holder;
+        }
+        ///shimmer layout
+        else{
+            return  new TextPostViewHolder(
+                    LayoutInflater.from(parent.getContext()).inflate(
+                            R.layout.item_container_textpost
+                            ,parent
+                            ,false
+                    )
+            );
         }
     }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         //如果第n個位置傳過來的getItemViewType是0
-        if(getItemViewType(position)==0){
-            //picturePost代表在items裡面第n個位置的物件，並將其轉型為PicturePost
-            PicturePost picturePost = (PicturePost)items.get(position).getObject();
-            ((pictuerPostViewHolder)holder).set_picPost_Content(picturePost,position ,holder);
-        }
-        //如果第n個位置傳過來的getItemViewType是1
-        else if(getItemViewType(position)==1){
-            //textPost代表在items裡面第n個位置的物件，並將其轉型為TextPost
-            TextPost textPost = (TextPost)items.get(position).getObject();
-            ((TextPostViewHolder)holder).set_textPost_Content(textPost);
+        if (isShimmer){
+            ((TextPostViewHolder)holder).shimmer_textpost.startShimmer();
         }else{
 
-            //創造一個holder
-            RecyclerItemNormalHolder recyclerItemViewHolder = (RecyclerItemNormalHolder) holder;
-            //將holder設定一個RecyclerBaseAdapter
-            //recyclerItemViewHolder.setRecyclerBaseAdapter(this);
-            VideoPost videoPost = (VideoPost)items.get(position).getObject();
-            recyclerItemViewHolder.onBind(position, videoPost);
+            if(getItemViewType(position)==0){
+                //picturePost代表在items裡面第n個位置的物件，並將其轉型為PicturePost
+                PicturePost picturePost = (PicturePost)items.get(position).getObject();
+                ((pictuerPostViewHolder)holder).set_picPost_Content(picturePost,position ,holder);
+            }
+            //如果第n個位置傳過來的getItemViewType是1
+            else if(getItemViewType(position)==1){
+                //textPost代表在items裡面第n個位置的物件，並將其轉型為TextPost
+                ((TextPostViewHolder)holder).shimmer_textpost.stopShimmer();
+                ((TextPostViewHolder)holder).shimmer_textpost.setShimmer(null);
+                TextPost textPost = (TextPost)items.get(position).getObject();
+                ((TextPostViewHolder)holder).set_textPost_Content(textPost);
+            }else if (getItemViewType(position)==2){
+
+                //創造一個holder
+                RecyclerItemNormalHolder recyclerItemViewHolder = (RecyclerItemNormalHolder) holder;
+                //將holder設定一個RecyclerBaseAdapter
+                //recyclerItemViewHolder.setRecyclerBaseAdapter(this);
+                VideoPost videoPost = (VideoPost)items.get(position).getObject();
+                recyclerItemViewHolder.onBind(position, videoPost);
+            }
+            //shimmer layout
+            else{
+                ((TextPostViewHolder)holder).shimmer_textpost.stopShimmer();
+                ((TextPostViewHolder)holder).shimmer_textpost.setShimmer(null);
+            }
         }
+
 
     }
 
     @Override
     public int getItemCount() {
-        return items.size();
+        return isShimmer?SHIMMER_ITEM_NUMBER:items.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-        return items.get(position).getType();
+        if (isShimmer){
+            return 100;
+        }else {
+            return items.get(position).getType();
+        }
+
     }
 
 
 
     //===========================ViewHolders===============================//
+
+    //picture post
     public class pictuerPostViewHolder extends RecyclerView.ViewHolder{
         private CardView cardView_picpost;
 
 
         private LinearLayout lv_pic_like,lv_pic_comment;
         public ViewPager image_slider;
-        private ImageView img_user;
-        private TextView tv_username_pic, tv_img_count,tv_time_picpost;
+        private ImageView img_user,btn_like_picpost;
+        private TextView tv_username_pic, tv_img_count,tv_time_picpost,tv_likecount_pic,tv_commentcount_pic;
         private ExpandableTextView tv_des_picPost;
         //在建構子內宣告
         public pictuerPostViewHolder(@NonNull View itemView) {
@@ -194,7 +229,9 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             lv_pic_comment=itemView.findViewById(R.id.lv_pic_comment);
             lv_pic_like = itemView.findViewById(R.id.lv_pic_like);
             tv_time_picpost = itemView.findViewById(R.id.tv_time_picpost);
-//            cardView_picpost.setAnimation(AnimationUtils.loadAnimation(context,AnimId));
+            btn_like_picpost = itemView.findViewById(R.id.btn_like_picpost);
+            tv_likecount_pic = itemView.findViewById(R.id.tv_likecount_pic);
+            tv_commentcount_pic = itemView.findViewById(R.id.tv_commentcount_pic);
              itemView.setOnClickListener(new View.OnClickListener() {
                  @Override
                  public void onClick(View v) {
@@ -222,7 +259,26 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             String t1=format.format(d1);
             tv_time_picpost.setText(t1);
 
-            Log.e("images",p.getImages().size()+"");
+            listenForComments(p.getPostID(), new CommentChangeListener() {
+                @Override
+                public void onCommentChanged(int count) {
+                    tv_commentcount_pic.setText(count+" 條留言");
+                }
+            });
+
+            listenForLikes(p.getPostID(), new LikeChangeListener() {
+                @Override
+                public void onLikeChanged(int count, boolean hasliked) {
+                    tv_likecount_pic.setText(count+" 個讚");
+                    if (hasliked){
+                        btn_like_picpost.setImageResource(R.drawable.ic_like_blue);
+                    }else {
+                        btn_like_picpost.setImageResource(R.drawable.ic_like);
+                    }
+                }
+            });
+
+//            Log.e("images",p.getImages().size()+"");
             if (p.getImages().size() ==1){
                 tv_img_count.setVisibility(View.GONE);
             }else {
@@ -258,7 +314,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "u ckicked comment on"+p.getPostID(), Toast.LENGTH_SHORT).show();
-                    CommentFragment commentFragment = CommentFragment.getInstance();
+                    CommentFragment commentFragment =new CommentFragment();
                     Bundle bundle = new Bundle();
 
                     bundle.putString("id", p.getPostID());
@@ -271,15 +327,28 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 public void onClick(View v) {
                     Toast.makeText(context, "u ckicked like on"+p.getPostID(), Toast.LENGTH_SHORT).show();
                     //readLikesFromFirebase(p.getPostID());
+                    readLikesFromFirebase(p.getPostID(), new ReadLikeCalback() {
+                        @Override
+                        public void onCallBacked(boolean needRemove) {
+                            Log.e("final like",""+needRemove);
+                            if (!needRemove){
+                                btn_like_picpost.setImageResource(R.drawable.ic_like_blue);
+                            }
+                            else {
+                                btn_like_picpost.setImageResource(R.drawable.ic_like);
+                            }
+                        }
+                    });
                 }
             });
         }
     }
 
     public class TextPostViewHolder extends RecyclerView.ViewHolder {
+        private ShimmerFrameLayout shimmer_textpost;
         private CardView cardView_textpost;
-        private ImageView img_user_text,btn_like_textpost;
-        private TextView tv_username_text, tv_time_textPost;
+        private ImageView img_user_text,btn_like_textpost,btn_comment_textpost;
+        private TextView tv_username_text, tv_time_textPost,tv_likecount_text,tv_commentcount_text;
         private ExpandableTextView tv_des_textPost;
         private LinearLayout lv_text_like,lv_text_comment;
         public TextPostViewHolder(@NonNull View itemView) {
@@ -292,6 +361,10 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             lv_text_comment = itemView.findViewById(R.id.lv_text_comment);
             lv_text_like = itemView.findViewById(R.id.lv_text_like);
             btn_like_textpost = itemView.findViewById(R.id.btn_like_textpost);
+            btn_comment_textpost = itemView.findViewById(R.id.btn_comment_textpost);
+            tv_likecount_text = itemView.findViewById(R.id.tv_likecount_text);
+            tv_commentcount_text = itemView.findViewById(R.id.tv_commentcount_text);
+            shimmer_textpost = itemView.findViewById(R.id.shimmer_textpost);
             //            cardView_textpost.setAnimation(AnimationUtils.loadAnimation(context,AnimId));
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -308,34 +381,72 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
         }
 
+        //text post
         // TODO: 2020/9/9 案讚功能有問題待修，以textpost為基準測試
         void set_textPost_Content(TextPost t) {
             Glide.with(context).load(t.getUser_avatar()).centerCrop().into(img_user_text);
 
+            tv_username_text.setBackground(null);
             tv_username_text.setText(t.getUser_name());
+
+            tv_des_textPost.setBackground(null);
             tv_des_textPost.setText(t.getDescription());
+
             long time=t.getPostTime();//long now = android.os.SystemClock.uptimeMillis();
             SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date d1=new Date(time);
             String t1=format.format(d1);
+            tv_time_textPost.setBackground(null);
             tv_time_textPost.setText(t1);
+
+            btn_like_textpost.setBackground(null);
+            btn_comment_textpost.setBackground(null);
+            tv_commentcount_text.setBackground(null);
+            tv_likecount_text.setBackground(null);
+
+            listenForComments(t.getPostID(), new CommentChangeListener() {
+                @Override
+                public void onCommentChanged(int count) {
+                    tv_commentcount_text.setText(count+" 條留言");
+                }
+            });
+
+            listenForLikes(t.getPostID(), new LikeChangeListener() {
+                @Override
+                public void onLikeChanged(int count ,boolean hasliked) {
+                    tv_likecount_text.setText(count+" 個讚");
+                    if (hasliked){
+                        btn_like_textpost.setImageResource(R.drawable.ic_like_blue);
+                    }else {
+                        btn_like_textpost.setImageResource(R.drawable.ic_like);
+                    }
+                }
+            });
+
             lv_text_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "u clicked like on"+t.getPostID(), Toast.LENGTH_SHORT).show();
                     //readLikesFromFirebase(t.getPostID());
-                    if (readLikesFromFirebase(t.getPostID())){
-                        btn_like_textpost.setImageResource(R.drawable.ic_like_blue);
-                    }else{
-                        btn_like_textpost.setImageResource(R.drawable.ic_like_thicc);
-                    }
+                    readLikesFromFirebase(t.getPostID(), new ReadLikeCalback() {
+                        @Override
+                        public void onCallBacked(boolean needRemove) {
+                            Log.e("final like",""+needRemove);
+                            if (!needRemove){
+                                btn_like_textpost.setImageResource(R.drawable.ic_like_blue);
+                            }
+                            else {
+                                btn_like_textpost.setImageResource(R.drawable.ic_like);
+                            }
+                        }
+                    });
                 }
             });
             lv_text_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "u ckicked comment on"+t.getPostID(), Toast.LENGTH_SHORT).show();
-                    CommentFragment commentFragment = CommentFragment.getInstance();
+                    CommentFragment commentFragment = new CommentFragment();
                     Bundle bundle = new Bundle();
 
                     bundle.putString("id", t.getPostID());
@@ -347,7 +458,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
-
+    //video post
     public class RecyclerItemNormalHolder extends RecyclerItemBaseHolder {
 
         public final static String TAG = "RecyclerView2List";
@@ -358,7 +469,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
         private CardView cardView_videopost;
         ImageView imageView ,btn_like_videopost;
         private ImageView img_user_video;
-        private TextView tv_username_video, tv_time_videoPost;
+        private TextView tv_username_video, tv_time_videoPost,tv_likecount_video,tv_commentcount_video;
         GSYVideoOptionBuilder gsyVideoOptionBuilder;
         private ExpandableTextView tv_des_videoPost;
         private LinearLayout lv_video_like,lv_video_comment;
@@ -376,6 +487,8 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             tv_time_videoPost=itemView.findViewById(R.id.tv_time_videopost);
             gsyVideoPlayer = itemView.findViewById(R.id.video_item_player);
             btn_like_videopost = itemView.findViewById(R.id.btn_like_videopost);
+            tv_likecount_video = itemView.findViewById(R.id.tv_likecount_video);
+            tv_commentcount_video = itemView.findViewById(R.id.tv_commentcount_video);
 
             gsyVideoOptionBuilder = new GSYVideoOptionBuilder();
 //            cardView_videopost.setAnimation(AnimationUtils.loadAnimation(context,AnimId));
@@ -474,16 +587,47 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 }
             });
 
+            listenForComments(videoPost.getPostID(), new CommentChangeListener() {
+                @Override
+                public void onCommentChanged(int count) {
+                    tv_commentcount_video.setText(count+" 條留言");
+                }
+            });
+
+            listenForLikes(videoPost.getPostID(), new LikeChangeListener() {
+                @Override
+                public void onLikeChanged(int count, boolean hasliked) {
+                    tv_likecount_video.setText(count+" 個讚");
+                    if (hasliked){
+                        btn_like_videopost.setImageResource(R.drawable.ic_like_blue);
+                    }else {
+                        btn_like_videopost.setImageResource(R.drawable.ic_like);
+                    }
+                }
+            });
+
             lv_video_like.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    readLikesFromFirebase(videoPost.getPostID(), new ReadLikeCalback() {
+                        @Override
+                        public void onCallBacked(boolean needRemove) {
+                            Log.e("final like",""+needRemove);
+                            if (!needRemove){
+                                btn_like_videopost.setImageResource(R.drawable.ic_like_blue);
+                            }
+                            else {
+                                btn_like_videopost.setImageResource(R.drawable.ic_like);
+                            }
+                        }
+                    });
                 }
             });
             lv_video_comment.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     Toast.makeText(context, "u ckicked comment on"+videoPost.getPostID(), Toast.LENGTH_SHORT).show();
-                    CommentFragment commentFragment = CommentFragment.getInstance();
+                    CommentFragment commentFragment = new CommentFragment();
                     Bundle bundle = new Bundle();
                     bundle.putString("id", videoPost.getPostID());
 
@@ -503,49 +647,113 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
 
-    private boolean readLikesFromFirebase(String postId){
-
-        databaseReference = FirebaseDatabase.getInstance().getReference();
-        firebaseAuth= FirebaseAuth.getInstance();
-
-        databaseReference.child("posting").child(postId).addListenerForSingleValueEvent(new ValueEventListener() {
+    //負責初次載入時檢查likes list
+    //由資料庫變動觸發
+    private void listenForLikes(String postId,LikeChangeListener likeChangeListener) {
+        databaseReference.child("posting").child(postId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.hasChild("likes")){
+                    ArrayList<Object> loadList = (ArrayList<Object>) dataSnapshot.child("likes").getValue();
+                    ArrayList<Likes> getLikes=new ArrayList<>();
+                    boolean userHasLiked = false;
+                    for (Object o:loadList){
+                        Map<String, Object> map = (Map<String, Object>) o;
+                        Likes likes = new Likes((long)map.get("likeTime"),(String)map.get("user_avatar"),(String)map.get("user_Id"),(String)map.get("user_name"));
+                        getLikes.add(likes);
+                    }
+                    for (Likes likes :getLikes){
+                        if (likes.getUser_Id().equals(firebaseAuth.getCurrentUser().getUid())){
+                            userHasLiked = true;
+                        }
+                    }
+
+                    likeChangeListener.onLikeChanged(getLikes.size(),userHasLiked);
+                }else {
+                    likeChangeListener.onLikeChanged(0,false);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+    //負責判斷當前使用者是否有like這篇貼文，沒有like的話幫like，有的話就幫取消
+    //由使用者點案like按鍵觸發
+    private void readLikesFromFirebase(String postId, ReadLikeCalback likeCalback){
+
+
+        databaseReference.child("posting").child(postId).addListenerForSingleValueEvent(new ValueEventListener() {
+
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                likesArrayList.clear();
                 //如果有likes
                 if (dataSnapshot.hasChild("likes")){
+                    //先把所有的likes load下來
                     Toast.makeText(context, "has liked", Toast.LENGTH_SHORT).show();
-                    for (DataSnapshot snapshot:dataSnapshot.child("likes").getChildren()){
-                        //如果當前使用者有按like，幫她取銷
-                        if (snapshot.child("user_Id").getValue().toString().equals(firebaseAuth.getCurrentUser().getUid())){
+                    ArrayList<Object> loadedList;
+                    loadedList = (ArrayList<Object>) dataSnapshot.child("likes").getValue();
+                    for (Object o:loadedList){
+                        Map<String, Object> map = (Map<String, Object>) o;
+                        Likes c = new Likes((long)map.get("likeTime"),(String)map.get("user_avatar"),(String)map.get("user_Id"),(String)map.get("user_name"));
+                        likesArrayList.add(c);
+                    }
+                    boolean userliked = false;
+                    //needRemoveLike == true,移除like needRemoveLike == false,like顯示
+                    boolean needRemoveLike = false;
+                    //現在已取得使用者的like
+                    for (Likes likes:likesArrayList){
+                        Log.e("read id",""+likes.getUser_Id());
+                        Log.e("current id",""+firebaseAuth.getCurrentUser().getUid());
+                        if(likes.getUser_Id().equals(firebaseAuth.getCurrentUser().getUid())){
+                            Log.e("already liked","already liked");
+                            userliked = true;
+                            needRemoveLike = true;
+                            //如果使用者有案讚
+                            //幫她移除
+                            likesArrayList.remove(likes);
 
-                            Log.e("likes","讚取消");
-                            snapshot.getRef().removeValue();
-                            isliked = false;
+                            break;
+                        }else{
+                            Log.e("hasent liked yet","hasent liked yet");
+                            userliked = false;
+                            needRemoveLike = false;
                         }
-                        //如果當前使用者沒有按like，幫她按
-                        else{
-                            ArrayList<Likes> likesArrayList = new ArrayList<>();
-                            Likes likes = new Likes();
+                    }
+
+                    Log.e("like staus",""+userliked);
+                    //如果使用者沒案讚
+                    //幫他案
+                    if (!userliked){
+                        Log.e("user unlikes","幫他案");
+                        Likes likes = new Likes();
                             likes.setLikeTime(System.currentTimeMillis());
                             likes.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
                             likes.setUser_Id(firebaseAuth.getCurrentUser().getUid());
                             likes.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
                             likesArrayList.add(likes);
-                            databaseReference.child("posting").child(postId).child("likes").setValue(likesArrayList).addOnCompleteListener(new OnCompleteListener<Void>() {
+
+                    }
+                    //將完成後的likesArrayList推上去
+                    boolean finalneedRemoved = needRemoveLike;
+                    databaseReference.child("posting").child(postId).child("likes").setValue(likesArrayList).addOnCompleteListener(new OnCompleteListener<Void>() {
                                 @Override
                                 public void onComplete(@NonNull Task<Void> task) {
                                     if (task.isSuccessful()){
-                                        Log.e("likes","案讚");
-                                        isliked = true;
+                                        likeCalback.onCallBacked(finalneedRemoved);
                                     }
                                 }
                             });
-                        }
-                    }
 
                 //如果沒有likes
                 }else{
-                    ArrayList<Likes> likesArrayList = new ArrayList<>();
+
                     Likes likes = new Likes();
                     likes.setLikeTime(System.currentTimeMillis());
                     likes.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
@@ -557,7 +765,9 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                         public void onComplete(@NonNull Task<Void> task) {
                             if (task.isSuccessful()){
                                 Log.e("likes","0讚，案讚");
-                                isliked = true;
+                                likeCalback.onCallBacked(false);
+                            }else{
+                                Toast.makeText(context, "上船失敗，請檢察網路", Toast.LENGTH_SHORT).show();
                             }
                         }
                     });
@@ -570,7 +780,53 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
             }
         });
 
-        return  isliked;
+
+    }
+
+    //負責初次載入時檢查likes list
+    //由資料庫變動觸發
+    private void listenForComments(String postId,CommentChangeListener commentChangeListener) {
+        databaseReference.child("posting").child(postId).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+
+                if (dataSnapshot.hasChild("comments")){
+                    ArrayList<Object> loadList = (ArrayList<Object>) dataSnapshot.child("comments").getValue();
+                    ArrayList<Comments> getComments=new ArrayList<>();
+
+                    for (Object o:loadList){
+                        Map<String, Object> map = (Map<String, Object>) o;
+                        Comments c = new Comments((long)map.get("commentTime"),(String) map.get("comment"),(String)map.get("user_avatar"),(String)map.get("user_name"),(String)map.get("user_Id"));
+                        getComments.add(c);
+                    }
+
+                    commentChangeListener.onCommentChanged(getComments.size());
+                }else {
+                    commentChangeListener.onCommentChanged(0);
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+    }
+
+    interface ReadLikeCalback{
+        void onCallBacked(boolean needRemove);
+
+    }
+    interface LikeChangeListener{
+        void onLikeChanged(int count,boolean hasliked);
+
+    }
+
+    interface CommentChangeListener{
+        void onCommentChanged(int count);
+
     }
 
 }

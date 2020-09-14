@@ -63,12 +63,13 @@ public class CommentFragment extends BottomSheetDialogFragment {
 
     CommentAdapter adapter;
 
-    public static CommentFragment getInstance() {
-        if (instance == null){
-            instance = new CommentFragment();
-        }
-        return instance;
-    }
+    //使用singleton會造成資源重複仔入
+//    public static CommentFragment getInstance() {
+//        if (instance == null){
+//            instance = new CommentFragment();
+//        }
+//        return instance;
+//    }
 
     public CommentFragment() {
         // Required empty public constructor
@@ -80,6 +81,11 @@ public class CommentFragment extends BottomSheetDialogFragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setStyle(DialogFragment.STYLE_NORMAL, R.style.DialogStyle);
+
+
+
+
+
     }
 
     @Override
@@ -101,24 +107,14 @@ public class CommentFragment extends BottomSheetDialogFragment {
 
         layoutManager = new LinearLayoutManager(getContext());
         recycler_comment.setLayoutManager(layoutManager);
+        recycler_comment.hasFixedSize();
+        oldcommentList.clear();
+        readDataComment();
+        adapter = new CommentAdapter(getContext(),oldcommentList);
+        recycler_comment.setAdapter(adapter);
 
 
-//        Query query = databaseReference.child("posting").orderByChild("postID").equalTo(postId);
-//        query.addValueEventListener(new ValueEventListener() {
-//            @Override
-//            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-//                for (DataSnapshot commentSnapShot:dataSnapshot.getChildren()){
-//
-//                    Log.e("comment size is",""+ commentSnapShot.getValue().getClass().toString());
-//
-//                }
-//            }
-//
-//            @Override
-//            public void onCancelled(@NonNull DatabaseError databaseError) {
-//
-//            }
-//        });
+
         btn_send.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -128,39 +124,25 @@ public class CommentFragment extends BottomSheetDialogFragment {
                 comments.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
                 comments.setUser_Id(firebaseAuth.getCurrentUser().getUid());
                 comments.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
-                //commentList.clear();
+
                 commentList.add(comments);
                 databaseReference.child("posting").child(postId).child("comments").setValue(commentList).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
                         if (task.isSuccessful()){
                             Log.e("comments","ok");
-
-                            //readDataComment();
                             recycler_comment.smoothScrollToPosition(adapter.getItemCount());
                         }
                     }
                 });
 
                 et_comment.setText("");
-
-
             }
         });
-
-        if(oldcommentList.size()!= 0){
-            Log.e("oldcommentList","clear");
-            oldcommentList.clear();
-        }
-        readDataComment();
-        adapter = new CommentAdapter(getContext(),oldcommentList);
-        recycler_comment.setAdapter(adapter);
-
-
-
         return itemView;
     }
-
+    // TODO:解決新增留言會重複仔入
+    // TODO:fragment每重新開啟一次，新輸入的留言便會重複幾次
     private void readDataComment() {
         databaseReference.child("posting").child(postId).addValueEventListener(new ValueEventListener() {
 
@@ -184,26 +166,34 @@ public class CommentFragment extends BottomSheetDialogFragment {
                     Log.e("old list befire assigned",oldcommentList.size()+"");
 
                     if(oldcommentList.size()!= 0){
-                        //第一次載入時，old list的長度為0，故心就沒有差別之分
+
                         //第二次以後當有心資料讀入時，此時只要將new list加入就好
                         Log.e("inserted list",adapterlist.size()+"");
                         Log.e("inserted list",adapterlist.get(adapterlist.size()-1).getComment()+"");
                         oldcommentList.add(oldcommentList.size(),adapterlist.get(adapterlist.size()-1));
                         adapter.notifyItemInserted(oldcommentList.size());
                     }else{
+
+                        //第一次載入時，old list的長度為0，故心就沒有差別之分
                         oldcommentList.addAll(adapterlist);
                         Log.e("old list after assigned",oldcommentList.size()+"");
                         //adapter設定為舊list
                         //adapter.notifyDataSetChanged()不起作用? 解決:https://blog.csdn.net/like_program/article/details/52517119
+
+                        adapter.isShimmer = false;
                         adapter.notifyDataSetChanged();
                         recycler_comment.scrollToPosition(adapter.getItemCount()-1);
                     }
-                    // TODO:解決新增留言會重複仔入
-                    //將新讀出的list給舊list
+
+
 
 
 
                 }else{
+
+                    adapter.isShimmer = false;
+                    adapter.notifyDataSetChanged();
+                    Log.e("no comments","no comments");
                     if(commentList==null){
                         Log.e("commentlist","list is null");
                         commentList = new ArrayList<>();
@@ -245,5 +235,29 @@ public class CommentFragment extends BottomSheetDialogFragment {
         }
         commentList = new ArrayList<>();
 
+    }
+
+    @Override
+    public void onPause() {
+        super.onPause();
+        Log.e("commentlist","pause");
+    }
+
+    @Override
+    public void onStop() {
+        super.onStop();
+        Log.e("commentlist","stop");
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        Log.e("commentlist","destroy");
+    }
+
+    @Override
+    public void onDetach() {
+        super.onDetach();
+        Log.e("commentlist","detach");
     }
 }

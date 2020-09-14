@@ -3,6 +3,7 @@ package info.androidhive.firebaseauthapp.ui.notifications;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -42,8 +43,6 @@ import info.androidhive.firebaseauthapp.classModels.FitClass;
 public class NotificationsFragment extends Fragment {
     RecyclerView gridView;
     private DatabaseReference myRef;
-    String[] numbers = {"在家輕鬆動","啞鈴鍊肌","重量訓練","有氧瑜珈","暖身操"};
-    int [] pics ={R.drawable.exercise,R.drawable.gym,R.drawable.gym2,R.drawable.healthy,R.drawable.workout};
     ArrayList<FitClass> classes = new ArrayList<>();
 
     @Nullable
@@ -54,10 +53,16 @@ public class NotificationsFragment extends Fragment {
         //INIT VIEWS
         init(fragment_notifications);
 
+        ClassAdapter adapter = new ClassAdapter(context,classes);
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2, GridLayoutManager.VERTICAL,false);
+        gridView.setLayoutManager(gridLayoutManager);
+        gridView.setAdapter(adapter);
+
+
         myRef.child("fitness").addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ClearAll();
+                classes.clear();
                 for(DataSnapshot fitSnapShop:dataSnapshot.getChildren()){
                     if(fitSnapShop.hasChild("classImage")){
                         FitClass fitClass = fitSnapShop.getValue(FitClass.class);
@@ -68,11 +73,17 @@ public class NotificationsFragment extends Fragment {
                     }else{
                         Log.e("classImage","no such class");
                     }
-                    ClassAdapter adapter = new ClassAdapter(context,classes);
-                    GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2, GridLayoutManager.VERTICAL,false);
-                    gridView.setLayoutManager(gridLayoutManager);
-                    gridView.setAdapter(adapter);
+
                 }
+
+//                new Handler().postDelayed(new Runnable() {
+//                    @Override
+//                    public void run() {
+//
+//                    }
+//                },1000);
+                adapter.isShimmer = false;
+                adapter.notifyDataSetChanged();
             }
 
             @Override
@@ -87,12 +98,7 @@ public class NotificationsFragment extends Fragment {
         return fragment_notifications;
     }
 
-    public void ClearAll(){
-        if (classes != null){
-            classes.clear();
-        }
-        classes = new ArrayList<>();
-    }
+
     private void init(View v) {
         myRef = FirebaseDatabase.getInstance().getReference();
         gridView = v.findViewById(R.id.grid_view);

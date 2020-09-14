@@ -13,6 +13,7 @@ import androidx.recyclerview.widget.DiffUtil;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.facebook.shimmer.ShimmerFrameLayout;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -24,32 +25,16 @@ import info.androidhive.firebaseauthapp.classModels.FitClass;
 import info.androidhive.firebaseauthapp.models.Comments;
 import info.androidhive.firebaseauthapp.util.DiffUtilCallback;
 
-public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.CommentViewHolder> {
 
     Context context;
     List<Comments> commentList;
+    public boolean isShimmer = true;//to judge shimmer or not
+    int SHIMMER_ITEM_NUMBER = 8;//numbers of shimmer shown during loading
 
     public CommentAdapter(Context context, List<Comments> commentList) {
         this.context = context;
         this.commentList = commentList;
-    }
-
-    public void insertData(List<Comments> insertList){
-        //this will add new data to list
-        DiffUtilCallback diffUtilCallback = new DiffUtilCallback(commentList,insertList);
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffUtilCallback);
-
-        commentList.addAll(insertList);
-        diffResult.dispatchUpdatesTo(this);
-    }
-
-    public void updateData(List<Comments> newList){
-        //this will clear old data add new data
-        DiffUtilCallback diffUtilCallback = new DiffUtilCallback(commentList,newList);
-        DiffUtil.DiffResult diffResult = DiffUtil.calculateDiff(diffUtilCallback);
-        commentList.clear();
-        commentList.addAll(newList);
-        diffResult.dispatchUpdatesTo(this);
     }
 
     @NonNull
@@ -61,20 +46,29 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
 
     }
 
+
+
     @Override
-    public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull CommentViewHolder holder , int position) {
         //Log.e("type",commentList.get(position).getClass().toString());
-        Comments comments = commentList.get(position);
-        ((CommentAdapter.CommentViewHolder)holder).setCommentInfo(comments,position);
+        if (isShimmer){
+            holder.shimmer_layout.startShimmer();//start shimmer
+        }else{
+            holder.shimmer_layout.stopShimmer();//stop shimmer
+            holder.shimmer_layout.setShimmer(null);//remove shimmer overlay
+            Comments comments = commentList.get(position);
+            ((CommentAdapter.CommentViewHolder)holder).setCommentInfo(comments,position);
+        }
+
     }
 
     @Override
     public int getItemCount() {
-        return commentList.size();
+        return isShimmer?SHIMMER_ITEM_NUMBER:commentList.size();
     }
 
     public class CommentViewHolder extends RecyclerView.ViewHolder {
-
+        ShimmerFrameLayout shimmer_layout;
         TextView tv_username_comment,tv_comment_time,tv_comment;
         ImageView img_user_comment;
 
@@ -85,32 +79,28 @@ public class CommentAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder
             tv_comment_time = itemView.findViewById(R.id.tv_comment_time);
             tv_username_comment = itemView.findViewById(R.id.tv_username_comment);
             img_user_comment = itemView.findViewById(R.id.img_user_comment);
+            shimmer_layout = itemView.findViewById(R.id.shimmer_layout_comment);
 
         }
 
         void setCommentInfo(Comments comments, int position){
+            tv_comment.setBackground(null);
             tv_comment.setText(comments.getComment());
+
+            tv_username_comment.setBackground(null);
             tv_username_comment.setText(comments.getUser_name());
+
+
             Glide.with(context).load(comments.getUser_avatar()).into(img_user_comment);
 
             long time=comments.getCommentTime();//long now = android.os.SystemClock.uptimeMillis();
             SimpleDateFormat format=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
             Date d1=new Date(time);
             String t1=format.format(d1);
+            tv_comment_time.setBackground(null);
             tv_comment_time.setText(t1);
         }
     }
-//    private ArrayList<Comments> getCommentList(){
-//        ArrayList<Comments> comments = new ArrayList<>();
-//        Comments c1 = new Comments(1111,"eduwdwugd","dwdwdwdw","bob","dsdsfsfsee");
-//        Comments c2 = new Comments(1111,"eduwdwugd","dwdwdwdw","bob","dsdsfsfsee");
-//        Comments c3 = new Comments(1111,"eduwdwugd","dwdwdwdw","bob","dsdsfsfsee");
-//
-//        comments.add(c1);
-//        comments.add(c2);
-//        comments.add(c3);
-//
-//        return comments;
-//    }
+
 
 }

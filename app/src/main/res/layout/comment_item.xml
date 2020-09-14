@@ -7,38 +7,57 @@
     android:orientation="horizontal"
     android:padding="10dp">
 
-    <ImageView
-        android:id="@+id/img_user_comment"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        tools:srcCompat="@tools:sample/avatars" />
+    <com.facebook.shimmer.ShimmerFrameLayout
+        android:id="@+id/shimmer_layout_comment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginLeft="10dp">
-
-        <TextView
-            android:id="@+id/tv_username_comment"
-            android:layout_width="wrap_content"
+        <LinearLayout
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="TextView" />
+            android:orientation="horizontal">
+            <ImageView
+                android:id="@+id/img_user_comment"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                tools:srcCompat="@tools:sample/avatars"
+                android:background="@color/shimmer_background"/>
 
-        <TextView
-            android:id="@+id/tv_comment_time"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:text="TextView" />
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginLeft="10dp">
 
-        <TextView
-            android:id="@+id/tv_comment"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_username_comment"
-            android:layout_marginTop="5dp"
-            android:text="TextView" />
+                <TextView
+                    android:id="@+id/tv_username_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@color/shimmer_background"
+                    android:text="comment title" />
 
-    </RelativeLayout>
+                <TextView
+                    android:id="@+id/tv_comment_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentRight="true"
+                    android:background="@color/shimmer_background"
+                    android:text="comment time" />
+
+                <TextView
+                    android:id="@+id/tv_comment"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_username_comment"
+                    android:layout_marginTop="5dp"
+                    android:background="@color/shimmer_background"
+                    android:text="description" />
+
+            </RelativeLayout>
+        </LinearLayout>
+
+
+
+    </com.facebook.shimmer.ShimmerFrameLayout>
+
 
 </LinearLayout>

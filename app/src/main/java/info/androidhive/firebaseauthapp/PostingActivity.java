@@ -542,17 +542,7 @@ public class PostingActivity extends AppCompatActivity {
         p.setPostTime(System.currentTimeMillis());
         p.setUser_ID(firebaseAuth.getCurrentUser().getUid());
         p.setPost_type(0);
-//        Comments comments = new Comments();
-//        comments.setComment("hi");
-//        comments.setCommentTime(System.currentTimeMillis());
-//        comments.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
-//        comments.setUser_Id(firebaseAuth.getCurrentUser().getUid());
-//        comments.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
-//
-//        ArrayList<Comments> commentList = new ArrayList<>();
-//        commentList.add(comments);
-//
-//        p.setComments(commentList);
+
 
         Log.e("upload images","upload complete");
 
