@@ -6,7 +6,6 @@
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
-
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -14,7 +13,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar.FullScreen">
-        <activity android:name=".ImageEdit.ImageEditActivity"></activity>
+        <activity android:name=".ClassEntityActivity"></activity>
+        <activity android:name=".ArticleActivity" />
+        <activity android:name=".ImageEdit.ImageEditActivity" />
         <activity android:name=".ImageViewPagerActivity" />
         <activity android:name=".FitnessClassActivity" />
         <activity
@@ -68,11 +69,10 @@
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
         </activity>
-
         <activity
             android:name="com.yalantis.ucrop.UCropActivity"
             android:screenOrientation="portrait"
-            android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 
 </manifest>

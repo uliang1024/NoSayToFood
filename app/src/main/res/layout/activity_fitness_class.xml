@@ -21,7 +21,7 @@
         </androidx.recyclerview.widget.RecyclerView>
 
         <Button
-            android:id="@+id/button5"
+            android:id="@+id/btn_start_exercise"
             android:layout_width="238dp"
             android:layout_height="60dp"
             android:layout_alignParentStart="true"

@@ -50,6 +50,8 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.OnProgressListener;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.gowtham.library.utils.TrimType;
+import com.gowtham.library.utils.TrimVideo;
 import com.gun0912.tedpermission.PermissionListener;
 import com.gun0912.tedpermission.TedPermission;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
@@ -93,6 +95,7 @@ public class PostingActivity extends AppCompatActivity {
     private Toolbar toolbar_posting;
     private RequestManager requestManager;
     private static final int SELECT_VIDEO = 1;
+    private static final int IMAGE_EDIT = 2;
     private StorageReference storageReference;
     private DatabaseReference databaseReference;
     private FirebaseAuth firebaseAuth;
@@ -197,7 +200,6 @@ public class PostingActivity extends AppCompatActivity {
         gsyVideoOptionBuilder
                 .setIsTouchWiget(false)
                 .setUrl(selectedUri.toString())
-                .setCacheWithPlay(true)
                 .setRotateViewAuto(true)
                 .setRotateWithSystem(true)
                 .setLockLand(false)
@@ -228,6 +230,7 @@ public class PostingActivity extends AppCompatActivity {
                         sampleCoverVideo.getCurrentPlayer().getTitleTextView().setText((String)objects[0]);
                     }
                 }).build(sampleCoverVideo);
+        sampleCoverVideo.startPlayLogic();
         //设置全屏按键功能
         sampleCoverVideo.getFullscreenButton().setOnClickListener(new View.OnClickListener() {
             @Override
@@ -334,7 +337,7 @@ public class PostingActivity extends AppCompatActivity {
                         Intent intent = new Intent(PostingActivity.this, ImageEditActivity.class);
                         intent.putExtra("position",finalI);
                         intent.setData(uriList.get(finalI));
-                        startActivityForResult(intent,2);
+                        startActivityForResult(intent,IMAGE_EDIT);
                     }
                 });
             }
@@ -344,27 +347,36 @@ public class PostingActivity extends AppCompatActivity {
     @ Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == TrimVideo.VIDEO_TRIMMER_REQ_CODE && data != null){
+            selectedUri = Uri.parse(TrimVideo.getTrimmedVideoPath(data));
+            Log.e("trimmed video path", "Trimmed path:: " + selectedUri);
+            loadVideo();
+        }
         if (resultCode == RESULT_OK) {
             Log.e("request is",""+requestCode);
+
+
             if (requestCode == SELECT_VIDEO) {
-                selectedUri = data.getData();
+
                 try {
-                    if (selectedUri == null) {
+                    if (data.getData() == null) {
                         Log.e("TED","selected video path = null!");
                         finish();
                     } else {
 
                         //Uri uri = Uri.fromFile(new File(selectedVideoPath));
-                        Log.e("TED","selected video path ="+selectedUri);
-                        loadVideo();
-                        //UploadVideo();
+                        Log.e("TED","selected video path ="+data.getData());
+                        openTrimActivity(String.valueOf(data.getData()));
+                        //
+
                     }
                 } catch (Exception e) {
                     //#debug
                     e.printStackTrace();
                 }
             }
-            if (requestCode ==2){
+            if (requestCode ==IMAGE_EDIT){
                 int position = data.getIntExtra("position",-1);
                 String uri = data.getStringExtra("uri");
                 Log.e("get result","uri:"+uri+"posittion:"+position);
@@ -375,6 +387,13 @@ public class PostingActivity extends AppCompatActivity {
             }
         }
 
+    }
+
+    private void openTrimActivity(String data) {
+        TrimVideo.activity(data)
+                .setTrimType(TrimType.MIN_MAX_DURATION)
+                .setMinToMax(1, 1200)
+                .start(this);
     }
 
     private void reloadUriList() {
@@ -410,7 +429,7 @@ public class PostingActivity extends AppCompatActivity {
                         Intent intent = new Intent(PostingActivity.this, ImageEditActivity.class);
                         intent.putExtra("position",finalI);
                         intent.setData(selectedUriList.get(finalI));
-                        startActivityForResult(intent,2);
+                        startActivityForResult(intent,IMAGE_EDIT);
                     }
                 });
             }
@@ -562,7 +581,7 @@ public class PostingActivity extends AppCompatActivity {
             progressDialog.setCanceledOnTouchOutside(false);
             progressDialog.setCancelable(false);
             progressDialog.show();
-            UploadTask uploadTask = reference.putFile(selectedUri);
+            UploadTask uploadTask = reference.putFile(Uri.parse("file://"+selectedUri));
 
             uploadTask.addOnProgressListener(new OnProgressListener<UploadTask.TaskSnapshot>() {
                 @Override

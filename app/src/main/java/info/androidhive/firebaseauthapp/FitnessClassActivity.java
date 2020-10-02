@@ -7,8 +7,12 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 
 import com.google.firebase.database.DataSnapshot;
@@ -30,7 +34,9 @@ public class FitnessClassActivity extends AppCompatActivity {
     private Context context;
     private RecyclerView recyclerview_classes;
     private DatabaseReference myRef;
+    Button btn_start_exercise;
     private List<ClassdataEntity> classdataEntities = new ArrayList<>();
+    String className;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -38,9 +44,14 @@ public class FitnessClassActivity extends AppCompatActivity {
 
         context = getApplicationContext();
         recyclerview_classes = findViewById(R.id.recyclerview_classes);
+        btn_start_exercise = findViewById(R.id.btn_start_exercise);
+
         myRef = FirebaseDatabase.getInstance().getReference();
-        Bundle extras = getIntent().getExtras();
-        String className = extras.getString("className");
+        if (getIntent().getExtras()!= null){
+            Bundle extras = getIntent().getExtras();
+            className = extras.getString("className");
+        }
+
         Query query = FirebaseDatabase.getInstance().getReference("fitness")
                 .orderByChild("className")
                 .equalTo(className);
@@ -70,10 +81,22 @@ public class FitnessClassActivity extends AppCompatActivity {
             }
         });
 
+        btn_start_exercise.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(FitnessClassActivity.this, ClassEntityActivity.class);
+                Bundle bundle = new Bundle();
+                bundle.putParcelableArrayList("class", (ArrayList<? extends Parcelable>) classdataEntities);
 
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
 
 
 
 
     }
+
+
 }

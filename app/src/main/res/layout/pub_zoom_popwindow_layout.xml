@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/image_scale_rll"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#D5000000"
+    android:clickable="true">
+
+    <info.androidhive.firebaseauthapp.htmlTextViewUtil.ZoomImageView
+        android:id="@+id/image_scale_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_centerInParent="true"
+        android:scaleType="matrix" />
+
+</RelativeLayout>

@@ -8,6 +8,8 @@ public class FitClass {
     private String classImage;
     private List<ClassdataEntity> classData;
 
+    public FitClass(){}
+
     public String getClassName() {
         return className;
     }

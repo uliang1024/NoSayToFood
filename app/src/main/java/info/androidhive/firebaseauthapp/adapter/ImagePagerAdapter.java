@@ -1,5 +1,6 @@
 package info.androidhive.firebaseauthapp.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
@@ -16,6 +17,7 @@ import com.bumptech.glide.Glide;
 import java.util.ArrayList;
 
 import info.androidhive.firebaseauthapp.ImageViewPagerActivity;
+import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.models.PicturePostGridImage;
 
 public class ImagePagerAdapter extends PagerAdapter {
@@ -53,6 +55,7 @@ public class ImagePagerAdapter extends PagerAdapter {
                 bundle.putInt("position",position);
                 i.putExtras(bundle);
                 context.startActivity(i);
+                ((Activity)context).overridePendingTransition(R.anim.activity_fade_in, R.anim.activity_fade_out);
             }
         });
         container.addView(imageView,0);

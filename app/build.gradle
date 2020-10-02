@@ -95,6 +95,15 @@ dependencies {
 
     //facebook recyclerview shimmer effect
     implementation 'com.facebook.shimmer:shimmer:0.5.0'
+    //video trimmer
+    implementation 'com.github.a914-gowtham:Android-video-trimmer:1.4.0'
+
+    //Picasso
+    implementation 'com.squareup.picasso:picasso:2.5.2'
+
+    //make parcelable easier
+    implementation 'org.parceler:parceler-api:1.1.12'
+    annotationProcessor 'org.parceler:parceler:1.1.12'
 
 }
 apply plugin: 'com.google.gms.google-services'

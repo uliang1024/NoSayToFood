@@ -5,6 +5,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.telecom.Call;
 import android.util.Log;
 import android.widget.TextView;
 
@@ -63,5 +64,6 @@ public class ImageViewPagerActivity extends AppCompatActivity implements OnLayou
     @Override
     public void onLayoutSwiped() {
         finish();
+        this.overridePendingTransition(R.anim.activity_fade_in,R.anim.activity_fade_out);
     }
 }

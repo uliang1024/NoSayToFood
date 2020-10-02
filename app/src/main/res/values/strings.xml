@@ -23,6 +23,8 @@
     <string name="actionToggleLineValues">Toggle Line Values</string>
     <string name="actionToggleBarValues">Toggle Bar Values</string>
     <string name="actionRemoveDataSet">Remove Data Set</string>
+    <string name="dummy_button">Dummy Button</string>
+    <string name="dummy_content">DUMMY\nCONTENT</string>
 
 
 </resources>

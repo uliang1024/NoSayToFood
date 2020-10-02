@@ -25,7 +25,7 @@
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/navigation_social"
-        android:name="info.androidhive.firebaseauthapp.ui.social.notifications.SocialFragment"
+        android:name="info.androidhive.firebaseauthapp.ui.social.SocialFragment"
         android:label="@string/title_social"
         tools:layout="@layout/fragment_notifications" />
     <fragment

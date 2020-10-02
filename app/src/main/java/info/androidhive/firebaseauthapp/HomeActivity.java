@@ -93,8 +93,22 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
             navigation.setSelectedItemId(R.id.navigation_social);
             //重設intent夾帶的值
             intent.putExtra("id", 0);
+        }if(id == 2){
+            Fragment fragment = new NotificationsFragment();
+            FragmentManager fragmentManager = getSupportFragmentManager();
+            FragmentTransaction transaction=fragmentManager.beginTransaction();
+            transaction.replace(R.id.fragment_container,fragment);
+            transaction.commit();
+            //將導向到SocialFragment
+            Log.e("run","執行onResume，id = "+id);
+            //將ButtomVavigation的指標設到navigation_social
+            navigation.setSelectedItemId(R.id.navigation_notifications);
+            //重設intent夾帶的值
+            intent.putExtra("id", 0);
         }
     }
+
+
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -143,13 +157,13 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("確定關機??");
             builder.setCancelable(true);
-            builder.setNegativeButton("yes", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
             });
-            builder.setPositiveButton("close", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Intent i = new Intent(Intent.ACTION_MAIN);
@@ -162,7 +176,7 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
             alertDialog.show();
             counter =0;
         }else{
-            Toast.makeText(this, "我草你媽了個逼再按一次試試看操", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "確定退出嗎?", Toast.LENGTH_SHORT).show();
         }
 
     }
