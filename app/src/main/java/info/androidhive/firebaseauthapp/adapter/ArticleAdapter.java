@@ -43,8 +43,8 @@ public class ArticleAdapter extends RecyclerView.Adapter<ArticleAdapter.myArticl
 
     @Override
     public void onBindViewHolder(@NonNull myArticleViewHolder holder, int position) {
-        Article fitClass = articles.get(position);
-        ((ArticleAdapter.myArticleViewHolder)holder).setArticleInfo(fitClass);
+        Article article = articles.get(position);
+        ((ArticleAdapter.myArticleViewHolder)holder).setArticleInfo(article);
     }
 
     @Override

@@ -18,6 +18,7 @@ import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
+import com.facebook.stetho.Stetho;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -38,7 +39,6 @@ public class Frag2 extends Fragment {
     DatabaseHelper myDb;
     private ExpandableListView user_list ;
     private ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
-
     private Button bt_eat;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
