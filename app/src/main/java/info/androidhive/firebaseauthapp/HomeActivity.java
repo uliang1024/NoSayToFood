@@ -3,21 +3,12 @@ package info.androidhive.firebaseauthapp;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.content.ContextCompat;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.AlarmManager;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.app.PendingIntent;
-import android.app.job.JobInfo;
-import android.app.job.JobScheduler;
-import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -27,10 +18,8 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
-import com.facebook.stetho.Stetho;
 import com.github.mikephil.charting.data.Entry;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.firebase.auth.FirebaseAuth;
@@ -42,23 +31,19 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
-import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
-import info.androidhive.firebaseauthapp.Notification.AlarmReciever;
 import info.androidhive.firebaseauthapp.first.HelloUser;
 
 import info.androidhive.firebaseauthapp.ui.dashboard.DashboardFragment;
-import info.androidhive.firebaseauthapp.ui.home.Frag1;
 import info.androidhive.firebaseauthapp.ui.home.HomeFragment;
 import info.androidhive.firebaseauthapp.ui.notifications.NotificationsFragment;
 import info.androidhive.firebaseauthapp.ui.profile.ProfileFragment;
 import info.androidhive.firebaseauthapp.ui.social.Frag_posting;
 import info.androidhive.firebaseauthapp.ui.social.SocialFragment;
 
-public class HomeActivity extends FragmentActivity implements BottomNavigationView.OnNavigationItemSelectedListener , Frag1.Frag1TimeListener {
+public class HomeActivity extends FragmentActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
     BottomNavigationView navigation;
     private int counter ;
@@ -66,7 +51,7 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-        Stetho.initializeWithDefaults(this);
+
         Log.e("run","執行onCreate");
 
         //loading the default fragment
@@ -75,18 +60,7 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
         //getting bottom navigation view and attaching the listener
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
-        //設定提醒
-        Calendar cal = Calendar.getInstance(); //取得時間
-        cal.add(Calendar.SECOND, 10);
 
-
-        //add_alarm(this, cal);
-//        createNotificationChannel();
-//        StopService();
-//        StartService();
-        createNotificationChannel();
-        cancelJob();
-        scheduleJob();
     }
 
 
@@ -134,27 +108,7 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
         }
     }
 
-    public void scheduleJob(){
-        ComponentName componentName = new ComponentName(this,FastingJobService.class);
-        JobInfo info = new JobInfo.Builder(123,componentName)
-                .setPersisted(true)
-                .setOverrideDeadline(0)
-                .build();
 
-        JobScheduler scheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
-        int resultCode = scheduler.schedule(info);
-        if (resultCode == JobScheduler.RESULT_SUCCESS){
-            Log.e("job scheduled","success");
-        }else {
-            Log.e("job scheduled","failed");
-        }
-    }
-
-    public void cancelJob(){
-        JobScheduler scheduler = (JobScheduler)getSystemService(JOB_SCHEDULER_SERVICE);
-        scheduler.cancel(123);
-        Log.e("job canceled","job has been canceled");
-    }
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
@@ -193,70 +147,6 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
             return true;
         }
         return false;
-    }
-
-//    public void add_alarm(Context context, Calendar cal) {
-//
-//        Toast.makeText(context,"有執行",Toast.LENGTH_SHORT).show();
-//        createNotificationChannel();
-//
-//
-//        AlarmManager alarmManager = (AlarmManager) getSystemService(Context.ALARM_SERVICE);
-//        Intent intent = new Intent(this, AlarmReciever.class);
-//        intent.putExtra("type",10001);
-//        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
-//
-//        alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),1000*60*3, pendingIntent);
-//    }
-
-    private void createNotificationChannel(){
-        if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
-            CharSequence name = "斷時進程";
-            String description = "channel for fasting progress";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
-            NotificationChannel channel= new NotificationChannel("LemmeNo",name,importance);
-            channel.setDescription(description);
-            channel.enableLights(true);
-            channel.enableVibration(true);
-            channel.setLightColor(R.color.colorPrimary);
-            channel.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-            //NotificationManager notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
-            notificationManager.createNotificationChannel(channel);
-
-            CharSequence name2 = "斷時進程2";
-            String description2 = "channel for fasting progress2";
-            NotificationChannel channe2= new NotificationChannel("channe2",name2,importance);
-            channe2.setDescription(description2);
-            channe2.enableLights(true);
-            channe2.enableVibration(true);
-            channe2.setLightColor(R.color.colorPrimary);
-            channe2.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-            //NotificationManager notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
-            NotificationManager notificationManager2 = getSystemService(NotificationManager.class);
-            notificationManager2.createNotificationChannel(channe2);
-        }
-    }
-
-    public void StartService(ArrayList<String> start_date,ArrayList<String> end_date,ArrayList<Integer> off_day){
-        Intent serviceIntent = new Intent(this,FastTimerService.class);
-        serviceIntent.putStringArrayListExtra("inputStartDates",start_date);
-        serviceIntent.putStringArrayListExtra("inputEndDates",end_date);
-        serviceIntent.putIntegerArrayListExtra("inputOffDates",off_day);
-        ContextCompat.startForegroundService(this,serviceIntent);
-    }
-
-    public void StopService(){
-        Intent serviceIntent = new Intent(this,FastTimerService.class);
-        stopService(serviceIntent);
-    }
-
-    @Override
-    protected void onDestroy() {
-        Log.e("destroyed","destroyed");
-        //StopService();
-        //Toast.makeText(this, "destroyed", Toast.LENGTH_SHORT).show();
-        super.onDestroy();
     }
 
     @Override
@@ -337,27 +227,4 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
     }
 
 
-    @Override
-    public void onTimeChanged(ArrayList<Long> start_time, ArrayList<Long> end_time ,ArrayList<Integer> off_day) {
-
-        if (start_time!= null && end_time!=null){
-            Log.e("getTimeFromHome",start_time+"");
-            Log.e("getTimeFromHome",end_time+"");
-            ArrayList<String>start_date = new ArrayList<>();
-            ArrayList<String>end_date = new ArrayList<>();
-            for (long start:start_time){
-                start_date.add(String.valueOf(start));
-            }
-            for (long end:end_time){
-                end_date.add(String.valueOf(end));
-            }
-            //createNotificationChannel();
-            StopService();
-            StartService(start_date,end_date,off_day);
-        }
-        else{
-            Log.e("get0Data","u havent choose a fasting plan");
-        }
-
-    }
 }
