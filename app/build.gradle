@@ -105,5 +105,6 @@ dependencies {
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
 
+    implementation 'com.facebook.stetho:stetho:1.5.1'
 }
 apply plugin: 'com.google.gms.google-services'

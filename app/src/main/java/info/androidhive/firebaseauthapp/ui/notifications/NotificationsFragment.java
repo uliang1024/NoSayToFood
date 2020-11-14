@@ -28,62 +28,86 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
+import info.androidhive.firebaseauthapp.ArticleActivity;
 import info.androidhive.firebaseauthapp.FitnessClassActivity;
 import info.androidhive.firebaseauthapp.R;
+import info.androidhive.firebaseauthapp.RecipeActivity;
 import info.androidhive.firebaseauthapp.adapter.ClassAdapter;
+import info.androidhive.firebaseauthapp.adapter.RecipeAdapter;
 import info.androidhive.firebaseauthapp.classModels.FitClass;
+import info.androidhive.firebaseauthapp.models.Article;
+import info.androidhive.firebaseauthapp.models.Recipe;
 
 /**
  * Created by Belal on 1/23/2018.
  */
 
-public class NotificationsFragment extends Fragment {
-    RecyclerView gridView;
+public class NotificationsFragment extends Fragment implements RecipeAdapter.RecipeClickedListener {
+    private LinearLayoutManager layoutManager;
+    RecyclerView recyclerView;
     private DatabaseReference myRef;
-    ArrayList<FitClass> classes = new ArrayList<>();
+    private Context mContext;
+    ArrayList<Recipe> recipes = new ArrayList<>();
+    private RecipeAdapter adapter;
 
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View fragment_notifications = inflater.inflate(R.layout.fragment_notifications, container, false);
-        Context context = fragment_notifications.getContext();
         //INIT VIEWS
-        init(fragment_notifications);
-
-        ClassAdapter adapter = new ClassAdapter(context,classes);
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(context,2, GridLayoutManager.VERTICAL,false);
-        gridView.setLayoutManager(gridLayoutManager);
-        gridView.setAdapter(adapter);
-
-
-        myRef.child("fitness").addListenerForSingleValueEvent(new ValueEventListener() {
+        myRef = FirebaseDatabase.getInstance().getReference();
+        recyclerView = fragment_notifications.findViewById(R.id.recycler_recipe);
+        mContext = getContext();
+        add_Data(new DataListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                classes.clear();
-                for(DataSnapshot fitSnapShop:dataSnapshot.getChildren()){
-                    if(fitSnapShop.hasChild("classImage")){
-                        FitClass fitClass = fitSnapShop.getValue(FitClass.class);
-                        Log.e("className",""+fitClass.getClassName());
-                        Log.e("classImage",""+fitClass.getClassImage());
-                        classes.add(fitClass);
-
-                    }else{
-                        Log.e("classImage","no such class");
-                    }
-
-                }
-
-//                new Handler().postDelayed(new Runnable() {
-//                    @Override
-//                    public void run() {
-//
-//                    }
-//                },1000);
+            public void onReceiveData(boolean dataLoadComplete) {
+                Log.e("load data complete",""+recipes.size()+"，"+recipes.toString());
                 adapter.isShimmer = false;
                 adapter.notifyDataSetChanged();
+            }
+        });
+
+        layoutManager = new LinearLayoutManager(mContext);
+        recyclerView.setLayoutManager(layoutManager);
+        adapter = new RecipeAdapter(recipes,mContext,this);
+        recyclerView.setAdapter(adapter);
+
+
+        return fragment_notifications;
+    }
+
+    private void add_Data(DataListener listener) {
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("recipe")){
+
+                    HashMap<String,Object> loadedItems = (HashMap<String,Object>) dataSnapshot.child("recipe").getValue();
+                    if (loadedItems == null||loadedItems.size() == 0){
+                        Log.e("no data","no data read");
+                        return;
+                    }
+                    int loadCounter = 0;
+                    recipes.clear();
+                    for(DataSnapshot recipeSnapShot:dataSnapshot.child("recipe").getChildren()){
+                        Recipe recipe = recipeSnapShot.getValue(Recipe.class);
+                        recipes.add(recipe);
+                        loadCounter++;
+                    }
+
+                    if (loadCounter == loadedItems.size()){
+                        Log.e("load data complete",""+recipes.size()+"，"+recipes.toString());
+                        listener.onReceiveData(true);
+                    }
+
+                }else{
+
+                }
             }
 
             @Override
@@ -92,18 +116,22 @@ public class NotificationsFragment extends Fragment {
             }
         });
 
+    }
 
-
-
-        return fragment_notifications;
+    @Override
+    public void onRecipeClicked(int position) {
+        Log.e("clicked ","on position "+position);
+        Intent intent = new Intent(mContext, RecipeActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("content",recipes.get(position).getContent());
+        intent.putExtras(bundle);
+        startActivity(intent);
     }
 
 
-    private void init(View v) {
-        myRef = FirebaseDatabase.getInstance().getReference();
-        gridView = v.findViewById(R.id.grid_view);
+    interface DataListener{
+        void onReceiveData(boolean dataLoadComplete);
     }
-
 
 
 }
