@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="vertical"
@@ -7,8 +7,6 @@
     android:background="@drawable/kggggggggggg"
     android:padding="20sp">
 <LinearLayout
-    android:id="@+id/lv_weight_input"
-    android:layout_centerHorizontal="true"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:orientation="horizontal"
@@ -29,41 +27,24 @@
         android:textSize="50sp"/>
 
 </LinearLayout>
-    <Button
-
-        android:id="@+id/btn_setHeight"
-        android:layout_centerHorizontal="true"
-        android:layout_width="100dp"
-        android:layout_height="45dp"
-        android:layout_marginStart="15dp"
-        android:layout_marginTop="15dp"
-        android:layout_marginEnd="15dp"
-        android:layout_marginBottom="0dp"
-        android:layout_below="@id/lv_weight_input"
-        android:background="@drawable/kgkgkgkg"
-        />
 
     <TextView
-        android:layout_centerHorizontal="true"
         android:layout_gravity="center"
         android:id="@+id/date_picker"
         android:layout_width="100dp"
         android:layout_height="50dp"
         android:background="@drawable/kgkgkgkg"
-        android:layout_margin="10sp"
+        android:layout_margin="25sp"
         android:gravity="center"
-        android:layout_below="@id/btn_setHeight"
         />
 
     <Button
         android:id="@+id/kg_ok"
-        android:layout_marginTop="15dp"
+        android:layout_marginTop="75dp"
         android:layout_width="200dp"
         android:layout_height="100dp"
         android:layout_gravity="center"
         android:text="OK"
-        android:textSize="50dp"
-        android:layout_centerHorizontal="true"
-        android:layout_below="@id/date_picker"/>
+        android:textSize="50dp"/>
 
-</RelativeLayout>
+</LinearLayout>

@@ -15,7 +15,7 @@
             android:id="@+id/recyclerview_classes"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_above="@+id/btn_start_exercise"
+            android:layout_above="@+id/button5"
             android:layout_marginBottom="40dp">
 
         </androidx.recyclerview.widget.RecyclerView>

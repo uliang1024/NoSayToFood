@@ -1,6 +1,5 @@
 package info.androidhive.firebaseauthapp.adapter;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -67,14 +66,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.myRecipeVi
     public class myRecipeViewHolder extends RecyclerView.ViewHolder {
         ShimmerFrameLayout shimmer_layout_recipe;
         ImageView img_recipe;
-        TextView tv_title;
+        TextView tv_title,tv_time;
 
 
         public  myRecipeViewHolder(@NonNull View itemView , RecipeClickedListener listener) {
             super(itemView);
             shimmer_layout_recipe = itemView.findViewById(R.id.shimmer_layout_recipe);
             img_recipe = itemView.findViewById(R.id.img_recipe);
-            //tv_time = itemView.findViewById(R.id.tv_recipe_time);
+            tv_time = itemView.findViewById(R.id.tv_recipe_time);
             tv_title = itemView.findViewById(R.id.tv_recipe_title);
 
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -87,15 +86,14 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.myRecipeVi
 
 
 
-        @SuppressLint("ResourceAsColor")
         public void setArticleInfo(Recipe recipe){
-            tv_title.setText(recipe.getRecipename());
-            //tv_time.setText(recipe.getTime());
-            Log.e("thumb",""+recipe.getRecipeimage());
-            Glide.with(context).load(recipe.getRecipeimage()).into(img_recipe);
+            tv_title.setText(recipe.getTitle());
+            tv_time.setText(recipe.getTime());
+            Log.e("thumb",""+recipe.getImage());
+            Glide.with(context).load(recipe.getImage()).into(img_recipe);
             img_recipe.setBackground(null);
-            //tv_time.setBackground(null);
-            tv_title.setBackgroundColor(R.color.transparentBlack);
+            tv_time.setBackground(null);
+            tv_title.setBackground(null);
 
         }
     }

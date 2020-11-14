@@ -21,7 +21,7 @@
     <fragment
         android:id="@+id/navigation_notifications"
         android:name="info.androidhive.firebaseauthapp.ui.notifications.NotificationsFragment"
-        android:label="@string/title_recipe"
+        android:label="@string/title_workout"
         tools:layout="@layout/fragment_notifications" />
     <fragment
         android:id="@+id/navigation_social"

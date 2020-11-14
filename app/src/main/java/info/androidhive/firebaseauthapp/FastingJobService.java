@@ -45,8 +45,7 @@ public class FastingJobService extends JobService {
 //            }
 //        }).start();
         Calendar cal = Calendar.getInstance(); //取得時間
-        cal.add(Calendar.HOUR_OF_DAY,9);
-        cal.set(Calendar.MINUTE,35);
+        cal.add(Calendar.SECOND, 10);
         add_alarm(this, cal);
     }
     public void add_alarm(Context context, Calendar cal) {
@@ -59,7 +58,7 @@ public class FastingJobService extends JobService {
         intent.putExtra("type",10001);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, intent, 0);
 
-        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),AlarmManager.INTERVAL_DAY, pendingIntent);
+        alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, cal.getTimeInMillis(),1000*60*3, pendingIntent);
     }
     @Override
     public boolean onStopJob(JobParameters params) {

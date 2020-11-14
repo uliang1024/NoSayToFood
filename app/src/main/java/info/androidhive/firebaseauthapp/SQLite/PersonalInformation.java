@@ -34,10 +34,10 @@ public class PersonalInformation extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table IF NOT EXISTS " + TABLE_NAME1 +" (UID TEXT PRIMARY KEY,NAME TEXT,GENDER TEXT,AGE INTEGER,HEIGHT FLOAT,WEIGHT FLOAT,WAISTLINE FLOAT,BODY_FAT_PERCENTAGE FLOAT,ACTIVITY INTEGER)");
+        db.execSQL("create table IF NOT EXISTS " + TABLE_NAME1 +" (UID TEXT PRIMARY KEY,NAME TEXT,GENDER TEXT,AGE INTEGER,HEIGHT FLOAT,WEIGHT FLOAT,WAISTLINE FLOAT,BODY_FAT_PERCENTAGE FLOAT,ACTIVITY TEXT)");
         db.execSQL("create table IF NOT EXISTS " + TABLE_NAME2 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,START_TIME LONG,END_TIME LONG,OFF_DAY INTEGER,UID TEXT,NOW_TIME LONG,DAY INTEGER)");
         db.execSQL("create table IF NOT EXISTS " + TABLE_NAME3 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME TEXT,DATE TEXT,AMOUNT TEXT,UID TEXT,MEAL INTEGER)");
-        db.execSQL("create table IF NOT EXISTS " + TABLE_NAME4 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,UID TEXT,KG FLOAT,HEIGHT FLOAT,WAISTLINE FLOAT,BODYFAT FLOAT,DATE TEXT,TS INTEGER)");
+        db.execSQL("create table IF NOT EXISTS " + TABLE_NAME4 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,UID TEXT,KG FLOAT,DATE TEXT)");
     }
 
     @Override
@@ -49,7 +49,7 @@ public class PersonalInformation extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String uid,String name,String gender,Integer age,Float height,Float weight,Float waistline,Float body_fat_percentage,Integer activity) {
+    public boolean insertData(String uid,String name,String gender,Integer age,Float height,Float weight,Float waistline,Float body_fat_percentage,String activity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1,uid);
@@ -75,11 +75,11 @@ public class PersonalInformation extends SQLiteOpenHelper {
     }
 
 
-    public boolean updateData(String uid,Float height) {
+    public boolean updateData(String uid,Float weight) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1,uid);
-        contentValues.put(COL_5,height);
+        contentValues.put(COL_6,weight);
         db.update(TABLE_NAME1, contentValues, "UID = ?",new String[] { uid });
         return true;
     }

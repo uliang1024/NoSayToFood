@@ -8,7 +8,6 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,7 +51,7 @@ public class Weight_scale extends AppCompatActivity {
     private ArrayList<Float> KG = new ArrayList<>();
     private ArrayList<String> date = new ArrayList<>();
     private ArrayList<Integer> ID = new ArrayList<>();
-    private float height,weight_data;
+    private float height,width_data;
     private Button bt_KG;
     private String uid = null;
     PersonalInformation myDb;
@@ -150,7 +149,7 @@ public class Weight_scale extends AppCompatActivity {
         int day = calendar.get(Calendar.DAY_OF_MONTH);
         DecimalFormat df = new DecimalFormat("##0.0");
         date_picker.setText(String.format("%02d", year)+"/"+String.format("%02d", month)+"/"+String.format("%02d", day));
-        //選擇日期按鈕
+
         date_picker.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -173,7 +172,6 @@ public class Weight_scale extends AppCompatActivity {
                 dialog.show();
             }
         });
-        //體重輸入完成完成
         kg_ok.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -187,11 +185,11 @@ public class Weight_scale extends AppCompatActivity {
                     if(date_picker.getText().toString().equals(str)){
                         tv_KG.setText(editText.getText().toString());
                     }
-                    weight_data = Float.parseFloat(tv_KG.getText().toString());
-                    float profit = weight_data/((height/100)*(height/100));
+                    width_data = Float.parseFloat(tv_KG.getText().toString());
+                    float profit = width_data/((height/100)*(height/100));
                     DecimalFormat df2 = new DecimalFormat("##0.0");
                     tv_BMI.setText(String.valueOf(df2.format(profit)));
-                    weight_data = Float.parseFloat(editText.getText().toString());
+                    width_data = Float.parseFloat(editText.getText().toString());
                     updateData(date_picker.getText().toString());
                     AddData(date_picker.getText().toString());
 
@@ -208,17 +206,17 @@ public class Weight_scale extends AppCompatActivity {
         if(x.equals(str)){
             boolean isupdated = false;
             isupdated = myDb.updateData(uid,
-                    weight_data);
+                    width_data);
         }
 
     }
     public  void AddData(String x) {
         if(date.indexOf(x) ==-1){
-            //boolean isInserted2 = myDb2.insertData(uid,weight_data,x);
+            boolean isInserted2 = myDb2.insertData(uid,width_data,x);
         }else{
             boolean isupdated = false;
-            //isupdated = myDb2.updateData(ID.get(date.indexOf(x)),
-            //        weight_data);
+            isupdated = myDb2.updateData(ID.get(date.indexOf(x)),
+                    width_data);
         }
         KG = new ArrayList<>();
         date = new ArrayList<>();
@@ -228,7 +226,7 @@ public class Weight_scale extends AppCompatActivity {
             if(uid.equals(res.getString(1))){
                 ID.add(res.getInt(0));
                 KG.add(res.getFloat(2));
-                date.add(res.getString(6));
+                date.add(res.getString(3));
             }
         }
         ListView lv = findViewById(R.id.listView1);
@@ -265,7 +263,7 @@ public class Weight_scale extends AppCompatActivity {
             return 3; // we have 3 different item-types
         }
     }
-    //產生體重的摺線圖
+
     private LineData generateDataLine(int cnt) {
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -279,7 +277,7 @@ public class Weight_scale extends AppCompatActivity {
             if(uid.equals(res.getString(1))){
                 ID.add(res.getInt(0));
                 KG.add(res.getFloat(2));
-                date.add(res.getString(6));
+                date.add(res.getString(3));
             }
         }
 
@@ -293,7 +291,6 @@ public class Weight_scale extends AppCompatActivity {
             String dateStr = sdf.format(calendar.getTime());
             for(int j = 0;j<date.size();j++){
                 if(dateStr.equals(date.get(j))){
-                    Log.e("get i","i = "+i);
                     values1.add(new Entry(i, KG.get(j)));
                 }
             }
@@ -323,13 +320,11 @@ public class Weight_scale extends AppCompatActivity {
         d2.setDrawCircles(false);
 
         ArrayList<ILineDataSet> sets = new ArrayList<>();
-
         sets.add(d1);
         sets.add(d2);
 
         return new LineData(sets);
     }
-    //產生bmi的摺線圖
     private LineData generateDataLine2(int cnt) {
 
         ArrayList<Entry> values1 = new ArrayList<>();

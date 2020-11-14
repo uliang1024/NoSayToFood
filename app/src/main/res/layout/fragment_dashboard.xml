@@ -1,456 +1,96 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
 
-    <RelativeLayout
-        android:layout_width="match_parent"
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="40sp"
+        android:layout_gravity="center"
+        android:layout_margin="40sp"
+        android:text="紀錄:" />
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content">
-
         <LinearLayout
-            android:id="@+id/lv_show_weight"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"
+            android:orientation="vertical"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
             android:gravity="center"
-            android:weightSum="3">
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/ll_bg">
 
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/image_scale"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_weight_scale"
-                    tools:srcCompat="@drawable/ic_weight_scale" />
-
-                <TextView
-                    android:id="@+id/tv_current_weight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="1"
-                    android:background="@drawable/radius_weight_background_white"
-                    android:padding="3dp"
-                    android:text="textView"
-                    android:textSize="20sp"/>
-            </RelativeLayout>
-
-
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:orientation="vertical">
-
-                <TextView
-                    android:id="@+id/tv_init_weight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:background="@drawable/radius_weight_background"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="88kg"
-                    android:textAlignment="center"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:text="初始體重"
-                    android:textAlignment="center" />
-
-                <TextView
-                    android:id="@+id/tv_ideal_weight"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-
-                    android:background="@drawable/radius_weight_background"
-                    android:paddingLeft="5dp"
-                    android:paddingTop="5dp"
-                    android:paddingRight="5dp"
-                    android:paddingBottom="5dp"
-                    android:text="88kg"
-                    android:textAlignment="center"
-                    android:textSize="18sp" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_gravity="center_horizontal|center_vertical"
-                    android:text="理想體重"
-                    android:textAlignment="center" />
-            </LinearLayout>
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/image_bmi"
-                    android:layout_width="150dp"
-                    android:layout_height="150dp"
-                    android:layout_marginStart="5dp"
-                    android:layout_marginTop="20dp"
-                    android:layout_marginEnd="5dp"
-                    android:layout_marginBottom="20dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_bathroom_scale"
-                    tools:srcCompat="@drawable/ic_bathroom_scale" />
-
-                <TextView
-                    android:id="@+id/tv_current_bmi"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerInParent="true"
-                    android:layout_weight="1"
-                    android:background="@drawable/radius_weight_background_white"
-                    android:padding="3dp"
-                    android:text="TextView"
-                    android:textSize="20sp"/>
-            </RelativeLayout>
-
-
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/seperator01"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-
-            android:layout_below="@id/lv_show_weight"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="#6D636363" />
-
-        <LinearLayout
-            android:id="@+id/lv_button"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/seperator01"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_below="@id/seperator01"
-                android:orientation="horizontal"
-                android:weightSum="2">
-
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btn_fast_record"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/food_record" />
-
-                <View
-                    android:id="@+id/seperator02"
-                    android:layout_width="1dp"
-                    android:layout_height="match_parent"
-                    android:layout_below="@id/lv_show_weight"
-                    android:background="#6D636363" />
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btn_food_record"
-                    android:layout_width="80dp"
-                    android:layout_height="80dp"
-                    android:layout_weight="1"
-                    app:srcCompat="@drawable/ic_salad" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:weightSum="2">
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="斷食計錄"
-                    android:textAlignment="center" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_weight="1"
-                    android:text="食物計錄"
-                    android:textAlignment="center" />
-            </LinearLayout>
-
-        </LinearLayout>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_weight"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/lv_button"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            app:cardCornerRadius="8dp">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/btn_weight_add"
-                    android:layout_marginTop="15dp"
-                    android:layout_marginRight="15dp"
-                    android:layout_width="40dp"
-                    android:layout_height="40dp"
-                    app:srcCompat="@drawable/add"
-                    android:layout_gravity="right"
-                    />
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/weight_chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_margin="10dp" />
-
-
-            </LinearLayout>
-
-
-        </androidx.cardview.widget.CardView>
-
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_bmi"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_below="@id/card_weight"
-            android:layout_marginStart="20dp"
-            android:layout_marginTop="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="20dp"
-            app:cardCornerRadius="8dp">
-
-            <RelativeLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
-
-                <com.github.mikephil.charting.charts.LineChart
-                    android:id="@+id/bmi_chart"
-                    android:layout_width="match_parent"
-                    android:layout_height="300dp"
-                    android:layout_margin="10dp" />
-
-            </RelativeLayout>
-
-
-
-        </androidx.cardview.widget.CardView>
-
-        <LinearLayout
-            android:id="@+id/lv_body_info"
-            android:layout_below="@+id/card_bmi"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3"
-            android:layout_margin="20dp">
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="5dp"
-                    app:srcCompat="@drawable/ic_star" />
-                <TextView
-                    android:textAlignment="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="理想體重"/>
-                <TextView
-                    android:id="@+id/tv_target_weight"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="80公斤"
-                    android:textSize="18sp"
-                    android:textAlignment="center"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="5dp"
-                    app:srcCompat="@drawable/ic_balance" />
-                <TextView
-                    android:textAlignment="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="體重過重/輕"/>
-                <TextView
-                    android:id="@+id/tv_weight_diff"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="過重6公斤"
-                    android:textSize="18sp"
-                    android:textAlignment="center"/>
-            </LinearLayout>
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_weight="1">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="70dp"
-                    android:layout_height="70dp"
-                    android:layout_gravity="center_horizontal"
-                    android:layout_marginBottom="5dp"
-                    app:srcCompat="@drawable/ic_like" />
-                <TextView
-                    android:textAlignment="center"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="健康範圍"/>
-                <TextView
-                    android:id="@+id/tv_health_weight_range"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:text="80公斤"
-                    android:textSize="18sp"
-                    android:textAlignment="center"/>
-            </LinearLayout>
-
-
-
-        </LinearLayout>
-
-        <View
-            android:id="@+id/seperator03"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-
-            android:layout_below="@id/lv_body_info"
-            android:layout_marginStart="20dp"
-            android:layout_marginEnd="20dp"
-            android:layout_marginBottom="10dp"
-            android:background="#6D636363" />
-
-        <LinearLayout
-            android:layout_below="@+id/seperator03"
-            android:layout_marginTop="20dp"
-            android:layout_marginRight="20dp"
-            android:layout_marginLeft="20dp"
-            android:layout_marginBottom="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-
-            <androidx.cardview.widget.CardView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:padding="15dp"
-                app:cardCornerRadius="8dp">
-                <LinearLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical"
-                    android:layout_margin="13dp">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                            android:text="*Harris–Benedict equations revised by Mifflin and St Jeor in 1990*"
-                        android:padding="10dp"
-                        />
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:weightSum="10"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:id="@+id/tv_bmr"
-                            android:layout_weight="9"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="每日基礎代謝 BMR:"
-                            android:textSize="22sp"/>
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/bmr_info"
-                            android:layout_margin="5dp"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/ic_question"/>
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal"
-                        android:layout_marginTop="8dp"
-                        android:weightSum="10">
-                        <TextView
-                            android:id="@+id/tv_tdee"
-                            android:layout_weight="9"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="總熱量消耗 TDEE:"
-                            android:textSize="22sp"/>
-                        <androidx.appcompat.widget.AppCompatImageView
-                            android:id="@+id/tdee_info"
-                            android:layout_margin="5dp"
-                            android:layout_width="30dp"
-                            android:layout_height="30dp"
-                            android:layout_weight="1"
-                            app:srcCompat="@drawable/ic_question"/>
-                    </LinearLayout>
-
-
-                </LinearLayout>
-
-            </androidx.cardview.widget.CardView>
-
-
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/food_record"
+                android:layout_gravity="center"
+                android:id="@+id/fasting_record"/>
 
             <TextView
-                android:id="@+id/tv_daily_activity"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="20dp"
-                android:text="每日活動量:"
-                android:textAlignment="textEnd"
-                android:textSize="24sp" />
-
+                android:text="斷食紀錄"
+                android:layout_gravity="center"
+                android:textSize="20dp"/>
         </LinearLayout>
 
+        <LinearLayout
+            android:id="@+id/show2"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/ll_bg">
 
-    </RelativeLayout>
+            <ImageView
 
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:src="@drawable/body_record" />
 
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="身體數值"
+                android:textSize="20dp" />
+        </LinearLayout>
+    </LinearLayout>
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <LinearLayout
+            android:id="@+id/show"
+            android:orientation="vertical"
+            android:layout_width="200dp"
+            android:layout_height="200dp"
+            android:gravity="center"
+            android:layout_margin="10dp"
+            android:layout_weight="1"
+            android:background="@drawable/ll_bg">
 
+            <ImageView
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:src="@drawable/food_record"
+                android:layout_gravity="center"
+                />
 
-</ScrollView>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="食物紀錄"
+                android:layout_gravity="center"
+                android:textSize="20dp"/>
+        </LinearLayout>
+    </LinearLayout>
+</LinearLayout>

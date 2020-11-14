@@ -1,46 +1,64 @@
 package info.androidhive.firebaseauthapp.models;
 
-import java.util.List;
-
 public  class Recipe {
+    private String title;
+    private String videoUrl;
+    private String time;
+    private String image;
+    private String content;
 
-    private String recipeName;
-    private String recipeImage;
-    private List<StepsEntity> steps;
 
     public Recipe() {
+
     }
 
-    public Recipe(String recipename, String recipeimage, List<StepsEntity> steps) {
-        this.recipeName = recipename;
-        this.recipeImage = recipeimage;
-        this.steps = steps;
+    public Recipe(String title, String videoUrl, String time, String image, String content) {
+        this.title = title;
+        this.videoUrl = videoUrl;
+        this.time = time;
+        this.image = image;
+        this.content = content;
     }
 
-    public String getRecipename() {
-        return recipeName;
+    public String getTitle() {
+        return title;
     }
 
-    public void setRecipename(String recipename) {
-        this.recipeName = recipename;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getRecipeimage() {
-        return recipeImage;
+    public String getVideourl() {
+        return videoUrl;
     }
 
-    public void setRecipeimage(String recipeimage) {
-        this.recipeImage = recipeimage;
+    public void setVideourl(String videourl) {
+        this.videoUrl = videourl;
     }
 
-    public List<StepsEntity> getSteps() {
-        return steps;
+    public String getTime() {
+        return time;
     }
 
-    public void setSteps(List<StepsEntity> steps) {
-        this.steps = steps;
+    public void setTime(String time) {
+        this.time = time;
     }
 
+    public String getImage() {
+        return image;
+    }
+
+    public void setImage(String image) {
+        this.image = image;
+    }
+
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 
 
 }

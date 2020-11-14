@@ -1,9 +1,7 @@
 package info.androidhive.firebaseauthapp.ui.home;
 
-import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.graphics.PointF;
@@ -21,7 +19,6 @@ import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -69,7 +66,6 @@ public class Frag1 extends Fragment {
     private ArrayList<Long> end_time = new ArrayList<>();
     private ArrayList<Integer> off_day = new ArrayList<>();
     private Button bt_fitness;
-    private Button btn_check_fasting;
     //儲存Date
     ArrayList<Date> start_date = new ArrayList<>();
     ArrayList<Date> end_date = new ArrayList<>();
@@ -89,9 +85,7 @@ public class Frag1 extends Fragment {
     private WaveLoadingView waveLoadingView1,waveLoadingView2,waveLoadingView3,waveLoadingView4,waveLoadingView5,waveLoadingView6,waveLoadingView7,waveLoadingView8,waveLoadingView9,waveLoadingView10;
     private Integer water=0,cc=0;
     private TextView tv_water,tv_drop,tv_add,tv_cc,title_water,progress;
-    public static final String SHARED_PREFS = "shared_prefs";
-    public static final String STATUS = "status";
-    private SharedPreferences sharedPreferences;
+
 
     public interface Frag1TimeListener{
         void onTimeChanged(ArrayList<Long> start_time,ArrayList<Long> end_time,ArrayList<Integer> off_day);
@@ -251,27 +245,11 @@ public class Frag1 extends Fragment {
                     startActivity(new Intent(Frag1.super.getContext(), FitnessActivity.class));
                 }
             });
-            Log.e("是否記錄此次斷食",""+isFastingRecord());
-            btn_check_fasting.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
-                    //如果以記錄斷食
-                    if (isFastingRecord()){
-                        Toast.makeText(getContext(), "您已記錄本次斷食了噢", Toast.LENGTH_SHORT).show();
-                    }else{
-                        //導至斷食完成的頁面，讓使ˇ用者記錄此次心得感想體重之類
-                        saveFastingData(true);
-                    }
-
-                }
-            });
 
             //結束斷食紐按下
             end_fasting.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     //導向到斷食完成的activity (Fasting_Complete)
                     startActivity(new Intent(Frag1.super.getContext(), Fasting_Complete.class));
 
@@ -323,20 +301,6 @@ public class Frag1 extends Fragment {
         }
 
         return fragment_frag1;
-    }
-
-    private void saveFastingData(boolean isRecorded) {
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putBoolean(STATUS,isRecorded);
-        editor.apply();
-        Log.e("紀錄狀態",""+isRecorded);
-    }
-
-    private boolean isFastingRecord(){
-
-        boolean isRecorded = sharedPreferences.getBoolean(STATUS,false);
-        Log.e("已記錄狀態",""+isRecorded);
-        return isRecorded;
     }
 
     private void water() {
@@ -526,9 +490,7 @@ public class Frag1 extends Fragment {
     }
 
     private void init(View v) {
-        sharedPreferences = v.getContext().getSharedPreferences(SHARED_PREFS,Context.MODE_PRIVATE);
         bt_fitness = v.findViewById(R.id.bt_fitness);
-        btn_check_fasting = v.findViewById(R.id.btn_check_fasting);
         progress = v.findViewById(R.id.tv_progress);
         textPercentage = (TextView) v.findViewById(R.id.textPercentage);
         decoView = (DecoView) v.findViewById(R.id.dynamicArcView);
@@ -619,7 +581,6 @@ public class Frag1 extends Fragment {
                             textPercentage.setText(getTimeLeft(mytime/1000));
                             start.setText("在"+sdf.format(start_date.get(index))+"開始斷食");
                             //listener.onTimeChanged("距離斷時開始還有"+getTimeLeft(mytime/1000));
-                            btn_check_fasting.setVisibility(View.INVISIBLE);
                             //在這進行progressbar
                         }else{
                             //其它天的休息日
@@ -636,8 +597,6 @@ public class Frag1 extends Fragment {
                             progress.setText("目前進度"+Math.round(Float.parseFloat(getPercent(now_time,true))*100)+"%");
                             //listener.onTimeChanged("距離斷時開始還有"+getTimeLeft(mytime/1000));
                             add_progress(Float.parseFloat(getPercent(now_time,true)));
-                            btn_check_fasting.setVisibility(View.VISIBLE);
-
                             //在這進行progressbar
                         }
                     }
@@ -652,9 +611,7 @@ public class Frag1 extends Fragment {
                         progress.setText("目前進度"+Math.round(Float.parseFloat(getPercent(now_time,false))*100)+"%");
                         //listener.onTimeChanged("距離斷食結束還有"+getTimeLeft((end_time.get(index)-now_time)/1000));
                         add_progress(Float.parseFloat(getPercent(now_time,false)));
-                        //開啟一輪新的斷食要重置為為記錄此次斷食
-                        saveFastingData(false);
-                        btn_check_fasting.setVisibility(View.INVISIBLE);
+
                     }
                 }else {
                     status.setText("斷食結束");
@@ -664,7 +621,7 @@ public class Frag1 extends Fragment {
                 }
 
             }else {
-                //Log.e("index",index+"");
+                Log.e("index",index+"");
                 status.setText("恭喜您完成此次斷食");
                 textPercentage.setText("結束");
                 start.setText("");
