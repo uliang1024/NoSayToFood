@@ -12,6 +12,7 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
@@ -76,14 +77,17 @@ public class HelloUser extends AppCompatActivity {
     private String email = user.getEmail();
     private FirebaseAuth mAuth;
     String[] gender = {"男性","女性","其他"};
-    String[] exercise = {"輕度工作","中度工作","重度工作"};
+    //0 = 久坐, 1=輕量活動 , 2=中度活動量, 3=高度活動量,4 = 非常高度活動量
+    private int exercise_level;
+    String[] exercise = {"久坐","輕量活動","中度活動量","高度活動量","非常高度活動量"};
     String[] BMI = {"","過輕","目前","過重",""};
     String[] fat = {"","目前","肥胖"};
     private TextView tv_gender,tv_height,tv_width,tv_age,tv_waistline,tv_exercise,tv_fat;
     PersonalInformation myDb;
     BodyRecord myDb2;
     private LinearLayout rl_years,rl_gender;
-    private String gender_data,exercise_data;
+    private String gender_data;
+
     private Integer age_data;
     private float height_data,width_data,waistline_data,fat_data;
     private float profit;
@@ -239,7 +243,7 @@ public class HelloUser extends AppCompatActivity {
                         fat_data = Float.parseFloat(tv_fat.getText().toString());
                     }
 
-                    exercise_data = tv_exercise.getText().toString();
+                    exercise_level = numberPicker2.getValue();
                     profit = width_data/((height_data/100)*(height_data/100));
                     AddData();
 
@@ -282,13 +286,14 @@ public class HelloUser extends AppCompatActivity {
                 width_data,
                 waistline_data,
                 fat_data,
-                exercise_data);
+                exercise_level);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyy/MM/dd");
 
         Date curDate = new Date(System.currentTimeMillis()) ; // 獲取當前時間
 
         String str = formatter.format(curDate);
-        boolean isInserted2 = myDb2.insertData(uid,width_data,str);
+        boolean isInserted2 = myDb2.insertData(uid,width_data,height_data,waistline_data,fat_data,str,curDate.getTime());
+        //Log.e("body data inserted :",isInserted2+"ID:"+uid+"weight:"+width_data+"height:"+height_data+"waist:"+waistline_data+"fat data:"+fat_data+"date:"+str);
         if(isInserted){
             Toast.makeText(HelloUser.this,"Data Inserted",Toast.LENGTH_LONG).show();
 
@@ -496,10 +501,10 @@ public class HelloUser extends AppCompatActivity {
         chart2 = workingAge_view3.findViewById(R.id.chart2);
         tv_bmi.setText("BMI:"+profit);
         if(gender_data.equals("男性")){
-            float BMR_man= (float) ((13.7*width_data)+(5.0*height_data)-(6.8*age_data)+66);
+            float BMR_man= (float) ((10*width_data)+(6.25*height_data)-(5*age_data)+5);
             tv_bmr.setText("BMR(基礎代謝率):"+BMR_man);
         }else{
-            float BMR_woman=(float) ((13.7*width_data)+(5.0*height_data)-(6.8*age_data)+66);
+            float BMR_woman=(float) ((10*width_data)+(6.25*height_data)-(5*age_data)-161);
             tv_bmr.setText("BMR(基礎代謝率):"+BMR_woman);
         }
         if(fat_data==0){

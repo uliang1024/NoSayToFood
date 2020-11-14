@@ -213,7 +213,7 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
         if (Build.VERSION.SDK_INT>=Build.VERSION_CODES.O){
             CharSequence name = "斷時進程";
             String description = "channel for fasting progress";
-            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            int importance = NotificationManager.IMPORTANCE_LOW;
             NotificationChannel channel= new NotificationChannel("LemmeNo",name,importance);
             channel.setDescription(description);
             channel.enableLights(true);
@@ -224,20 +224,22 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
 
+
+            int importance_repeat_notification = NotificationManager.IMPORTANCE_HIGH;
             CharSequence name2 = "斷時進程2";
             String description2 = "channel for fasting progress2";
-            NotificationChannel channe2= new NotificationChannel("channe2",name2,importance);
+            NotificationChannel channe2= new NotificationChannel("channe2",name2,importance_repeat_notification);
             channe2.setDescription(description2);
             channe2.enableLights(true);
             channe2.enableVibration(true);
             channe2.setLightColor(R.color.colorPrimary);
             channe2.setLockscreenVisibility(Notification.VISIBILITY_PUBLIC);
-            //NotificationManager notificationManager = (NotificationManager)this.getSystemService(Context.NOTIFICATION_SERVICE);
+
             NotificationManager notificationManager2 = getSystemService(NotificationManager.class);
             notificationManager2.createNotificationChannel(channe2);
         }
     }
-
+    //開始前景執行
     public void StartService(ArrayList<String> start_date,ArrayList<String> end_date,ArrayList<Integer> off_day){
         Intent serviceIntent = new Intent(this,FastTimerService.class);
         serviceIntent.putStringArrayListExtra("inputStartDates",start_date);
@@ -245,7 +247,7 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
         serviceIntent.putIntegerArrayListExtra("inputOffDates",off_day);
         ContextCompat.startForegroundService(this,serviceIntent);
     }
-
+    //停止前景執行
     public void StopService(){
         Intent serviceIntent = new Intent(this,FastTimerService.class);
         stopService(serviceIntent);
