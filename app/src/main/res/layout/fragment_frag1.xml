@@ -34,21 +34,12 @@
             android:text="更改斷食計畫"
             android:gravity="center"
             android:paddingStart="20sp" />
-        <com.hookedonplay.decoviewlib.DecoView
-            xmlns:custom="http://schemas.android.com/apk/res-auto"
-            android:id="@+id/dynamicArcView2"
-            android:layout_width="275dp"
-            android:layout_height="275dp"
-            android:layout_centerHorizontal="true"
-            custom:dv_arc_gravity_horizontal="Fill"
-            custom:dv_arc_gravity_vertical="Bottom"
-            android:layout_marginTop="10dp"
-            android:layout_below="@+id/imageView5"/>
+
         <com.hookedonplay.decoviewlib.DecoView
             xmlns:custom="http://schemas.android.com/apk/res-auto"
             android:id="@+id/dynamicArcView"
-            android:layout_width="275dp"
-            android:layout_height="275dp"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
             android:layout_centerHorizontal="true"
             custom:dv_arc_gravity_horizontal="Fill"
             custom:dv_arc_gravity_vertical="Bottom"
@@ -87,24 +78,43 @@
             android:layout_below="@+id/textPercentage"
             android:textSize="15sp" />
 
+        <TextView
+            android:id="@+id/tv_progress"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/start"
+            android:layout_centerInParent="true"
+            android:textSize="20sp" />
+
         <Button
             android:id="@+id/end_fasting"
-            android:layout_width="150dp"
-            android:layout_height="55dp"
-            android:layout_centerHorizontal="true"
+            android:layout_width="100dp"
+            android:layout_height="40dp"
+            android:layout_below="@id/dynamicArcView"
             android:layout_alignParentBottom="true"
-            android:layout_marginBottom="20sp"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="#E11414"
             android:text="提前結束"
+            android:textColor="#F3F3F3"
             android:textSize="17sp"
-            android:textColor="#ffffff"
             android:textStyle="bold" />
     </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_check_fasting"
+        android:layout_width="150dp"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center_horizontal"
+        android:text="記錄此次斷食" />
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:gravity="center">
+        android:layout_marginTop="20dp"
+        android:gravity="center"
+        android:orientation="horizontal">
+
         <TextView
             android:layout_width="30sp"
             android:layout_height="30sp"
@@ -113,9 +123,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="已完成"
+            android:gravity="center_vertical"
             android:padding="5dp"
-            android:gravity="center_vertical" />
+            android:text="已完成" />
+
         <TextView
             android:layout_width="30sp"
             android:layout_height="30sp"
@@ -124,9 +135,10 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="未完成"
+            android:gravity="center_vertical"
             android:padding="5dp"
-            android:gravity="center_vertical" />
+            android:text="未完成" />
+
         <TextView
             android:layout_width="30sp"
             android:layout_height="30sp"
@@ -135,9 +147,9 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="進行中"
+            android:gravity="center_vertical"
             android:padding="5dp"
-            android:gravity="center_vertical" />
+            android:text="進行中" />
     </LinearLayout>
 
     <RelativeLayout
@@ -146,10 +158,10 @@
 
         <ImageView
             android:id="@+id/imageView6"
+            android:layout_width="match_parent"
+            android:layout_height="100dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
-            android:layout_width="match_parent"
-            android:layout_height="180dp"
             android:scaleType="fitXY"
             app:srcCompat="@drawable/fasting_square" />
 
@@ -449,6 +461,7 @@
             app:wlv_waveColor="@color/colorAccent"/>
 
     </LinearLayout>
+
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -459,39 +472,49 @@
             android:layout_width="50dp"
             android:layout_height="40dp"
             android:layout_centerHorizontal="true"
-            android:text="0"
             android:layout_marginTop="5dp"
+            android:background="#E5E7E9"
             android:gravity="center"
-            android:background="#E5E7E9"/>
+            android:text="0" />
+
         <TextView
             android:id="@+id/tv_drop"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/drop"
-            android:layout_toStartOf="@+id/tv_water"
             android:layout_marginEnd="15dp"
-            android:gravity="center"/>
+            android:layout_toStartOf="@+id/tv_water"
+            android:background="@drawable/drop"
+            android:gravity="center" />
+
         <TextView
             android:id="@+id/tv_add"
             android:layout_width="50dp"
             android:layout_height="50dp"
-            android:background="@drawable/add"
-            android:layout_toEndOf="@+id/tv_water"
             android:layout_marginStart="15dp"
-            android:gravity="center"
-            />
+            android:layout_toEndOf="@+id/tv_water"
+            android:background="@drawable/add"
+            android:gravity="center" />
 
         <TextView
             android:id="@+id/tv_cc"
-            android:layout_marginTop="10dp"
             android:layout_width="60dp"
             android:layout_height="30sp"
             android:layout_below="@+id/tv_water"
             android:layout_centerHorizontal="true"
-            android:text="0cc"
+            android:layout_marginTop="10dp"
+            android:background="#E5E7E9"
             android:gravity="center"
-            android:background="#E5E7E9"/>
+            android:text="0cc" />
 
+        <Button
+            android:id="@+id/bt_fitness"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_cc"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_rounde"
+            android:text="來運動八" />
 
 
     </RelativeLayout>
