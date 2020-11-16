@@ -7,10 +7,11 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
-public class BodyRecord extends SQLiteOpenHelper {
+//用來儲存斷食紀錄
+public class FastRecord extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String DATABASE_NAME = "mydb.db";
-    public static final String TABLE_NAME = "BodyRecord";
+    public static final String TABLE_NAME = "FastRecord";
     public static final String COL_1 = "ID";
     public static final String COL_2 = "UID";
     public static final String COL_3 = "KG";
@@ -20,7 +21,7 @@ public class BodyRecord extends SQLiteOpenHelper {
     public static final String COL_7 = "DATE";
     public static final String COL_8 = "TS";
 
-    public BodyRecord(Context context) {
+    public FastRecord(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 

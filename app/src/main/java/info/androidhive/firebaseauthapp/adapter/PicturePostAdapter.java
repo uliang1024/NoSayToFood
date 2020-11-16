@@ -273,7 +273,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     if (hasliked){
                         btn_like_picpost.setImageResource(R.drawable.ic_like_blue);
                     }else {
-                        btn_like_picpost.setImageResource(R.drawable.ic_like);
+                        btn_like_picpost.setImageResource(R.drawable.ic_like_empty);
                     }
                 }
             });
@@ -335,7 +335,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 btn_like_picpost.setImageResource(R.drawable.ic_like_blue);
                             }
                             else {
-                                btn_like_picpost.setImageResource(R.drawable.ic_like);
+                                btn_like_picpost.setImageResource(R.drawable.ic_like_empty);
                             }
                         }
                     });
@@ -418,7 +418,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     if (hasliked){
                         btn_like_textpost.setImageResource(R.drawable.ic_like_blue);
                     }else {
-                        btn_like_textpost.setImageResource(R.drawable.ic_like);
+                        btn_like_textpost.setImageResource(R.drawable.ic_like_empty);
                     }
                 }
             });
@@ -436,7 +436,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 btn_like_textpost.setImageResource(R.drawable.ic_like_blue);
                             }
                             else {
-                                btn_like_textpost.setImageResource(R.drawable.ic_like);
+                                btn_like_textpost.setImageResource(R.drawable.ic_like_empty);
                             }
                         }
                     });
@@ -601,7 +601,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     if (hasliked){
                         btn_like_videopost.setImageResource(R.drawable.ic_like_blue);
                     }else {
-                        btn_like_videopost.setImageResource(R.drawable.ic_like);
+                        btn_like_videopost.setImageResource(R.drawable.ic_like_empty);
                     }
                 }
             });
@@ -617,7 +617,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                                 btn_like_videopost.setImageResource(R.drawable.ic_like_blue);
                             }
                             else {
-                                btn_like_videopost.setImageResource(R.drawable.ic_like);
+                                btn_like_videopost.setImageResource(R.drawable.ic_like_empty);
                             }
                         }
                     });
