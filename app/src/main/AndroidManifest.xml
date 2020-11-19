@@ -18,6 +18,9 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar.FullScreen">
         <activity android:name=".RecordThis"></activity>
+        <activity android:name=".ui.profile.UserEdit"></activity>
+        <activity android:name=".ui.dashboard.OneFoodRecord" />
+        <activity android:name=".ui.profile.PersonalProfile" />
         <activity android:name=".FastRecordsActivity" />
         <activity android:name=".RecipeActivity" />
         <activity android:name=".FitnessActivity" />
@@ -37,12 +40,6 @@
         <activity android:name=".fasting.FirstFasting" />
         <activity android:name=".first.HelloUser" />
         <activity android:name=".ui.dashboard.Food_Record" />
-        <activity android:name=".food.Grain" />
-        <activity android:name=".food.Fruit" />
-        <activity android:name=".food.Vegetables" />
-        <activity android:name=".food.Meat" />
-        <activity android:name=".food.Milk" />
-        <activity android:name=".food.SugarSaltOil" />
         <activity android:name=".BodyInformation.Weight_scale" />
         <activity
             android:name=".HomeActivity"
