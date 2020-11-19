@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -65,7 +66,7 @@ public class NotificationsFragment extends Fragment implements RecipeAdapter.Rec
         add_Data(new DataListener() {
             @Override
             public void onReceiveData(boolean dataLoadComplete) {
-                Log.e("load data complete",""+recipes.size()+"，"+recipes.toString());
+                Log.e("load data complete",""+recipes.size()+"，"+recipes.toString()+"，"+recipes.get(0).getRecipename());
                 adapter.isShimmer = false;
                 adapter.notifyDataSetChanged();
             }
@@ -101,7 +102,7 @@ public class NotificationsFragment extends Fragment implements RecipeAdapter.Rec
                     }
 
                     if (loadCounter == loadedItems.size()){
-                        Log.e("load data complete",""+recipes.size()+"，"+recipes.toString());
+                        //Log.e("load data complete",""+recipes.size()+"，"+recipes.toString());
                         listener.onReceiveData(true);
                     }
 
@@ -123,7 +124,7 @@ public class NotificationsFragment extends Fragment implements RecipeAdapter.Rec
         Log.e("clicked ","on position "+position);
         Intent intent = new Intent(mContext, RecipeActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putString("content",recipes.get(position).getContent());
+        bundle.putParcelableArrayList("content",(ArrayList<? extends Parcelable>) recipes.get(position).getSteps());
         intent.putExtras(bundle);
         startActivity(intent);
     }

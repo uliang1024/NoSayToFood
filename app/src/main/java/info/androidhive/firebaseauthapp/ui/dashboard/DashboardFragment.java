@@ -117,6 +117,12 @@ public class DashboardFragment extends Fragment {
                 startDialog();
             }
         });
+        btn_food_record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(DashboardFragment.super.getContext(),Food_Record.class));
+            }
+        });
         uid = user.getUid();
 
         myDb = new PersonalInformation(getContext());

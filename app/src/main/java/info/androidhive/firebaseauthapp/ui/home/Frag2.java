@@ -1,4 +1,4 @@
-package info.androidhive.firebaseauthapp.ui.home;
+    package info.androidhive.firebaseauthapp.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -14,24 +14,17 @@ import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ListView;
-import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
-import com.facebook.stetho.Stetho;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
 
 import info.androidhive.firebaseauthapp.SQLite.DatabaseHelper;
 import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.food.Fruit;
 import info.androidhive.firebaseauthapp.food.foodClassification;
 
 
@@ -39,6 +32,7 @@ public class Frag2 extends Fragment {
     DatabaseHelper myDb;
     private ExpandableListView user_list ;
     private ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
+    private ArrayList<ArrayList<String>> list2 = new ArrayList<ArrayList<String>>();
     private Button bt_eat;
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
@@ -66,15 +60,20 @@ public class Frag2 extends Fragment {
         int meal1 = 0;
         list.add(new ArrayList<String>());
         list.get(meal1).add(String.valueOf(new ArrayList<String>()));
+        list2.add(new ArrayList<String>());
+        list2.get(meal1).add(String.valueOf(new ArrayList<String>()));
         while (res.moveToNext()) {
             if(uid.equals(res.getString(4))){
                 if(res.getString(1).substring(0, 11).equals(str)){
                     if(res.getInt(5)==(meal1+1)){
                         list.get(meal1).add(res.getString(2));
+                        list2.get(meal1).add(res.getString(3));
                     }else {
                         meal1+=1;
                         list.add(new ArrayList<String>());
                         list.get(meal1).add(res.getString(2));
+                        list2.add(new ArrayList<String>());
+                        list2.get(meal1).add(res.getString(3));
                     }
                 }
             }
@@ -178,6 +177,7 @@ public class Frag2 extends Fragment {
             TextView amount = (TextView) convertView.findViewById(R.id.amount);
 
             name.setText(list.get(groupPosition).get(childPosition));
+            amount.setText(list2.get(groupPosition).get(childPosition));
 
             return convertView;
         }

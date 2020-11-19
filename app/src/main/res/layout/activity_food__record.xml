@@ -1,27 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/contencrollView"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#F9F9F9"
+    xmlns:tools="http://schemas.android.com/tools">
+<ScrollView
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context=".ui.dashboard.Food_Record"
+    android:fillViewport="true">
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_width="match_parent">
-        <LinearLayout
+
+        android:orientation="vertical">
+
+        <TextView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            tools:context=".ui.dashboard.Food_Record"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:paddingTop="20dp"
+            android:text="食物紀錄"
+            android:textSize="30sp"/>
 
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:paddingTop="20dp"
-                android:text="食物紀錄"
-                android:textSize="30sp"/>
+        <ListView
+            android:id="@+id/user_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
 
-            <ListView
-                android:id="@+id/user_list"
-                android:layout_width="match_parent"
-                android:layout_height="660dp" />
-
-        </LinearLayout>   </ScrollView>
+    </LinearLayout>   </ScrollView></LinearLayout>

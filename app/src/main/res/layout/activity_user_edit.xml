@@ -1,0 +1,294 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.profile.UserEdit"
+    android:orientation="vertical"
+    android:background="#ECF0F1">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="關於您"
+        android:textSize="40sp"
+        android:textStyle="bold"
+        android:gravity="center"
+        android:layout_marginTop="30dp"
+        android:textColor="#000"/>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="讓我們更加了解你，以加快您的成果。"
+        android:gravity="center"
+        android:layout_marginTop="5dp"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_marginTop="15dp"
+        android:id="@+id/rl_gender"
+        android:background="@drawable/fasting_square"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/gender"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:gravity="center_vertical"
+            android:layout_marginStart="70dp"
+            android:text="性別"
+            android:id="@+id/show_gender" />
+
+        <TextView
+            android:id="@+id/tv_gender"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:paddingEnd="20dp"
+            android:text="" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rl_years"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:onClick="years"
+        android:background="@drawable/fasting_square"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            app:srcCompat="@drawable/age"
+            />
+
+        <TextView
+            android:id="@+id/tv_age_show"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="70dp"
+            android:gravity="center_vertical"
+            android:text="年齡" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:paddingEnd="20dp"
+            android:text=""
+            android:id="@+id/tv_age" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rl_height"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:onClick="height"
+        android:background="@drawable/fasting_square"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:src="@drawable/height"
+            />
+
+        <TextView
+            android:id="@+id/show_height"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="70dp"
+            android:gravity="center_vertical"
+            android:text="身高" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:paddingEnd="20dp"
+            android:text=""
+            android:id="@+id/tv_height" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rl_width"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:onClick="width"
+        android:background="@drawable/fasting_square"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:src="@drawable/weight"
+            />
+
+        <TextView
+            android:id="@+id/show_tv_width"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="70dp"
+            android:gravity="center_vertical"
+            android:text="體重" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:paddingEnd="20dp"
+            android:text=""
+            android:id="@+id/tv_width" />
+
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/rl_waistline"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:onClick="waistline"
+        android:background="@drawable/fasting_square"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:src="@drawable/ruler"
+            />
+
+        <TextView
+            android:id="@+id/show_waistline"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="70dp"
+            android:gravity="center_vertical"
+            android:text="腰圍" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:paddingEnd="20dp"
+            android:text=""
+            android:id="@+id/tv_waistline" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/rl_fat"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:onClick="fat"
+        android:background="@drawable/fasting_square"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:src="@drawable/fat"
+            />
+
+        <TextView
+            android:id="@+id/show_fat"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="70dp"
+            android:gravity="center_vertical"
+            android:text="體脂率" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:paddingEnd="20dp"
+            android:text=""
+            android:id="@+id/tv_fat" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/rl_exercise"
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:layout_alignParentTop="true"
+        android:onClick="exercise"
+        android:background="@drawable/fasting_square"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="10dp"
+        android:orientation="horizontal">
+
+        <ImageView
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center"
+            android:layout_margin="10dp"
+            android:src="@drawable/gym"
+            />
+
+        <TextView
+            android:id="@+id/show_exercis"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginStart="70dp"
+            android:gravity="center_vertical"
+            android:text="每日活動量" />
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:gravity="right|center_vertical"
+            android:paddingEnd="20dp"
+            android:text=""
+            android:id="@+id/tv_exercise" />
+
+
+    </LinearLayout>
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <Button
+            android:id="@+id/btn_ok"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@android:color/transparent"
+            android:text="確定   >"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:paddingBottom="10dp"
+            android:paddingEnd="10dp" />
+    </RelativeLayout>
+
+</LinearLayout>

@@ -129,6 +129,31 @@
             android:text="本次用餐紀錄:"
             android:textSize="35dp"
             android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt_recommend"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="70dp"
+            android:text="推薦"
+            android:textSize="25sp"
+            android:textStyle="bold" />
+
+        <Button
+            android:id="@+id/bt_what"
+            android:layout_width="40dp"
+            android:layout_height="40dp"
+            android:text="?"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="22dp"
+            android:layout_marginEnd="10dp"
+            android:background="@drawable/circle_progress"
+            />
+
         <ListView
             android:layout_width="373dp"
             android:layout_height="281dp"
@@ -137,7 +162,7 @@
             android:layout_alignParentBottom="true"
             android:layout_marginLeft="20dp"
             android:layout_marginBottom="24dp"
-            android:layout_marginTop="60dp"
+            android:layout_marginTop="80dp"
             android:id="@+id/listView"
             />
 

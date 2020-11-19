@@ -7,9 +7,11 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.KeyEvent;
+import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
 import android.widget.Toast;
@@ -31,6 +33,8 @@ import java.util.Map;
 import info.androidhive.firebaseauthapp.HomeActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.SQLite.DatabaseHelper;
+import info.androidhive.firebaseauthapp.SQLite.PersonalInformation;
+import info.androidhive.firebaseauthapp.first.HelloUser;
 import info.androidhive.firebaseauthapp.ui.home.HomeFragment;
 
 public class foodClassification extends AppCompatActivity {
@@ -38,17 +42,109 @@ public class foodClassification extends AppCompatActivity {
     private ListView listView;
     private Handler handler = new Handler();
     private SimpleAdapter simpleAdapter;
-    private String[] Name = {"食物名稱(熱量攝取量)"};
-    private String[] Amount = {"份量"};
+    private ArrayList<String> Name = new ArrayList<String>();
+    private ArrayList<Double> Amount = new ArrayList<Double>();
     private Button bt_milk,bt_fruit,bt_vegetables,bt_meet,bt_grain,bt_oil,button;
     ArrayList<Integer> meal = new ArrayList<Integer>();
     DatabaseHelper myDb;
 
+    PersonalInformation myDb2;
+    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+    private String uid = null;
+
+    private int user_exercise_level,age;
+    private String gender;
+    private float height,width;
+
+    private double bmr,tdee;
+    private String good_milk,good_fruit,good_vegetables,good_meet,good_grain,good_oil;
+    private Button bt_recommend;
+    private Button bt_what;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_food_classification);
         myDb = new DatabaseHelper(this);
+
+        uid = user.getUid();
+        myDb2 = new PersonalInformation(this);
+        Cursor res = myDb2.getAllData();
+        while (res.moveToNext()) {
+            if(uid.equals(res.getString(0))){
+                user_exercise_level = res.getInt(8);
+                gender = res.getString(2);
+                age = res.getInt(3);
+                height = res.getFloat(4);
+                width = res.getFloat(5);
+            }
+        }
+        if(gender.equals("男性")){
+            bmr = 10*width+6.25*height-5*age-161;
+        }else{
+            bmr = 10*width+6.25*height-5*age+5;
+        }
+        if(user_exercise_level == 0){
+            tdee = 1.2*bmr;
+        }else if(user_exercise_level == 1){
+            tdee = 1.375*bmr;
+        }else if(user_exercise_level == 2){
+            tdee = 1.55*bmr;
+        }else if(user_exercise_level == 3){
+            tdee = 1.725*bmr;
+        }else{
+            tdee = 1.9*bmr;
+        }
+
+        if(tdee>=2700){
+            good_grain = "4";
+            good_meet = "8";
+            good_milk = "2杯 (480 ml)";
+            good_vegetables= "5 份";
+            good_fruit="4 份";
+            good_oil="7 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
+        }else if(tdee <2700 && tdee>=2500){
+            good_grain = "4";
+            good_meet = "7";
+            good_milk = "1.5杯 (360 ml)";
+            good_vegetables= "5 份";
+            good_fruit="4 份";
+            good_oil="6 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
+        }else if(tdee <2500 && tdee>=2200){
+            good_grain = "3.5";
+            good_meet = "6";
+            good_milk = "1.5杯 (360 ml)";
+            good_vegetables= "4 份";
+            good_fruit="3.5 份";
+            good_oil="5 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
+        }else if(tdee <2200 && tdee>=2000){
+            good_grain = "3";
+            good_meet = "6";
+            good_milk = "1.5杯 (360 ml)";
+            good_vegetables= "4 份";
+            good_fruit="3 份";
+            good_oil="5 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
+        }else if(tdee <2000 && tdee>=1800){
+            good_grain = "3";
+            good_meet = "5";
+            good_milk = "1.5杯 (360 ml)";
+            good_vegetables= "3 份";
+            good_fruit="2 份";
+            good_oil="4 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
+        }else if(tdee <1800 && tdee>=1500){
+            good_grain = "2.5";
+            good_meet = "4( 青少年高鈣豆製品至少占 1.3 份 )";
+            good_milk = "1.5杯 (360 ml)";
+            good_vegetables= "3 份";
+            good_fruit="2 份";
+            good_oil="3 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
+        }else{
+            good_grain = "1.5";
+            good_meet = "3( 高鈣豆製品至少占 1 份 )";
+            good_milk = "1.5杯 (360 ml)";
+            good_vegetables= "3 份，至少 1.5 份為深色蔬菜";
+            good_fruit="2 份";
+            good_oil="3 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
+        }
 
         listView = (ListView)findViewById(R.id.listView);
 
@@ -64,70 +160,205 @@ public class foodClassification extends AppCompatActivity {
 
         button =(Button)findViewById(R.id.button);
 
+        bt_recommend= (Button)findViewById(R.id.bt_recommend);
+        bt_what = (Button)findViewById(R.id.bt_what);
+
+        bt_recommend.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new AlertDialog.Builder(foodClassification.this)
+                        .setTitle("六大類飲食建議份數")
+                        .setMessage("全穀雜糧類 ( 碗 )"+good_grain+"碗\n"+
+                                "豆魚蛋肉類 ( 份 )"+ good_meet+"份\n"+
+                                "乳品類 ( 杯 )"+good_milk+"杯\n"+
+                                "蔬菜類 ( 份 )"+good_vegetables+"份\n"+
+                                "水果類 ( 份 )"+good_fruit+"份\n"+
+                                "油脂與堅果種子類 ( 份 )" +good_oil+"份")
+                        .setPositiveButton("了解", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+
+                            }
+                        })
+                        .show();
+            }
+        });
+        bt_what.setOnClickListener(new Button.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+            }
+        });
+
         bt_oil.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                Intent it= new Intent(foodClassification.this,SugarSaltOil.class);
-                bundle.putStringArray("Name", Name);
-                bundle.putStringArray("Amount", Amount);
-                it.putExtras(bundle);
-                startActivity(it);
+                LayoutInflater inflater = LayoutInflater.from(foodClassification.this);
+                final View view = inflater.inflate(R.layout.show_yourkg, null);
+                new AlertDialog.Builder(foodClassification.this)
+                        .setTitle("油脂與堅果種子類吃多少(份)?")
+                        .setView(view)
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText editText = (EditText) (view.findViewById(R.id.editText1));
+                                if(editText.getText().toString().matches("")) {
+
+                                }else{
+                                    if(Name.contains("油脂與堅果種子類")){
+                                        int index = Name.indexOf("油脂與堅果種子類");
+                                        Amount.set(index,Amount.get(index)+Double.parseDouble(editText.getText().toString()));
+                                    }else{
+                                        Name.add("油脂與堅果種子類");
+                                        Amount.add(Double.parseDouble(editText.getText().toString()));
+                                    }
+
+                                }
+                            }
+                        })
+                        .show();
             }
         });
         bt_milk.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                Intent it= new Intent(foodClassification.this,Milk.class);
-                bundle.putStringArray("Name", Name);
-                bundle.putStringArray("Amount", Amount);
-                it.putExtras(bundle);
-                startActivity(it);
+                LayoutInflater inflater = LayoutInflater.from(foodClassification.this);
+                final View view = inflater.inflate(R.layout.show_yourkg, null);
+                new AlertDialog.Builder(foodClassification.this)
+                        .setTitle("乳品類吃多少(杯)?")
+                        .setView(view)
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText editText = (EditText) (view.findViewById(R.id.editText1));
+                                if(editText.getText().toString().matches("")) {
+
+                                }else{
+                                    if(Name.contains("乳品類")){
+                                        int index = Name.indexOf("乳品類");
+                                        Amount.set(index,Amount.get(index)+Double.parseDouble(editText.getText().toString()));
+                                    }else{
+                                        Name.add("乳品類");
+                                        Amount.add(Double.parseDouble(editText.getText().toString()));
+                                    }
+
+                                }
+                            }
+                        })
+                        .show();
             }
         });
         bt_meet.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                Intent it= new Intent(foodClassification.this,Meat.class);
-                bundle.putStringArray("Name", Name);
-                bundle.putStringArray("Amount", Amount);
-                it.putExtras(bundle);
-                startActivity(it);
+                LayoutInflater inflater = LayoutInflater.from(foodClassification.this);
+                final View view = inflater.inflate(R.layout.show_yourkg, null);
+                new AlertDialog.Builder(foodClassification.this)
+                        .setTitle("豆魚蛋肉類吃多少(份)?")
+                        .setView(view)
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText editText = (EditText) (view.findViewById(R.id.editText1));
+                                if(editText.getText().toString().matches("")) {
+
+                                }else{
+                                    if(Name.contains("豆魚蛋肉類")){
+                                        int index = Name.indexOf("豆魚蛋肉類");
+                                        Amount.set(index,Amount.get(index)+Double.parseDouble(editText.getText().toString()));
+                                    }else{
+                                        Name.add("豆魚蛋肉類");
+                                        Amount.add(Double.parseDouble(editText.getText().toString()));
+                                    }
+
+                                }
+                            }
+                        })
+                        .show();
             }
         });
         bt_vegetables.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                Intent it= new Intent(foodClassification.this,Vegetables.class);
-                bundle.putStringArray("Name", Name);
-                bundle.putStringArray("Amount", Amount);
-                it.putExtras(bundle);
-                startActivity(it);
+                LayoutInflater inflater = LayoutInflater.from(foodClassification.this);
+                final View view = inflater.inflate(R.layout.show_yourkg, null);
+                new AlertDialog.Builder(foodClassification.this)
+                        .setTitle("蔬菜類吃多少(份)?")
+                        .setView(view)
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText editText = (EditText) (view.findViewById(R.id.editText1));
+                                if(editText.getText().toString().matches("")) {
+
+                                }else{
+                                    if(Name.contains("蔬菜類")){
+                                        int index = Name.indexOf("蔬菜類");
+                                        Amount.set(index,Amount.get(index)+Double.parseDouble(editText.getText().toString()));
+                                    }else{
+                                        Name.add("蔬菜類");
+                                        Amount.add(Double.parseDouble(editText.getText().toString()));
+                                    }
+                                }
+                            }
+                        })
+                        .show();
             }
         });
         bt_fruit.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                Intent it= new Intent(foodClassification.this,Fruit.class);
-                bundle.putStringArray("Name", Name);
-                bundle.putStringArray("Amount", Amount);
-                it.putExtras(bundle);
-                startActivity(it);
+                LayoutInflater inflater = LayoutInflater.from(foodClassification.this);
+                final View view = inflater.inflate(R.layout.show_yourkg, null);
+                new AlertDialog.Builder(foodClassification.this)
+                        .setTitle("水果類吃多少(杯)?")
+                        .setView(view)
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText editText = (EditText) (view.findViewById(R.id.editText1));
+                                if(editText.getText().toString().matches("")) {
+
+                                }else{
+                                    if(Name.contains("水果類")){
+                                        int index = Name.indexOf("水果類");
+                                        Amount.set(index,Amount.get(index)+Double.parseDouble(editText.getText().toString()));
+                                    }else{
+                                        Name.add("水果類");
+                                        Amount.add(Double.parseDouble(editText.getText().toString()));
+                                    }
+                                }
+                            }
+                        })
+                        .show();
             }
         });
         bt_grain.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Bundle bundle = new Bundle();
-                Intent it= new Intent(foodClassification.this,Grain.class);
-                bundle.putStringArray("Name", Name);
-                bundle.putStringArray("Amount", Amount);
-                it.putExtras(bundle);
-                startActivity(it);
+                LayoutInflater inflater = LayoutInflater.from(foodClassification.this);
+                final View view = inflater.inflate(R.layout.show_yourkg, null);
+                new AlertDialog.Builder(foodClassification.this)
+                        .setTitle("全榖雜糧類吃了幾碗?")
+                        .setView(view)
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText editText = (EditText) (view.findViewById(R.id.editText1));
+                                if(editText.getText().toString().matches("")) {
+
+                                }else{
+                                    if(Name.contains("全榖雜糧類")){
+                                        int index = Name.indexOf("全榖雜糧類");
+                                        Amount.set(index,Amount.get(index)+Double.parseDouble(editText.getText().toString()));
+                                    }else{
+                                        Name.add("全榖雜糧類");
+                                        Amount.add(Double.parseDouble(editText.getText().toString()));
+                                    }
+                                }
+                            }
+                        })
+                        .show();
             }
         });
         AddData();
@@ -138,62 +369,65 @@ public class foodClassification extends AppCompatActivity {
         button.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if(Name.length<=1){
+                if(Name.size()<=0){
                     Toast.makeText(foodClassification.this,"您還沒有新增任何食物",Toast.LENGTH_LONG).show();
                 }else{
-                new AlertDialog.Builder(foodClassification.this)
-                        .setTitle("你確定完成您的菜單了嗎?")
-                        .setPositiveButton("ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                String uid = null;
-                                if (user != null) {
-                                    uid = user.getUid();
-                                }
-                                @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
-                                @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy年MM月dd日");
-                                Date curDate = new Date(System.currentTimeMillis()) ; // 獲取當前時間
-                                String str = formatter2.format(curDate);
-                                Cursor res = myDb.getAllData();
-                                while (res.moveToNext()) {
-                                    if(uid.equals(res.getString(4))){
-                                        if(res.getString(1).substring(0, 11).equals(str)){
-                                            meal.add(res.getInt(5));
+                    new AlertDialog.Builder(foodClassification.this)
+                            .setTitle("你確定完成您的菜單了嗎?")
+                            .setPositiveButton("ok", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    String uid = null;
+                                    if (user != null) {
+                                        uid = user.getUid();
+                                    }
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter = new SimpleDateFormat("yyyy年MM月dd日HH:mm:ss");
+                                    @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter2 = new SimpleDateFormat("yyyy年MM月dd日");
+                                    Date curDate = new Date(System.currentTimeMillis()) ; // 獲取當前時間
+                                    String str = formatter2.format(curDate);
+                                    Cursor res = myDb.getAllData();
+                                    while (res.moveToNext()) {
+                                        if(uid.equals(res.getString(4))){
+                                            if(res.getString(1).substring(0, 11).equals(str)){
+                                                meal.add(res.getInt(5));
+                                            }
                                         }
                                     }
-                                }
-                                int highest = 0;
-                                if (meal.size()> 0) {
-                                    highest = meal.get(0);
+                                    int highest = 0;
+                                    if (meal.size()> 0) {
+                                        highest = meal.get(0);
 
-                                    for (int s = 1; s < meal.size(); s++) {
-                                        int curValue = meal.get(s);
-                                        if (curValue > highest) {
-                                            highest = curValue;
+                                        for (int s = 1; s < meal.size(); s++) {
+                                            int curValue = meal.get(s);
+                                            if (curValue > highest) {
+                                                highest = curValue;
+                                            }
                                         }
                                     }
-                                }
-                                boolean isInserted = false;
-                                for(int i=1; i<Name.length;i++){
+                                    boolean isInserted = false;
 
-                                    isInserted = myDb.insertData(Name[i],
-                                            str,
-                                            Amount[i],
-                                            uid,
-                                            highest+1);
-                                }
-                                if(isInserted)
-                                    Toast.makeText(foodClassification.this,"Data Inserted",Toast.LENGTH_LONG).show();
-                                else
-                                    Toast.makeText(foodClassification.this,"Data not Inserted",Toast.LENGTH_LONG).show();
 
-                                Intent intent = new Intent(foodClassification.this, HomeActivity.class);
-                                startActivity(intent);
-                                finish();
-                            }
-                        }).setNegativeButton("cancel",null).create()
-                        .show();
+
+                                    for(int i=0; i<Name.size();i++){
+
+                                        isInserted = myDb.insertData(Name.get(i),
+                                                str,
+                                                Amount.get(i),
+                                                uid,
+                                                highest+1);
+                                    }
+                                    if(isInserted)
+                                        Toast.makeText(foodClassification.this,"Data Inserted",Toast.LENGTH_LONG).show();
+                                    else
+                                        Toast.makeText(foodClassification.this,"Data not Inserted",Toast.LENGTH_LONG).show();
+
+                                    Intent intent = new Intent(foodClassification.this, HomeActivity.class);
+                                    startActivity(intent);
+                                    finish();
+                                }
+                            }).setNegativeButton("cancel",null).create()
+                            .show();
                 }
             }
         });
@@ -202,27 +436,22 @@ public class foodClassification extends AppCompatActivity {
     private Runnable updateTimer = new Runnable() {
         public void run() {
             handler.postDelayed(this, 0);
-            Intent intent = getIntent();
-            if(intent.getStringArrayExtra("Name") != null){
-                Name = intent.getStringArrayExtra("Name");
-                Amount = intent.getStringArrayExtra("Amount");
+
+            listView = (ListView)findViewById(R.id.listView);
+            List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
+            for (int i = 0; i < Name.size(); i++) {
+                Map<String, Object> item = new HashMap<String, Object>();
+                item.put("Name", Name.get(i));
+                item.put("Amount", Amount.get(i));
+                items.add(item);
             }
+            simpleAdapter = new SimpleAdapter(foodClassification.this,
+                    items, R.layout.item_child, new String[]{"Name", "Amount"},
+                    new int[]{R.id.tv_child, R.id.tv_what});
+            listView.setAdapter(simpleAdapter);
 
+        }
 
-
-                listView = (ListView)findViewById(R.id.listView);
-                List<Map<String, Object>> items = new ArrayList<Map<String,Object>>();
-                for (int i = 0; i < Name.length; i++) {
-                    Map<String, Object> item = new HashMap<String, Object>();
-                    item.put("Name", Name[i]);
-                    item.put("Amount", Amount[i]);
-                    items.add(item);
-                }
-                simpleAdapter = new SimpleAdapter(foodClassification.this,
-                        items, R.layout.item_child, new String[]{"Name", "Amount"},
-                        new int[]{R.id.tv_child, R.id.tv_what});
-                listView.setAdapter(simpleAdapter);
-            }
 
     };
 

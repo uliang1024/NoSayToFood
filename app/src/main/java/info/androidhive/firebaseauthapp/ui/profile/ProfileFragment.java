@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -18,7 +19,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
-import com.facebook.login.LoginManager;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -31,8 +31,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.Map;
 
 import javax.annotation.Nullable;
 
@@ -50,7 +48,7 @@ public class ProfileFragment extends Fragment {
     private FirebaseAuth mAuth;
     private TextView welconeText;
     private ImageView imageView;
-    private RelativeLayout rl_logout;
+    private LinearLayout ll_logout,ll_editor;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
     @SuppressLint("StaticFieldLeak")
     @Nullable
@@ -96,7 +94,14 @@ public class ProfileFragment extends Fragment {
 
         mAuth = FirebaseAuth.getInstance();
 
-        rl_logout.setOnClickListener(new View.OnClickListener() {
+        ll_editor.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(ProfileFragment.super.getContext(), PersonalProfile.class));
+            }
+        });
+
+        ll_logout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 mAuth.signOut();
@@ -163,7 +168,8 @@ public class ProfileFragment extends Fragment {
     private void init(View v) {
         welconeText = (TextView)v.findViewById(R.id.welconeText);
         imageView = (ImageView)v.findViewById(R.id.imageView);
-        rl_logout = (RelativeLayout)v.findViewById(R.id.rl_logout);
+        ll_logout = (LinearLayout)v.findViewById(R.id.ll_logout);
+        ll_editor = (LinearLayout)v.findViewById(R.id.ll_editor);
     }
 
 
