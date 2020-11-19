@@ -14,11 +14,8 @@ public class FastRecord extends SQLiteOpenHelper {
     public static final String TABLE_NAME = "FastRecord";
     public static final String COL_1 = "ID";
     public static final String COL_2 = "UID";
-    public static final String COL_3 = "KG";
-    public static final String COL_4 = "HEIGHT";
-    public static final String COL_5 = "WAISTLINE";
-    public static final String COL_6 = "BODYFAT";
-    public static final String COL_7 = "DATE";
+    public static final String COL_3 = "STARTDATE";
+    public static final String COL_4 = "ENDDATE";
     public static final String COL_8 = "TS";
 
     public FastRecord(Context context) {
@@ -38,17 +35,14 @@ public class FastRecord extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String uid, Float kg,Float Height,Float Waist,Float BodyFat, String date,Long timeStamp) {
+    public boolean insertData(String uid, String startdate,String enddate,Long timeStamp) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_2,uid);
-        contentValues.put(COL_3,kg);
-        contentValues.put(COL_4,Height);
-        contentValues.put(COL_5,Waist);
-        contentValues.put(COL_6,BodyFat);
-        contentValues.put(COL_7,date);
+        contentValues.put(COL_3,startdate);
+        contentValues.put(COL_4,enddate);
         contentValues.put(COL_8,timeStamp);
-        Log.e("body data inserted :","ID:"+uid+"weight:"+kg+"height:"+Height+"waist:"+Waist+"fat data:"+BodyFat+"date:"+date);
+        Log.e("body data inserted :","ID:"+uid+"startDate:"+startdate+"endDate:"+enddate+"ts:"+timeStamp);
 
         long result = db.insert(TABLE_NAME,null ,contentValues);
         if(result == -1)
@@ -63,26 +57,6 @@ public class FastRecord extends SQLiteOpenHelper {
         return res;
     }
 
-    public boolean updateWeightData(Integer id, Float kg,Float height,Long timestamp) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_1,id);
-        contentValues.put(COL_3,kg);
-        contentValues.put(COL_4,height);
-        contentValues.put(COL_8,timestamp);
-        db.update(TABLE_NAME, contentValues, "ID = ?",new String[] {String.valueOf(id)});
-        return true;
-    }
-
-    public boolean updateHeightData(Integer id, Float height,Long timestamp) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_1,id);
-        contentValues.put(COL_4,height);
-        contentValues.put(COL_8,timestamp);
-        db.update(TABLE_NAME, contentValues, "ID = ?",new String[] {String.valueOf(id)});
-        return true;
-    }
 
     public Integer deleteData (String uid) {
         SQLiteDatabase db = this.getWritableDatabase();

@@ -26,6 +26,10 @@ android {
         sourceCompatibility JavaVersion.VERSION_1_8
         targetCompatibility JavaVersion.VERSION_1_8
     }
+    configurations {
+        cleanedAnnotations
+        compile.exclude group: 'org.jetbrains' , module:'annotations'
+    }
 }
 
 repositories {
@@ -102,8 +106,13 @@ dependencies {
     implementation 'org.parceler:parceler-api:1.1.12'
     annotationProcessor 'org.parceler:parceler:1.1.12'
     //stetho
+
     implementation 'com.facebook.stetho:stetho:1.5.1'
     //infinite viewpager
     implementation 'com.github.devlight:infinitecycleviewpager:1.0.2'
+    //view animation
+    implementation 'com.daimajia.androidanimations:library:2.4@aar'
+    //congrats effect
+
 }
 apply plugin: 'com.google.gms.google-services'

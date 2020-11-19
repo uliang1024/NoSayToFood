@@ -19,6 +19,7 @@ import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.BounceInterpolator;
 import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -45,8 +46,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import info.androidhive.firebaseauthapp.FastRecordsActivity;
 import info.androidhive.firebaseauthapp.FitnessActivity;
 import info.androidhive.firebaseauthapp.R;
+import info.androidhive.firebaseauthapp.RecordThis;
 import info.androidhive.firebaseauthapp.SQLite.FastingPlan;
 import info.androidhive.firebaseauthapp.fasting.FastingPlan1;
 import info.androidhive.firebaseauthapp.fasting.Fasting_Complete;
@@ -75,6 +78,8 @@ public class Frag1 extends Fragment {
     ArrayList<Date> end_date = new ArrayList<>();
     //日期的index
     int index ;
+
+    private ImageView img_notification;
 
 
     private HorizontalStepView horizontalStepView;
@@ -252,6 +257,8 @@ public class Frag1 extends Fragment {
                 }
             });
             Log.e("是否記錄此次斷食",""+isFastingRecord());
+            //記錄此次斷食
+            //只有在"段時與斷食之間的休息間格，及"前面一天是段時日"的休息日才會顯現button
             btn_check_fasting.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -259,14 +266,21 @@ public class Frag1 extends Fragment {
                     //如果以記錄斷食
                     if (isFastingRecord()){
                         Toast.makeText(getContext(), "您已記錄本次斷食了噢", Toast.LENGTH_SHORT).show();
+                        navigateToRecord(1);
                     }else{
                         //導至斷食完成的頁面，讓使ˇ用者記錄此次心得感想體重之類
                         saveFastingData(true);
+                        navigateToRecord(0);
                     }
 
                 }
             });
-
+            img_notification.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    startActivity(new Intent(getContext(),RecordThis.class));
+                }
+            });
             //結束斷食紐按下
             end_fasting.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -325,6 +339,42 @@ public class Frag1 extends Fragment {
         return fragment_frag1;
     }
 
+    private void navigateToRecord(int status) {
+
+        Date date = new Date();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+
+        int target_day = 0;
+        if (date.after(end_date.get(end_date.size()-1))){
+            Log.e("oops","something wrong");
+        }
+
+        for (int i = 0;i<=end_date.size();i++){
+            if (df.format(end_date.get(i)).equals(df.format(date))){
+                target_day= i;
+                break;
+
+            }
+        }
+        Log.e("target day","index"+target_day);
+        Log.e("today day","today"+date);
+
+
+        String startdate = df.format(start_date.get(target_day));
+        String enddate = df.format(end_date.get(target_day));
+
+        Intent intent = new Intent(getContext(),RecordThis.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("startdate",startdate);
+        bundle.putString("enddate",enddate);
+        //0代表未紀錄，要記錄 1代表已記，要查看
+        bundle.putInt("status",status);
+        intent.putExtras(bundle);
+        startActivity(intent);
+
+    }
+
+    //只有在"段時與斷食之間的休息間格，及"前面一天是段時日"的休息日才會顯現button
     private void saveFastingData(boolean isRecorded) {
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putBoolean(STATUS,isRecorded);
@@ -333,7 +383,6 @@ public class Frag1 extends Fragment {
     }
 
     private boolean isFastingRecord(){
-
         boolean isRecorded = sharedPreferences.getBoolean(STATUS,false);
         Log.e("已記錄狀態",""+isRecorded);
         return isRecorded;
@@ -556,7 +605,7 @@ public class Frag1 extends Fragment {
         tv_water = (TextView)v.findViewById(R.id.tv_water);
         tv_cc = (TextView)v.findViewById(R.id.tv_cc);
         title_water = (TextView)v.findViewById(R.id.title_water);
-
+        img_notification = v.findViewById(R.id.iv_bells);
     }
     private void init2(View v) {
         plan1 = (LinearLayout)v.findViewById(R.id.plan1);
@@ -619,7 +668,7 @@ public class Frag1 extends Fragment {
                             textPercentage.setText(getTimeLeft(mytime/1000));
                             start.setText("在"+sdf.format(start_date.get(index))+"開始斷食");
                             //listener.onTimeChanged("距離斷時開始還有"+getTimeLeft(mytime/1000));
-                            btn_check_fasting.setVisibility(View.INVISIBLE);
+                            btn_check_fasting.setVisibility(View.GONE);
                             //在這進行progressbar
                         }else{
                             //其它天的休息日
@@ -654,13 +703,33 @@ public class Frag1 extends Fragment {
                         add_progress(Float.parseFloat(getPercent(now_time,false)));
                         //開啟一輪新的斷食要重置為為記錄此次斷食
                         saveFastingData(false);
+                        btn_check_fasting.setVisibility(View.GONE);
+                    }
+                }else
+                  //off_day.get(index == 0)
+                 {
+                    ArrayList<Integer> off_days_indexs =new ArrayList<>();
+                    //抓到 "斷食後的休息日" 在休息日陣列中的索引直
+                    for (int i = 0;i<off_day.size();i++){
+                        //1.要是休息日(0) 2.不能是第一筆(i-1>=0) 3.他的前一筆必須為段時日(off_day.get(i-1)==1)
+                        if (off_day.get(i) == 0  && i-1>=0 && off_day.get(i-1)==1){
+                            off_days_indexs .add(i);
+                        }
+                    }
+                    if (off_days_indexs.contains(index)){
+                        status.setText("斷食結束");
+                        textPercentage.setText("接下來維休息日");
+                        start.setText("");
+                        progress.setText("");
+                        btn_check_fasting.setVisibility(View.VISIBLE);
+                    }else{
+                        status.setText("斷食結束");
+                        textPercentage.setText("接下來維休息日");
+                        start.setText("");
+                        progress.setText("");
                         btn_check_fasting.setVisibility(View.INVISIBLE);
                     }
-                }else {
-                    status.setText("斷食結束");
-                    textPercentage.setText("接下來維休息日");
-                    start.setText("");
-                    progress.setText("");
+
                 }
 
             }else {
@@ -669,6 +738,7 @@ public class Frag1 extends Fragment {
                 textPercentage.setText("結束");
                 start.setText("");
                 progress.setText("");
+                btn_check_fasting.setVisibility(View.INVISIBLE);
             }
 
         }

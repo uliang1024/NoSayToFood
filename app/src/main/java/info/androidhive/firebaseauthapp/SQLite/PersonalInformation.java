@@ -16,6 +16,7 @@ public class PersonalInformation extends SQLiteOpenHelper {
     public static final String TABLE_NAME2 = "FastingPlan";
     public static final String TABLE_NAME3 = "foodRecord_table";
     public static final String TABLE_NAME4 = "BodyRecord";
+    public static final String TABLE_NAME5 = "FastRecord";
     public static final String COL_1 = "Uid";
     public static final String COL_2 = "Name";
     public static final String COL_3 = "Gender";
@@ -38,6 +39,7 @@ public class PersonalInformation extends SQLiteOpenHelper {
         db.execSQL("create table IF NOT EXISTS " + TABLE_NAME2 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,START_TIME LONG,END_TIME LONG,OFF_DAY INTEGER,UID TEXT,NOW_TIME LONG,DAY INTEGER)");
         db.execSQL("create table IF NOT EXISTS " + TABLE_NAME3 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME TEXT,DATE TEXT,AMOUNT TEXT,UID TEXT,MEAL INTEGER)");
         db.execSQL("create table IF NOT EXISTS " + TABLE_NAME4 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,UID TEXT,KG FLOAT,HEIGHT FLOAT,WAISTLINE FLOAT,BODYFAT FLOAT,DATE TEXT,TS INTEGER)");
+        db.execSQL("create table IF NOT EXISTS " + TABLE_NAME5 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,UID TEXT,STARTDATE TEXT,ENDDATE TEXT,TS INTEGER)");
     }
 
     @Override
@@ -46,6 +48,7 @@ public class PersonalInformation extends SQLiteOpenHelper {
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME2);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME3);
         db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME4);
+        db.execSQL("DROP TABLE IF EXISTS "+TABLE_NAME5);
         onCreate(db);
     }
 

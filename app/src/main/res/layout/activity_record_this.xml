@@ -1,0 +1,393 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".RecordThis"
+    android:scrollbars="none">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/lv_header"
+            android:layout_margin="20dp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_endtime"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="周一，5月25 2023"
+                android:textAlignment="center"
+                android:textSize="40sp" />
+
+            <TextView
+                android:id="@+id/tv_time_span"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="5月24 19:30 到 5月25 11:30"
+                android:textAlignment="center"
+                android:textSize="24sp" />
+
+        </LinearLayout>
+        <TextView
+            android:id="@+id/fasting_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="16小時00分鐘"
+            android:layout_centerHorizontal="true"
+            android:layout_alignTop="@+id/fasting_progress_record"
+            android:layout_marginTop="120dp"
+            android:textSize="26sp"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="已完成斷食時數"
+            android:layout_centerHorizontal="true"
+            android:layout_below="@id/fasting_time"
+
+            android:textSize="18sp"/>
+        <com.hookedonplay.decoviewlib.DecoView
+            android:id="@+id/fasting_progress_record"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_below="@id/lv_header"
+            android:layout_marginTop="30dp"
+            android:layout_centerHorizontal="true"
+            />
+        <TextView
+            android:id="@+id/tv_feels"
+            android:layout_below="@+id/fasting_progress_record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="兄弟，感覺如何"
+            android:textAlignment="center"
+            android:textSize="26dp"/>
+
+
+        <LinearLayout
+            android:id="@+id/lv_emoji"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_below="@id/tv_feels"
+            android:layout_marginTop="20dp"
+            android:weightSum="3"
+            android:gravity="center"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            >
+            <LinearLayout
+                android:id="@+id/lv_easy"
+                android:padding="7dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_margin="7dp"
+                android:background="@drawable/food_button_rounde_dark">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_easy"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:srcCompat="@drawable/ic_happy"
+                    android:layout_gravity="center" />
+                <TextView
+                    android:id="@+id/tv_easy"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    android:text="感覺十分輕鬆"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lv_soso"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_margin="7dp"
+                android:padding="7dp">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_soso"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:srcCompat="@drawable/ic_soso"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:id="@+id/tv_soso"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="感覺不太適應"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/lv_hard"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:layout_margin="7dp"
+                android:padding="7dp">
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_hard"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    app:srcCompat="@drawable/ic_sad"
+                    android:layout_gravity="center"/>
+                <TextView
+                    android:id="@+id/tv_hard"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="無法戰勝飢餓"
+                    android:textAlignment="center"/>
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_record"
+            android:layout_below="@id/lv_emoji"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="30dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp"
+            >
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_margin="20dp"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="來記錄下今日的體重吧!"
+                    android:textSize="30dp"
+                    android:textAlignment="center"    />
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:padding="20dp">
+
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img_show_weight"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:srcCompat="@drawable/ic_weight_scale"
+                            android:layout_gravity="center"
+                            android:layout_centerHorizontal="true"
+                            />
+                        <TextView
+                            android:id="@+id/record_show_weight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="89.9kg"
+                            android:padding="8dp"
+                            android:textSize="16sp"
+                            android:background="@drawable/radius_weight_background_white"
+                            android:layout_centerInParent="true"/>
+                        <TextView
+                            android:layout_below="@id/img_show_weight"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="體重"
+                            android:textAlignment="center"
+                            android:layout_centerHorizontal="true"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img_show_height"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:srcCompat="@drawable/ic_height"
+                            android:layout_centerHorizontal="true"
+                            />
+                        <TextView
+                            android:id="@+id/record_show_height"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:textSize="16sp"
+                            android:text="89.9kg"
+                            android:background="@drawable/radius_weight_background_white"
+                            android:layout_centerInParent="true"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_below="@+id/img_show_height"
+                            android:layout_marginTop="5dp"
+                            android:text="身高"
+                            android:layout_centerHorizontal="true"
+                            android:textAlignment="center"/>
+                    </RelativeLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:weightSum="2"
+                    android:padding="20dp">
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img_show_waist"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:srcCompat="@drawable/ic_apple"
+                            android:layout_centerHorizontal="true"
+                            />
+                        <TextView
+                            android:id="@+id/record_show_waist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:textSize="16sp"
+                            android:text="89.9kg"
+                            android:background="@drawable/radius_weight_background_white"
+                            android:layout_centerInParent="true"/>
+                        <TextView
+                            android:layout_below="@id/img_show_waist"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="腰圍"
+                            android:layout_centerHorizontal="true"
+                            android:textAlignment="center"/>
+                    </RelativeLayout>
+                    <RelativeLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:layout_weight="1">
+                        <androidx.appcompat.widget.AppCompatImageView
+                            android:id="@+id/img_show_fat"
+                            android:layout_width="100dp"
+                            android:layout_height="100dp"
+                            app:srcCompat="@drawable/fat"
+                            android:layout_centerHorizontal="true"
+                            />
+                        <TextView
+                            android:id="@+id/record_show_fat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:padding="8dp"
+                            android:textSize="16sp"
+                            android:text="89.9kg"
+                            android:background="@drawable/radius_weight_background_white"
+                            android:layout_centerInParent="true"/>
+                        <TextView
+                            android:layout_below="@id/img_show_fat"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="5dp"
+                            android:text="體脂肪"
+                            android:layout_centerHorizontal="true"
+                            android:textAlignment="center"/>
+
+                    </RelativeLayout>
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </androidx.cardview.widget.CardView>
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_food"
+            android:layout_below="@+id/card_record"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="8dp">
+
+            <RelativeLayout
+                android:id="@+id/card_godiet"
+                android:layout_width="match_parent"
+                android:layout_height="120dp"
+                android:layout_marginLeft="15dp">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/img_diet"
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:layout_centerVertical="true"
+                    app:srcCompat="@drawable/ic_diet" />
+
+                <TextView
+                    android:id="@+id/tv_go_diet"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toEndOf="@id/img_diet"
+                    android:text="記錄下今天的飲食吧?"
+                    android:textSize="20dp" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_above="@id/tv_go_diet"
+                    android:layout_marginLeft="15dp"
+                    android:layout_toEndOf="@id/img_diet"
+                    android:text="更好的掌控攝取的營養" />
+
+                <TextView
+                    android:id="@+id/go_food_record"
+                    android:layout_width="wrap_content"
+                    android:layout_height="35dp"
+                    android:layout_below="@id/tv_go_diet"
+
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginEnd="20dp"
+                    android:layout_marginBottom="10dp"
+                    android:text="走!來記錄"
+                    android:textColor="#189ABA" />
+            </RelativeLayout>
+
+        </androidx.cardview.widget.CardView>
+
+        <Button
+            android:id="@+id/btn_record"
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:layout_below="@+id/card_food"
+            android:layout_centerHorizontal="true"
+            android:layout_marginStart="20dp"
+            android:layout_marginTop="20dp"
+
+            android:layout_marginEnd="20dp"
+            android:layout_marginBottom="20dp"
+            android:background="@drawable/button_rounde"
+            android:text="done"
+            android:textColor="#144453"
+            android:textSize="20sp" />
+    </RelativeLayout>
+
+
+</ScrollView>

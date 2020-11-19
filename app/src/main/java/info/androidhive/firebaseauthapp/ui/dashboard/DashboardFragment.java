@@ -16,14 +16,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
@@ -45,12 +48,17 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 import javax.annotation.Nullable;
 
+import info.androidhive.firebaseauthapp.BodyInformation.ChartItem;
+import info.androidhive.firebaseauthapp.BodyInformation.LineChartItem;
+import info.androidhive.firebaseauthapp.BodyInformation.LineChartItem2;
 import info.androidhive.firebaseauthapp.FastRecordsActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.BodyInformation.Weight_scale;
+import info.androidhive.firebaseauthapp.RecordThis;
 import info.androidhive.firebaseauthapp.SQLite.BodyRecord;
 import info.androidhive.firebaseauthapp.SQLite.PersonalInformation;
 
@@ -69,7 +77,7 @@ public class DashboardFragment extends Fragment {
     private ImageView tdee_info,bmr_info;
     private ImageView work_lite,work_medium,work_heavy;
     private TextView tv_daily_activity;
-
+    ListView lv;
     String[] exercise = {"久坐","輕量活動","中度活動量","高度活動量","非常高度活動量"};
     String[] exercise_describe = {"基本沒在運動","每周運動1-3天","每周運動3-5天","每周運動6-7天","勞力密集的工作或是每天進行訓練"};
 
@@ -117,6 +125,12 @@ public class DashboardFragment extends Fragment {
                 startDialog();
             }
         });
+        btn_food_record.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(getContext(),Food_Record.class));
+            }
+        });
         uid = user.getUid();
 
         myDb = new PersonalInformation(getContext());
@@ -150,15 +164,125 @@ public class DashboardFragment extends Fragment {
                 }
             }
         }
+        height = Heights.get(Heights.size()-1);
         setUiData();
-        try {
-            setUpLineChart();
-        } catch (ParseException e) {
-            e.printStackTrace();
-        }
+
+
+        ArrayList<ChartItem> list = new ArrayList<>();
+        list.add(new LineChartItem(generateDataLine(1), getContext()));
+        list.add(new LineChartItem2(generateDataLine2(2), getContext()));
+
+        ChartDataAdapter cda = new ChartDataAdapter(getContext(), list);
+        lv.setAdapter(cda);
+//        try {
+//            setUpLineChart();
+//        } catch (ParseException e) {
+//            e.printStackTrace();
+//        }
         return fragment_dashboard;
     }
 
+    private LineData generateDataLine(int cnt) {
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_blue);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = null;
+        if (user != null) {
+            uid = user.getUid();
+        }
+        myDb2 = new BodyRecord(getContext());
+        Cursor res = myDb2.getAllData();
+        while (res.moveToNext()) {
+            if(uid.equals(res.getString(1))){
+                IDs.add(res.getInt(0));
+                KGs.add(res.getFloat(2));
+                Dates.add(res.getString(6));
+            }
+        }
+
+        ArrayList<Entry> values1 = new ArrayList<>();
+
+
+        for (int i = 0; i < 33; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH,i-30);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String dateStr = sdf.format(calendar.getTime());
+            for(int j = 0;j<Dates.size();j++){
+                if(dateStr.equals(Dates.get(j))){
+                    Log.e("get i","i = "+i);
+                    values1.add(new Entry(i, KGs.get(j)));
+                }
+            }
+        }
+
+        LineDataSet d1 = new LineDataSet(values1, "體重變化");
+        d1.setLineWidth(0f);
+        d1.setCircleRadius(0);
+        d1.setDrawValues(true);
+        d1.setDrawFilled(true);
+        d1.setCircleColor(Color.rgb(125, 245, 237));//圓點顏色
+        //d1.setCircleRadius(15);//圓點大小
+        d1.setDrawCircleHole(false);//圓點為實心(預設空心)
+        d1.setFillDrawable(drawable);
+        ArrayList<Entry> values2 = new ArrayList<>();
+
+        float good_kg = (height/100)*(height/100)*22;
+        for (int i = 0; i < 33; i++) {
+            values2.add(new Entry(i, good_kg));
+        }
+
+        LineDataSet d2 = new LineDataSet(values2, "理想體重");
+        d2.setLineWidth(2.5f);
+        d2.setCircleRadius(4.5f);
+        d2.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        d2.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+        d2.setDrawValues(false);
+        d2.setDrawCircles(false);
+        d2.setFillDrawable(drawable);
+
+        ArrayList<ILineDataSet> sets = new ArrayList<>();
+
+        sets.add(d1);
+        sets.add(d2);
+
+        return new LineData(sets);
+    }
+    //產生bmi的摺線圖
+    private LineData generateDataLine2(int cnt) {
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_blue);
+        ArrayList<Entry> values1 = new ArrayList<>();
+
+        for (int i = 0; i < 33; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH,i-30);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String dateStr = sdf.format(calendar.getTime());
+            for(int j = 0;j<Dates.size();j++){
+                if(dateStr.equals(Dates.get(j))){
+
+                    float bmi =  KGs.get(j)/((height/100)*(height/100));
+
+                    Log.e("得到bmi",""+bmi);
+                    values1.add(new Entry(i,bmi));
+                }
+            }
+        }
+
+        LineDataSet d1 = new LineDataSet(values1, "BMI變化");
+        d1.setLineWidth(0f);
+        d1.setCircleRadius(0);
+        d1.setDrawValues(true);
+        d1.setDrawFilled(true);
+        d1.setCircleColor(Color.rgb(125, 245, 237));//圓點顏色
+        d1.setCircleRadius(5);//圓點大小
+        d1.setDrawCircleHole(false);//圓點為實心(預設空心)
+        d1.setFillDrawable(drawable);
+
+        ArrayList<ILineDataSet> sets = new ArrayList<>();
+        sets.add(d1);
+
+        return new LineData(sets);
+    }
     private void startDialog() {
         initNumberPicker3();
         // 强制隐藏键盘
@@ -201,13 +325,39 @@ public class DashboardFragment extends Fragment {
         final TextView date_picker = workingAge_view.findViewById(R.id.date_picker);
         Button kg_ok = workingAge_view.findViewById(R.id.kg_ok);
         Button btn_setHeight = workingAge_view.findViewById(R.id.btn_setHeight);
-        final EditText editText = workingAge_view.findViewById(R.id.editText1);
+        final TextView editTextWeight = workingAge_view.findViewById(R.id.tv_edit_kg);
         Date date = new Date();
         //DecimalFormat df = new DecimalFormat("##0.0");
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         date_picker.setText(df.format(date));
 
         btn_setHeight.setText(""+Heights.get(Heights.size()-1));
+
+        editTextWeight.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                final View view = inflater.inflate(R.layout.show_yourkg, null);
+
+                new AlertDialog.Builder(getContext())
+                        .setTitle("請輸入你的體重")
+                        .setView(view)
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText editText = (EditText) (view.findViewById(R.id.editText1));
+                                DecimalFormat fdf = new DecimalFormat("###0.##");
+                                float data = Float.parseFloat(editText.getText().toString());
+                                if(editText.getText().toString().matches("")) {
+                                    editTextWeight.setText("");
+                                }else{
+                                    editTextWeight.setText(fdf.format(data));
+                                }
+                            }
+                        })
+                        .show();
+            }
+        });
         //選擇身高按鈕
         btn_setHeight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -269,7 +419,7 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(editText.getText().toString().matches("")) {
+                if(editTextWeight.getText().toString().matches("")) {
 
                 }else{
                     SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
@@ -277,9 +427,9 @@ public class DashboardFragment extends Fragment {
                     String str = df.format(curDate);
                     if(date_picker.getText().toString().equals(str)){
                         //tv_KG.setText(editText.getText().toString());
-                        Log.e("get weight",""+editText.getText().toString());
+                        Log.e("get weight",""+editTextWeight.getText().toString());
                     }
-                    weight_data = Float.parseFloat(editText.getText().toString());
+                    weight_data = Float.parseFloat(editTextWeight.getText().toString());
 
                     try {
                         AddData(date_picker.getText().toString());
@@ -294,94 +444,95 @@ public class DashboardFragment extends Fragment {
         });
     }
     //設定line chart的資料
-    private void setUpLineChart() throws ParseException {
-
-
-
-        ArrayList<Entry> valuesWeight = new ArrayList<>();
-        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_blue);
-
-        for (int i = 0; i < 33; i++) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_MONTH,i-30);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-            String dateStr = sdf.format(calendar.getTime());
-            for(int j = 0;j<Dates.size();j++){
-                if(dateStr.equals(Dates.get(j))){
-                    valuesWeight.add(new Entry(i, KGs.get(j)));
-                }
-            }
-        }
-        LineDataSet weightDataSet = new LineDataSet(valuesWeight, "體重變化");
-        weightDataSet.setLineWidth(2.5f);
-        weightDataSet.setDrawValues(true);
-        weightDataSet.setDrawFilled(true);
-        weightDataSet.setCircleColor(Color.rgb(64, 150, 255));//圓點顏色
-        weightDataSet.setCircleRadius(5);//圓點大小
-        weightDataSet.setDrawCircleHole(false);//圓點為實心(預設空心)
-        weightDataSet.setFillDrawable(drawable);
-
-
-        ArrayList<Entry> valuesIdealWeight = new ArrayList<>();
-        float good_kg = (Heights.get(Heights.size()-1)/100)*(Heights.get(Heights.size()-1)/100)*22;
-        for (int i = 0; i < 33; i++) {
-            valuesIdealWeight.add(new Entry(i, good_kg));
-        }
-
-        LineDataSet dealWeightDataSet = new LineDataSet(valuesIdealWeight, "理想體重");
-        dealWeightDataSet.setLineWidth(2.5f);
-        dealWeightDataSet.setCircleRadius(4.5f);
-        dealWeightDataSet.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        dealWeightDataSet.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-        dealWeightDataSet.setDrawValues(false);
-        dealWeightDataSet.setDrawCircles(false);
-
-
-        ArrayList<ILineDataSet> WeightSets = new ArrayList<>();
-        WeightSets.add(weightDataSet);
-        WeightSets.add(dealWeightDataSet);
-
-        LineData weightData = new LineData(WeightSets);
-        weight_chart.setData(weightData);
-        weight_chart.invalidate();
-
-//        XAxis xAxis = weight_chart.getXAxis();
-//        xAxis.setValueFormatter(new XAxisValueFormatter());
-        //=====bmi 圖表======//
-        ArrayList<Entry> valuesBmi = new ArrayList<>();
-        for (int i = 0; i < 33; i++) {
-            Calendar calendar = Calendar.getInstance();
-            calendar.add(Calendar.DAY_OF_MONTH,i-30);
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-            String dateStr = sdf.format(calendar.getTime());
-            for(int j = 0;j<Dates.size();j++){
-                if(dateStr.equals(Dates.get(j))){
-
-                    float bmi =  KGs.get(j)/((Heights.get(j)/100)*(Heights.get(j)/100));
-
-                    Log.e("得到bmi",""+bmi);
-                    valuesBmi.add(new Entry(i,bmi));
-                }
-            }
-        }
-
-        LineDataSet bmiDataSet = new LineDataSet(valuesBmi, "BMI變化");
-        bmiDataSet.setLineWidth(2.5f);
-        bmiDataSet.setCircleRadius(4.5f);
-        bmiDataSet.setDrawValues(true);
-        bmiDataSet.setDrawFilled(true);
-        bmiDataSet.setCircleColor(Color.rgb(64, 150, 255));//圓點顏色
-        bmiDataSet.setCircleRadius(5);//圓點大小
-        bmiDataSet.setDrawCircleHole(false);//圓點為實心(預設空心)
-        bmiDataSet.setFillDrawable(drawable);
-        ArrayList<ILineDataSet> BmiSets = new ArrayList<>();
-        BmiSets.add(bmiDataSet);
-        LineData bmiData = new LineData(BmiSets);
-
-        bmi_chart.setData(bmiData);
-        bmi_chart.invalidate();
-
-    }
+    //Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_blue);
+//    private void setUpLineChart() throws ParseException {
+//
+//
+//
+//        ArrayList<Entry> valuesWeight = new ArrayList<>();
+//
+//
+//        for (int i = 0; i < 33; i++) {
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.add(Calendar.DAY_OF_MONTH,i-30);
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+//            String dateStr = sdf.format(calendar.getTime());
+//            for(int j = 0;j<Dates.size();j++){
+//                if(dateStr.equals(Dates.get(j))){
+//                    valuesWeight.add(new Entry(i, KGs.get(j)));
+//                }
+//            }
+//        }
+//        LineDataSet weightDataSet = new LineDataSet(valuesWeight, "體重變化");
+//        weightDataSet.setLineWidth(2.5f);
+//        weightDataSet.setDrawValues(true);
+//        weightDataSet.setDrawFilled(true);
+//        weightDataSet.setCircleColor(Color.rgb(64, 150, 255));//圓點顏色
+//        weightDataSet.setCircleRadius(5);//圓點大小
+//        weightDataSet.setDrawCircleHole(false);//圓點為實心(預設空心)
+//        weightDataSet.setFillDrawable(drawable);
+//
+//
+//        ArrayList<Entry> valuesIdealWeight = new ArrayList<>();
+//        float good_kg = (Heights.get(Heights.size()-1)/100)*(Heights.get(Heights.size()-1)/100)*22;
+//        for (int i = 0; i < 33; i++) {
+//            valuesIdealWeight.add(new Entry(i, good_kg));
+//        }
+//
+//        LineDataSet dealWeightDataSet = new LineDataSet(valuesIdealWeight, "理想體重");
+//        dealWeightDataSet.setLineWidth(2.5f);
+//        dealWeightDataSet.setCircleRadius(4.5f);
+//        dealWeightDataSet.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+//        dealWeightDataSet.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
+//        dealWeightDataSet.setDrawValues(false);
+//        dealWeightDataSet.setDrawCircles(false);
+//
+//
+//        ArrayList<ILineDataSet> WeightSets = new ArrayList<>();
+//        WeightSets.add(weightDataSet);
+//        WeightSets.add(dealWeightDataSet);
+//
+//        LineData weightData = new LineData(WeightSets);
+//        weight_chart.setData(weightData);
+//        weight_chart.invalidate();
+//
+////        XAxis xAxis = weight_chart.getXAxis();
+////        xAxis.setValueFormatter(new XAxisValueFormatter());
+//        //=====bmi 圖表======//
+//        ArrayList<Entry> valuesBmi = new ArrayList<>();
+//        for (int i = 0; i < 33; i++) {
+//            Calendar calendar = Calendar.getInstance();
+//            calendar.add(Calendar.DAY_OF_MONTH,i-30);
+//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+//            String dateStr = sdf.format(calendar.getTime());
+//            for(int j = 0;j<Dates.size();j++){
+//                if(dateStr.equals(Dates.get(j))){
+//
+//                    float bmi =  KGs.get(j)/((Heights.get(j)/100)*(Heights.get(j)/100));
+//
+//                    Log.e("得到bmi",""+bmi);
+//                    valuesBmi.add(new Entry(i,bmi));
+//                }
+//            }
+//        }
+//
+//        LineDataSet bmiDataSet = new LineDataSet(valuesBmi, "BMI變化");
+//        bmiDataSet.setLineWidth(2.5f);
+//        bmiDataSet.setCircleRadius(4.5f);
+//        bmiDataSet.setDrawValues(true);
+//        bmiDataSet.setDrawFilled(true);
+//        bmiDataSet.setCircleColor(Color.rgb(64, 150, 255));//圓點顏色
+//        bmiDataSet.setCircleRadius(5);//圓點大小
+//        bmiDataSet.setDrawCircleHole(false);//圓點為實心(預設空心)
+//        bmiDataSet.setFillDrawable(drawable);
+//        ArrayList<ILineDataSet> BmiSets = new ArrayList<>();
+//        BmiSets.add(bmiDataSet);
+//        LineData bmiData = new LineData(BmiSets);
+//
+//        bmi_chart.setData(bmiData);
+//        bmi_chart.invalidate();
+//
+//    }
 
 
 
@@ -460,30 +611,30 @@ public class DashboardFragment extends Fragment {
     }
 
     //新增&更新資料
-    private void AddData(String x) throws ParseException {
-        Log.e("date get:",""+x);
+    private void AddData(String date) throws ParseException {
+        Log.e("date get:",""+date);
         //如果資料不存在
         //取得的日期字串轉換成Date
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-        Date getDate = df.parse(x);
+        Date getDate = df.parse(date);
         long timestamp = getDate.getTime();
         //如果該日期沒有資料
-        if(Dates.indexOf(x) ==-1){
+        if(Dates.indexOf(date) ==-1){
             //如果使用者沒輸入資料
             if (height ==0){
                 if (Dates.size()>=2){
-                    boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(Heights.size()-1),Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1),x,timestamp);
+                    boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(Heights.size()-1),Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1),date,timestamp);
                     Log.e("insert:",""+isInserted2);
                 }else{
-                    boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(0),Waists.get(0),Body_fats.get(0),x,timestamp);
+                    boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(0),Waists.get(0),Body_fats.get(0),date,timestamp);
                     Log.e("insert:",""+isInserted2);
                 }
             }else{
                 if (Dates.size()>=2){
-                    boolean isInserted2 = myDb2.insertData(uid,weight_data,height,Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1),x,timestamp);
+                    boolean isInserted2 = myDb2.insertData(uid,weight_data,height,Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1),date,timestamp);
                     Log.e("insert:",""+isInserted2);
                 }else{
-                    boolean isInserted2 = myDb2.insertData(uid,weight_data,height,Waists.get(0),Body_fats.get(0),x,timestamp);
+                    boolean isInserted2 = myDb2.insertData(uid,weight_data,height,Waists.get(0),Body_fats.get(0),date,timestamp);
                     Log.e("insert:",""+isInserted2);
                 }
             }
@@ -493,12 +644,12 @@ public class DashboardFragment extends Fragment {
         else{
             //如果使用者沒輸入資料
             if (height==0){
-                Log.e("found data ","data updated:" +Dates.get(Dates.indexOf(x)));
+                Log.e("found data ","data updated:" +Dates.get(Dates.indexOf(date)));
                 boolean isupdated = false;
-                isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(x)), weight_data,Heights.get(Heights.size()-1),timestamp);
+                isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(date)), weight_data,Heights.get(Heights.size()-1),timestamp);
             }else {
                 boolean isupdated = false;
-                isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(x)), weight_data,height,timestamp);
+                isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(date)), weight_data,height,timestamp);
             }
 
         }
@@ -521,7 +672,12 @@ public class DashboardFragment extends Fragment {
             }
         }
         setUiData();
-        setUpLineChart();
+        ArrayList<ChartItem> list = new ArrayList<>();
+        list.add(new LineChartItem(generateDataLine(1), getContext()));
+        list.add(new LineChartItem2(generateDataLine2(2), getContext()));
+
+        ChartDataAdapter cda = new ChartDataAdapter(getContext(), list);
+        lv.setAdapter(cda);
     }
 
     private class XAxisValueFormatter implements IAxisValueFormatter {
@@ -538,8 +694,8 @@ public class DashboardFragment extends Fragment {
 
 
     private void init(View v) {
-        weight_chart = v.findViewById(R.id.weight_chart);
-        bmi_chart = v.findViewById(R.id.bmi_chart);
+//        weight_chart = v.findViewById(R.id.weight_chart);
+//        bmi_chart = v.findViewById(R.id.bmi_chart);
         tv_current_weight = v.findViewById(R.id.tv_current_weight);
         tv_current_bmi = v.findViewById(R.id.tv_current_bmi);
         tv_init_weight = v.findViewById(R.id.tv_init_weight);
@@ -557,8 +713,35 @@ public class DashboardFragment extends Fragment {
         tv_daily_activity = v.findViewById(R.id.tv_daily_activity);
         btn_weight_add = v.findViewById(R.id.btn_weight_add);
 
+        lv=v.findViewById(R.id.list_body_charts);
+
 
         myDb = new PersonalInformation(v.getContext());
         myDb2 = new BodyRecord(v.getContext());
+    }
+    private class ChartDataAdapter extends ArrayAdapter<ChartItem> {
+
+        ChartDataAdapter(Context context, List<ChartItem> objects) {
+            super(context, 0, objects);
+        }
+
+        @NonNull
+        @Override
+        public View getView(int position, View convertView, @NonNull ViewGroup parent) {
+            //noinspection ConstantConditions
+            return getItem(position).getView(position, convertView, getContext());
+        }
+
+        @Override
+        public int getItemViewType(int position) {
+            // return the views type
+            ChartItem ci = getItem(position);
+            return ci != null ? ci.getItemType() : 0;
+        }
+
+        @Override
+        public int getViewTypeCount() {
+            return 3; // we have 3 different item-types
+        }
     }
 }

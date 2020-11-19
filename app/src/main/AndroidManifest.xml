@@ -17,7 +17,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar.FullScreen">
-        <activity android:name=".FastRecordsActivity"></activity>
+        <activity android:name=".RecordThis"></activity>
+        <activity android:name=".FastRecordsActivity" />
         <activity android:name=".RecipeActivity" />
         <activity android:name=".FitnessActivity" />
         <activity android:name=".ClassEntityActivity" />
