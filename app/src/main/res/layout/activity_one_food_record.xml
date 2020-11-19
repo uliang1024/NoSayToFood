@@ -14,11 +14,12 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="全穀雜糧類:"
+            android:text="全穀雜糧類(碗):"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textColor="#FFE0B00C"/>
         <TextView
             android:id="@+id/tv_grain"
             android:layout_width="wrap_content"
@@ -32,11 +33,12 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="豆魚蛋肉類:"
+            android:text="豆魚蛋肉類(份):"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textColor="#FFDA1FAF"/>
         <TextView
             android:id="@+id/tv_meet"
             android:layout_width="wrap_content"
@@ -50,11 +52,12 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="乳品類:"
+            android:text="乳品類(杯):"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textColor="#FF5DADE2"/>
         <TextView
             android:id="@+id/tv_milk"
             android:layout_width="wrap_content"
@@ -68,11 +71,12 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="蔬菜類:"
+            android:text="蔬菜類(份):"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textColor="#FF229954"/>
         <TextView
             android:id="@+id/tv_vegetables"
             android:layout_width="wrap_content"
@@ -86,11 +90,12 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="水果類:"
+            android:text="水果類(份):"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textColor="#FFD35400"/>
         <TextView
             android:id="@+id/tv_fruit"
             android:layout_width="wrap_content"
@@ -104,11 +109,12 @@
         android:orientation="horizontal">
 
         <TextView
-            android:text="油脂與堅果種子類:"
+            android:text="油脂與堅果種子類(份):"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="20sp"
+            android:textColor="#FF9C6A1B"/>
         <TextView
             android:id="@+id/tv_oil"
             android:layout_width="wrap_content"
