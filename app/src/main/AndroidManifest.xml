@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="info.androidhive.firebaseauthapp">
 
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -17,12 +18,11 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar.FullScreen">
-<<<<<<< Updated upstream
         <activity android:name=".ui.profile.UserEdit"></activity>
 =======
         <activity android:name=".food.ScreenSlidePagerActivity"></activity>
-        <activity android:name=".RecordThis" />
-        <activity android:name=".ui.profile.UserEdit" />
+        <activity android:name=".ui.profile.UserEdit"
+            tools:ignore="DuplicateActivity" />
 >>>>>>> Stashed changes
         <activity android:name=".ui.dashboard.OneFoodRecord" />
         <activity android:name=".ui.profile.PersonalProfile" />
