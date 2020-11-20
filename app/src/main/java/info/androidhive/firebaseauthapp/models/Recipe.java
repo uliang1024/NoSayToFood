@@ -1,46 +1,59 @@
 package info.androidhive.firebaseauthapp.models;
 
-import java.util.List;
-
 public  class Recipe {
 
-    private String recipeName;
-    private String recipeImage;
-    private List<StepsEntity> steps;
+    private String title;
+    private String time;
+    private String preview;
+    private String image;
+    private String ingredient;
+    private String content;
 
-    public Recipe() {
+    public String getTitle() {
+        return title;
     }
 
-    public Recipe(String recipename, String recipeimage, List<StepsEntity> steps) {
-        this.recipeName = recipename;
-        this.recipeImage = recipeimage;
-        this.steps = steps;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    public String getRecipename() {
-        return recipeName;
+    public String getTime() {
+        return time;
     }
 
-    public void setRecipename(String recipename) {
-        this.recipeName = recipename;
+    public void setTime(String time) {
+        this.time = time;
     }
 
-    public String getRecipeimage() {
-        return recipeImage;
+    public String getPreview() {
+        return preview;
     }
 
-    public void setRecipeimage(String recipeimage) {
-        this.recipeImage = recipeimage;
+    public void setPreview(String preview) {
+        this.preview = preview;
     }
 
-    public List<StepsEntity> getSteps() {
-        return steps;
+    public String getImage() {
+        return image;
     }
 
-    public void setSteps(List<StepsEntity> steps) {
-        this.steps = steps;
+    public void setImage(String image) {
+        this.image = image;
     }
 
+    public String getIngredient() {
+        return ingredient;
+    }
 
+    public void setIngredient(String ingredient) {
+        this.ingredient = ingredient;
+    }
 
+    public String getContent() {
+        return content;
+    }
+
+    public void setContent(String content) {
+        this.content = content;
+    }
 }
