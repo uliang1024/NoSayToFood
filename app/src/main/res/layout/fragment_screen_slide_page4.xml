@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/content"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView style="?android:textAppearanceMedium"
+                android:padding="16dp"
+                android:lineSpacingMultiplier="1.2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="25dp"
+                android:text="蔬菜類" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="向右滑動 >"
+                android:textSize="20dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:layout_margin="10dp"/>
+
+        </RelativeLayout>
+
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:src="@drawable/good_vegetables"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="蔬菜類的營養成分及功能"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:textColor="#0E1682"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="新鮮蔬菜的水分含量很高，約占 90% 以上，蛋白質和脂肪含量
+很少，但維生素、礦物質、膳食纖維，以及植化素含量卻很豐富。
+蔬菜的顏色越深綠或深黃，含有的維生素 A、C 及礦物質鐵、鈣也
+越多。蔬菜的礦物質多為鹼性礦物質，例如鉀、鈣等，可用來中和
+主食和肉類在體內所產生的酸性，維持體內酸鹼平衡。膳食纖維可
+增加飽足感、幫助排便，維持腸道的健康。腸道是我們身體與吃入
+食物直接接觸並發生交互作用的器官。腸道健康，身體才能順利消
+化吸收食物，規則排便，並且對伺機入侵的病菌具有抵抗力。蔬菜
+亦含有許多已知對健康有益的植化素，例如花青素、含硫化合物、
+胡蘿蔔素、茄紅素、類黃酮、多醣體等，具有抗發炎、抗癌、抗老
+化等活性。許多研究重複指出，每天吃到足夠量的蔬菜與水果，對
+身體健康具有保護作用，千萬不可忽略。"
+            android:textSize="15dp"
+            android:layout_margin="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="蔬菜類食物簡介"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:textColor="#0E1682"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="臺灣的蔬菜種類很多，根據食用的部份可區分為：葉菜類、花
+菜類、根菜類、果菜類、豆菜類、菇類、海菜類等。葉菜類我們食
+用莖葉部份，例如：菠菜、高麗菜、大白菜。花菜類例如：綠花椰菜、
+白花椰菜、韭菜花、金針花等。根菜類例如：蘿蔔、胡蘿蔔。果菜
+類是植物的果實，例如：青椒、茄子、冬瓜、絲瓜、苦瓜、小黃瓜等。
+豆菜類是一些豆科植物的新鮮果實或芽，例如：四季豆、豌豆夾、
+綠豆芽等。菇類如：香菇、洋菇、杏鮑菇、金針菇、雪白菇、鴻禧
+菇等。海菜類如：紫菜、海帶等。海菜類同時也是富含碘的食物。
+蔬菜類食物種類繁多，每日三餐的蔬菜，宜多變化，並選擇當季在
+地新鮮蔬菜為佳。"
+            android:textSize="15dp"
+            android:layout_margin="5dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="高鈣深色蔬菜"
+            android:textSize="25dp"
+            android:textStyle="bold"
+            android:layout_margin="5dp"
+            android:textColor="#0E1682"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="包括地瓜葉、小白菜、青江菜、菠
+菜、芥蘭菜、莧菜、空心菜、油菜、紅
+鳳菜、山芹菜、龍葵 ( 黑甜菜 )、紅莧菜、
+山茼蒿 ( 昭和草 )、千寶菜 ( 冬菜 )、荷葉白
+菜、川七、豆瓣菜等深色葉菜，比一般的蔬菜
+含有較多的鈣質 ( 每份 100 公克深色蔬菜之鈣含量
+大於 75 毫克 )。不能攝取乳品類的人，或鈣質需求較大的
+青少年，應該多選擇這些高鈣深色蔬菜，以確保攝取夠多的鈣
+質。"
+            android:textSize="15dp"
+            android:layout_margin="5dp"/>
+
+    </LinearLayout>
+</ScrollView>
