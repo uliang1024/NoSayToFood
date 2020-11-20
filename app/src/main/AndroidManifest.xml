@@ -17,8 +17,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar.FullScreen">
-        <activity android:name=".RecordThis"></activity>
+<<<<<<< Updated upstream
         <activity android:name=".ui.profile.UserEdit"></activity>
+=======
+        <activity android:name=".food.ScreenSlidePagerActivity"></activity>
+        <activity android:name=".RecordThis" />
+        <activity android:name=".ui.profile.UserEdit" />
+>>>>>>> Stashed changes
         <activity android:name=".ui.dashboard.OneFoodRecord" />
         <activity android:name=".ui.profile.PersonalProfile" />
         <activity android:name=".FastRecordsActivity" />
