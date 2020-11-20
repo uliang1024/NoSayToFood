@@ -71,7 +71,7 @@ public class SocialFragment extends Fragment{
         init(fragment_social);
 
         //showFab
-        shoeMenu();
+        //shoeMenu();
 
         SocialSectionPagerAdapter sectionsPagerAdapter;
         sectionsPagerAdapter = new SocialSectionPagerAdapter(this, getChildFragmentManager());
@@ -97,17 +97,17 @@ public class SocialFragment extends Fragment{
             @Override
             public void onPageSelected(int position) {
                 Log.e("selected",""+position);
-                switch (position){
-                    case 0:
-                        fab_main.show();
-                        fab_article.hide();
-                        break;
-                    case 1:
-                        closeMenu();
-                        fab_main.hide();
-                        fab_article.show();
-                        break;
-                }
+//                switch (position){
+//                    case 0:
+//                        fab_main.show();
+//                        fab_article.hide();
+//                        break;
+//                    case 1:
+//                        closeMenu();
+//                        fab_main.hide();
+//                        fab_article.show();
+//                        break;
+//                }
             }
 
             @Override
@@ -119,62 +119,63 @@ public class SocialFragment extends Fragment{
         return fragment_social;
     }
 
-    private void shoeMenu() {
+//    private void shoeMenu() {
+//
+//        fab_post.setAlpha(0f);
+//        fab_picture.setAlpha(0f);
+//
+//
+//        fab_picture.setTranslationY(translateYAxis);
+//        fab_post.setTranslationY(translateYAxis);
+//
+//        fab_main.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                if(menuOpen){
+//                    closeMenu();
+//                }else{
+//                    openMenu();
+//                }
+//            }
+//        });
+//
+//        fab_post.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(mContext, "fab_post clicked" , Toast.LENGTH_SHORT).show();
+//
+//
+//            }
+//        });
+//        fab_picture.setOnClickListener(new View.OnClickListener() {
+//            @Override
+//            public void onClick(View v) {
+//                Toast.makeText(mContext, "fab_picture clicked" , Toast.LENGTH_SHORT).show();
+//            }
+//        });
+//    }
+//
+//    private void openMenu() {
+//        menuOpen=!menuOpen;
+//        fab_post.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(500).start();
+//        fab_picture.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(500).start();
+//    }
+//
+//    private void closeMenu() {
+//        menuOpen=!menuOpen;
+//        fab_post.animate().translationY(translateYAxis).alpha(0f).setInterpolator(interpolator).setDuration(500).start();
+//        fab_picture.animate().translationY(translateYAxis).alpha(0f).setInterpolator(interpolator).setDuration(500).start();
+//    }
 
-        fab_post.setAlpha(0f);
-        fab_picture.setAlpha(0f);
-
-
-        fab_picture.setTranslationY(translateYAxis);
-        fab_post.setTranslationY(translateYAxis);
-
-        fab_main.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(menuOpen){
-                    closeMenu();
-                }else{
-                    openMenu();
-                }
-            }
-        });
-
-        fab_post.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "fab_post clicked" , Toast.LENGTH_SHORT).show();
-                Intent intent = new Intent(mContext, PostingActivity.class);
-                startActivity(intent);
-
-            }
-        });
-        fab_picture.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(mContext, "fab_picture clicked" , Toast.LENGTH_SHORT).show();
-            }
-        });
-    }
-
-    private void openMenu() {
-        menuOpen=!menuOpen;
-        fab_post.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(500).start();
-        fab_picture.animate().translationY(0f).alpha(1f).setInterpolator(interpolator).setDuration(500).start();
-    }
-
-    private void closeMenu() {
-        menuOpen=!menuOpen;
-        fab_post.animate().translationY(translateYAxis).alpha(0f).setInterpolator(interpolator).setDuration(500).start();
-        fab_picture.animate().translationY(translateYAxis).alpha(0f).setInterpolator(interpolator).setDuration(500).start();
-    }
-
+//    Intent intent = new Intent(mContext, PostingActivity.class);
+//    startActivity(intent);
 
     private void init(View v) {
         mContext = v.getContext();
-        fab_article = v.findViewById(R.id.fab_article);
-        fab_main = v.findViewById(R.id.fab_main);
-        fab_post = v.findViewById(R.id.fab_post);
-        fab_picture = v.findViewById(R.id.fab_picture);
+//        fab_article = v.findViewById(R.id.fab_article);
+//        fab_main = v.findViewById(R.id.fab_main);
+//        fab_post = v.findViewById(R.id.fab_post);
+//        fab_picture = v.findViewById(R.id.fab_picture);
         viewPager = v.findViewById(R.id.social_view_pager);
         tabLayout = v.findViewById(R.id.tab_layout);
         toolbar = v.findViewById(R.id.tool_bar);

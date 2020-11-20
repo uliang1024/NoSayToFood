@@ -12,11 +12,11 @@ public class FastingPlan extends SQLiteOpenHelper {
         public static final String TABLE_NAME = "FastingPlan";
         public static final String COL_1 = "ID";
         public static final String COL_2 = "Start_time";
-    public static final String COL_3 = "End_time";
-    public static final String COL_4 = "Off_day";
-    public static final String COL_5 = "Uid";
-    public static final String COL_6 = "Now_time";
-    public static final String COL_7 = "Day";
+        public static final String COL_3 = "End_time";
+        public static final String COL_4 = "Off_day";
+        public static final String COL_5 = "Uid";
+        public static final String COL_6 = "Now_time";
+        public static final String COL_7 = "Day";
 
         public FastingPlan(Context context) {
             super(context, DATABASE_NAME, null, DATABASE_VERSION);

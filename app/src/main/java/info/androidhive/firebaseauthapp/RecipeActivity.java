@@ -9,8 +9,10 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager;
 
 import java.util.ArrayList;
@@ -27,19 +29,40 @@ public class RecipeActivity extends AppCompatActivity {
     private static String HTML = "";
     ArrayList<StepsEntity> steps;
     HorizontalInfiniteCycleViewPager recipe_view_pager;
+
+    private TextView tv_title,tv_content,tv_ingredient;
+    private ImageView img_recipe;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_recipe);
 
         Intent intent = getIntent();
-        steps= intent.getExtras().getParcelableArrayList("content");
-        recipe_view_pager = findViewById(R.id.recipe_view_pager);
+        Bundle bundle = intent.getExtras();
+        String title = bundle.getString("title");
+        String content = bundle.getString("content");
+        String image = bundle.getString("image");
+        String time = bundle.getString("time");
+        String ingredient = bundle.getString("ingredient");
 
-        Log.e("get steps",""+steps.get(0).getDescription()+""+steps.get(0).getStepimage()+""+steps.get(0).getStepname());
+        tv_content = findViewById(R.id.tv_content);
+        tv_title = findViewById(R.id.tv_title);
+        tv_ingredient = findViewById(R.id.tv_ingredient);
+        img_recipe = findViewById(R.id.img_recipe);
 
-        RecipeStepPagerAdapter adapter = new RecipeStepPagerAdapter(this,steps);
-        recipe_view_pager.setAdapter(adapter);
+        Glide.with(this)
+            .load(image).into(img_recipe);
+        tv_content.setText(content);
+        tv_ingredient.setText(ingredient);
+        tv_title.setText(title);
+//        Intent intent = getIntent();
+//        steps= intent.getExtras().getParcelableArrayList("content");
+//        recipe_view_pager = findViewById(R.id.recipe_view_pager);
+//
+//        Log.e("get steps",""+steps.get(0).getDescription()+""+steps.get(0).getStepimage()+""+steps.get(0).getStepname());
+//
+//        RecipeStepPagerAdapter adapter = new RecipeStepPagerAdapter(this,steps);
+//        recipe_view_pager.setAdapter(adapter);
 
 
 //        textView = (TextView) findViewById(R.id.textview_recipe);

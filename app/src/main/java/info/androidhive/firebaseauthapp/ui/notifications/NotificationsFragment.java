@@ -66,7 +66,7 @@ public class NotificationsFragment extends Fragment implements RecipeAdapter.Rec
         add_Data(new DataListener() {
             @Override
             public void onReceiveData(boolean dataLoadComplete) {
-                Log.e("load data complete",""+recipes.size()+"，"+recipes.toString()+"，"+recipes.get(0).getRecipename());
+                //Log.e("load data complete",""+recipes.size()+"，"+recipes.toString()+"，"+recipes.get(0).getRecipename());
                 adapter.isShimmer = false;
                 adapter.notifyDataSetChanged();
             }
@@ -124,7 +124,13 @@ public class NotificationsFragment extends Fragment implements RecipeAdapter.Rec
         Log.e("clicked ","on position "+position);
         Intent intent = new Intent(mContext, RecipeActivity.class);
         Bundle bundle = new Bundle();
-        bundle.putParcelableArrayList("content",(ArrayList<? extends Parcelable>) recipes.get(position).getSteps());
+        //bundle.putParcelableArrayList("content",(ArrayList<? extends Parcelable>) recipes.get(position).getSteps());
+        bundle.putString("content",recipes.get(position).getContent());
+        bundle.putString("image",recipes.get(position).getImage());
+        bundle.putString("ingredient",recipes.get(position).getIngredient());
+        bundle.putString("preview",recipes.get(position).getPreview());
+        bundle.putString("time",recipes.get(position).getTime());
+        bundle.putString("title",recipes.get(position).getTitle());
         intent.putExtras(bundle);
         startActivity(intent);
     }

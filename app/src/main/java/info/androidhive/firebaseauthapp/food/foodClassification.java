@@ -172,7 +172,7 @@ public class foodClassification extends AppCompatActivity {
                                 "豆魚蛋肉類 ( 份 )"+ good_meet+"份\n"+
                                 "乳品類 ( 杯 )"+good_milk+"杯\n"+
                                 "蔬菜類 ( 份 )"+good_vegetables+"份\n"+
-                                "水果類 ( 份 )"+good_fruit+"份\n"+
+                                    "水果類 ( 份 )"+good_fruit+"份\n"+
                                 "油脂與堅果種子類 ( 份 )" +good_oil+"份")
                         .setPositiveButton("了解", new DialogInterface.OnClickListener() {
                             @Override
@@ -180,13 +180,20 @@ public class foodClassification extends AppCompatActivity {
 
                             }
                         })
+                        .setNeutralButton("問題?", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivity(new Intent(foodClassification.this,ScreenSlidePagerActivity.class));
+                            }
+                        })
+
                         .show();
             }
         });
         bt_what.setOnClickListener(new Button.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                startActivity(new Intent(foodClassification.this,ScreenSlidePagerActivity.class));
             }
         });
 

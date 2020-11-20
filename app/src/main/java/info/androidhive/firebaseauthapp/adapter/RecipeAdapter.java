@@ -89,10 +89,10 @@ public class RecipeAdapter extends RecyclerView.Adapter<RecipeAdapter.myRecipeVi
 
         @SuppressLint("ResourceAsColor")
         public void setArticleInfo(Recipe recipe){
-            tv_title.setText(recipe.getRecipename());
+            tv_title.setText(recipe.getTitle());
             //tv_time.setText(recipe.getTime());
-            Log.e("thumb",""+recipe.getRecipeimage());
-            Glide.with(context).load(recipe.getRecipeimage()).into(img_recipe);
+            Log.e("thumb",""+recipe.getImage());
+            Glide.with(context).load(recipe.getImage()).into(img_recipe);
             img_recipe.setBackground(null);
             //tv_time.setBackground(null);
             tv_title.setBackgroundColor(R.color.transparentBlack);

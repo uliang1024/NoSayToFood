@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,20 +7,98 @@
     tools:context=".RecipeActivity">
 
 
-    <com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager
-        android:id="@+id/recipe_view_pager"
+<!--    <com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager-->
+<!--        android:id="@+id/recipe_view_pager"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent"-->
+<!--        app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"-->
+<!--        app:icvp_scroll_duration="250"-->
+<!--        app:icvp_center_page_scale_offset="10dp"-->
+<!--        app:icvp_min_page_scale_offset="5dp"-->
+<!--        app:icvp_max_page_scale="0.8"-->
+<!--        app:icvp_min_page_scale="0.55"-->
+<!--        app:icvp_medium_scaled="false"-->
+<!--        >-->
+
+<!--    </com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager>-->
+<RelativeLayout
+
+    android:backgroundTintMode="src_in"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+
+    <androidx.appcompat.widget.AppCompatImageView
+        app:srcCompat="@drawable/recipe"
+        android:scaleType="centerCrop"
+        android:adjustViewBounds="true"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:icvp_interpolator="@android:anim/accelerate_decelerate_interpolator"
-        app:icvp_scroll_duration="250"
-        app:icvp_center_page_scale_offset="10dp"
-        app:icvp_min_page_scale_offset="5dp"
-        app:icvp_max_page_scale="0.8"
-        app:icvp_min_page_scale="0.55"
-        app:icvp_medium_scaled="false"
-        >
+        android:layout_height="match_parent"/>
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:id="@+id/img_recipe"
+        android:layout_width="350dp"
+        android:layout_height="250dp"
+        android:layout_centerHorizontal="true"/>
+    <TextView
+        android:layout_below="@id/img_recipe"
+        android:id="@+id/tv_title"
+        android:text="燃脂綠果昔"
+        android:textAlignment="center"
+        android:textSize="26dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <androidx.cardview.widget.CardView
+        android:layout_margin="15dp"
+        android:layout_below="@id/tv_title"
+        android:id="@+id/card_ingredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp">
+        <RelativeLayout
+            android:padding="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <TextView
+                android:id="@+id/tv01"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textAlignment="center"
+                android:textSize="22dp"
+                android:text="材料:"/>
+            <TextView
+                android:layout_below="@id/tv01"
+                android:layout_marginRight="20dp"
+                android:layout_marginLeft="20dp"
+                android:text="蘋果1顆、檸檬1/2顆、葡萄柚1顆、酪梨1/2顆、200克波菜苗2杯"
+                android:textAlignment="center"
+                android:textSize="20dp"
+                android:id="@+id/tv_ingredient"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+        </RelativeLayout>
 
-    </com.gigamole.infinitecycleviewpager.HorizontalInfiniteCycleViewPager>
+    </androidx.cardview.widget.CardView>
+    <androidx.cardview.widget.CardView
+        app:cardCornerRadius="8dp"
+        android:layout_margin="15dp"
+        android:layout_below="@id/card_ingredient"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+        <TextView
+            android:layout_below="@id/card_ingredient"
+            android:id="@+id/tv_content"
+            android:layout_margin="15dp"
+            android:textSize="18dp"
+            android:text="(1)將蘋果洗乾淨，切成四等分並去除果核；檸檬、葡萄柚和酪梨去皮；將菠菜苗洗乾淨、擦乾。(2)將檸檬、葡萄柚、酪梨和蘋果切成小塊，和菠菜苗一起放入攪拌機，加入400毫升的水，高速攪拌均勻"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
 
+
+    </androidx.cardview.widget.CardView>
 
 </RelativeLayout>
+
+
+
+</ScrollView>
