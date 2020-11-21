@@ -2,9 +2,11 @@ package info.androidhive.firebaseauthapp.ui.dashboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -32,7 +34,7 @@ public class OneFoodRecord extends AppCompatActivity {
     private ArrayList<String> name = new ArrayList<>();
     private ArrayList<Float> amount = new ArrayList<>();
     private float x1,x2,x3,x4,x5,x6;
-    private TextView tv_milk,tv_fruit,tv_vegetables,tv_meet,tv_grain,tv_oil;
+    private TextView today_date,tv_milk,tv_fruit,tv_vegetables,tv_meet,tv_grain,tv_oil;
 
     private BarChart chart;
     float barWidth=0.3f;
@@ -91,6 +93,8 @@ public class OneFoodRecord extends AppCompatActivity {
         tv_vegetables = (TextView)findViewById(R.id.tv_vegetables);
         tv_fruit = (TextView)findViewById(R.id.tv_fruit);
         tv_oil = (TextView)findViewById(R.id.tv_oil);
+        today_date = (TextView)findViewById(R.id.today_date);
+        today_date.setText(datee);
 
         tv_grain.setText(String.valueOf(x1));
         tv_meet.setText(String.valueOf(x2));
@@ -255,5 +259,13 @@ public class OneFoodRecord extends AppCompatActivity {
         leftAxis.setSpaceTop(35f);
         leftAxis.setAxisMinimum(0f);
 
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {//捕捉返回鍵
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            startActivity(new Intent(OneFoodRecord.this,Food_Record.class));
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

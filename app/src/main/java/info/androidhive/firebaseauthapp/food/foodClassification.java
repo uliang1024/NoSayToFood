@@ -168,7 +168,7 @@ public class foodClassification extends AppCompatActivity {
             public void onClick(View v) {
                 new AlertDialog.Builder(foodClassification.this)
                         .setTitle("六大類飲食建議份數")
-                        .setMessage("全穀雜糧類 ( 碗 )"+good_grain+"碗\n"+
+                        .setMessage("全榖雜糧類 ( 碗 )"+good_grain+"碗\n"+
                                 "豆魚蛋肉類 ( 份 )"+ good_meet+"份\n"+
                                 "乳品類 ( 杯 )"+good_milk+"杯\n"+
                                 "蔬菜類 ( 份 )"+good_vegetables+"份\n"+

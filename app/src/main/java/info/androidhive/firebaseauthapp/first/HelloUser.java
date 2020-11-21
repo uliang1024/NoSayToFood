@@ -76,7 +76,7 @@ public class HelloUser extends AppCompatActivity {
     private String name = user.getDisplayName();
     private String email = user.getEmail();
     private FirebaseAuth mAuth;
-    String[] gender = {"男性","女性","其他"};
+    String[] gender = {"男性","女性"};
     //0 = 久坐, 1=輕量活動 , 2=中度活動量, 3=高度活動量,4 = 非常高度活動量
     private int exercise_level;
     String[] exercise = {"久坐","輕量活動","中度活動量","高度活動量","非常高度活動量"};
