@@ -343,7 +343,6 @@ public class Frag1 extends Fragment {
 
         Date date = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
-
         int target_day = 0;
         if (date.after(end_date.get(end_date.size()-1))){
             Log.e("oops","something wrong");
@@ -360,15 +359,17 @@ public class Frag1 extends Fragment {
         Log.e("today day","today"+date);
 
 
-        String startdate = df.format(start_date.get(target_day));
-        String enddate = df.format(end_date.get(target_day));
+        long startdate = (start_date.get(target_day-1).getTime());
+        long enddate = (end_date.get(target_day-1).getTime());
+
 
         Intent intent = new Intent(getContext(),RecordThis.class);
         Bundle bundle = new Bundle();
-        bundle.putString("startdate",startdate);
-        bundle.putString("enddate",enddate);
+        bundle.putLong("startdate",startdate);
+        bundle.putLong("enddate",enddate);
         //0代表未紀錄，要記錄 1代表已記，要查看
         bundle.putInt("status",status);
+        bundle.putInt("emoji",100);
         intent.putExtras(bundle);
         startActivity(intent);
 
@@ -716,18 +717,21 @@ public class Frag1 extends Fragment {
                             off_days_indexs .add(i);
                         }
                     }
+                    //如果今天是"斷食後的休息日"，就開放它記錄段時
                     if (off_days_indexs.contains(index)){
                         status.setText("斷食結束");
                         textPercentage.setText("接下來維休息日");
                         start.setText("");
                         progress.setText("");
                         btn_check_fasting.setVisibility(View.VISIBLE);
-                    }else{
+                    }
+                    //如果今天不是"斷食後的休息日"，就不開放它記錄段時
+                    else{
                         status.setText("斷食結束");
                         textPercentage.setText("接下來維休息日");
                         start.setText("");
                         progress.setText("");
-                        btn_check_fasting.setVisibility(View.INVISIBLE);
+                        btn_check_fasting.setVisibility(View.GONE);
                     }
 
                 }

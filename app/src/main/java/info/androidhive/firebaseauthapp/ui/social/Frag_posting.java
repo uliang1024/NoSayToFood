@@ -312,22 +312,22 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
         Intent postingIntent = new Intent(getActivity(), PostingPageActivity.class);
         if (items.get(position).getObject() instanceof TextPost){
             TextPost textPost = (TextPost)items.get(position).getObject();
-            postingIntent.putExtra(POSTING_TYPE,items.get(position).getType());
-
-            startActivity(postingIntent);
+//            postingIntent.putExtra(POSTING_TYPE,items.get(position).getType());
+//
+//            startActivity(postingIntent);
         }
         else if (items.get(position).getObject() instanceof PicturePost){
             PicturePost picturePost = (PicturePost)items.get(position).getObject();
-            postingIntent.putExtra(POSTING_TYPE,items.get(position).getType());
-
-
-            startActivity(postingIntent);
+//            postingIntent.putExtra(POSTING_TYPE,items.get(position).getType());
+//
+//
+//            startActivity(postingIntent);
         }
         else if (items.get(position).getObject() instanceof VideoPost){
             VideoPost videoPost = (VideoPost)items.get(position).getObject();
-            postingIntent.putExtra(POSTING_TYPE,items.get(position).getType());
-
-            startActivity(postingIntent);
+//            postingIntent.putExtra(POSTING_TYPE,items.get(position).getType());
+//
+//            startActivity(postingIntent);
         }
     }
     interface DataListener{

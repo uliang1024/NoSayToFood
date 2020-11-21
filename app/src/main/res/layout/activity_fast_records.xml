@@ -17,15 +17,15 @@
             android:orientation="horizontal"
             android:weightSum="2">
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="130dp"
-                android:layout_height="130dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 app:srcCompat="@drawable/ic_crown"
                 android:layout_weight="1"/>
             <androidx.appcompat.widget.AppCompatImageView
-                android:layout_width="130dp"
-                android:layout_height="130dp"
+                android:layout_width="100dp"
+                android:layout_height="100dp"
                 android:layout_marginTop="20dp"
                 android:layout_marginLeft="20dp"
                 android:layout_marginRight="20dp"
@@ -43,6 +43,7 @@
                 android:layout_weight="1"
                 >
                 <TextView
+                    android:id="@+id/tv_daycount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
@@ -62,6 +63,7 @@
                 android:layout_weight="1"
                 >
                 <TextView
+                    android:id="@+id/tv_hourcount"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:textAlignment="center"
@@ -79,8 +81,16 @@
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/recycler_fast_record"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/lv_header"/>
+    <TextView
+        android:id="@+id/tv_no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="您還沒有完成任何斷食喔"
+        android:textSize="30dp"
+        android:layout_centerInParent="true"/>
 
 </RelativeLayout>

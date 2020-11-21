@@ -22,7 +22,7 @@
                 android:id="@+id/tv_endtime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="周一，5月25 2023"
+                android:text="好欸!斷食完成"
                 android:textAlignment="center"
                 android:textSize="40sp" />
 
@@ -321,6 +321,7 @@
             android:layout_height="wrap_content"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
+            android:layout_marginBottom="30dp"
             app:cardCornerRadius="8dp"
             app:cardElevation="8dp">
 

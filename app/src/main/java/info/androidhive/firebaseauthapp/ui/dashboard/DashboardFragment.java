@@ -347,10 +347,11 @@ public class DashboardFragment extends Fragment {
                             public void onClick(DialogInterface dialog, int which) {
                                 EditText editText = (EditText) (view.findViewById(R.id.editText1));
                                 DecimalFormat fdf = new DecimalFormat("###0.##");
-                                float data = Float.parseFloat(editText.getText().toString());
-                                if(editText.getText().toString().matches("")) {
+
+                                if(editText.getText().toString().equals("")) {
                                     editTextWeight.setText("");
                                 }else{
+                                    float data = Float.parseFloat(editText.getText().toString());
                                     editTextWeight.setText(fdf.format(data));
                                 }
                             }
