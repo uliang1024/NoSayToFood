@@ -1,16 +1,21 @@
 package info.androidhive.firebaseauthapp.ui.profile;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.drawable.ColorDrawable;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.storage.StorageManager;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -24,11 +29,26 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.NumberPicker;
 import android.widget.PopupWindow;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.squareup.picasso.Picasso;
+import com.theartofdev.edmodo.cropper.CropImage;
+import com.theartofdev.edmodo.cropper.CropImageView;
 
 import java.lang.reflect.Field;
 import java.text.ParseException;
@@ -36,6 +56,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import info.androidhive.firebaseauthapp.FastRecordsActivity;
 import info.androidhive.firebaseauthapp.MainActivity;
 import info.androidhive.firebaseauthapp.R;
@@ -66,12 +87,50 @@ public class PersonalProfile extends AppCompatActivity {
     private Integer age_data;
     private float height_data,fat_data;
     private int exercise_level;
+
+    private CircleImageView userface;
+    final static int Gallery_Pick = 1;
+    private StorageReference UserProfileImageRef;
+    String currentUserID;
+    private DatabaseReference UsersRef;
+    private ProgressDialog loadingBar;
     @Override
 
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_personalprofile);
 
+        uid = user.getUid();
+        currentUserID = uid;
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(currentUserID);
+        UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("users").child(currentUserID).child("header");
+        loadingBar= new ProgressDialog(this);
+
+        userface = (CircleImageView)findViewById(R.id.userface);
+        userface.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent();
+                intent.setAction(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent,Gallery_Pick);
+            }
+        });
+
+        UsersRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String image = dataSnapshot.child("profileimage").getValue().toString();
+                    Picasso.get().load(image).placeholder(R.drawable.com_facebook_profile_picture_blank_square).into(userface);
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
 
 
         tv_gender = (TextView)findViewById(R.id.tv_gender);
@@ -83,7 +142,7 @@ public class PersonalProfile extends AppCompatActivity {
         ll_age = (LinearLayout)findViewById(R.id.ll_age);
         iv_leftarrow=(ImageView)findViewById(R.id.iv_leftarrow);
 
-        uid = user.getUid();
+
         myDb = new PersonalInformation(this);
         Cursor res = myDb.getAllData();
         while (res.moveToNext()) {
@@ -227,6 +286,64 @@ public class PersonalProfile extends AppCompatActivity {
 
 
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if(requestCode==Gallery_Pick && resultCode==RESULT_OK&&data!=null){
+            Uri ImageUri = data.getData();
+
+            CropImage.activity(ImageUri)
+                    .setGuidelines(CropImageView.Guidelines.ON)
+                    .setAspectRatio(1,1)
+                    .start(this);
+        }
+        if(requestCode==CropImage.CROP_IMAGE_ACTIVITY_REQUEST_CODE){
+            CropImage.ActivityResult result = CropImage.getActivityResult(data);
+            if(resultCode==RESULT_OK){
+                loadingBar.setTitle("Profile Image");
+                loadingBar.setMessage("please wait");
+                loadingBar.show();
+                loadingBar.setCanceledOnTouchOutside(true);
+                Uri resultUri = result.getUri();
+                final StorageReference filePath = UserProfileImageRef.child(currentUserID + ".jpg");
+                filePath.putFile(resultUri).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        filePath.getDownloadUrl().addOnSuccessListener(new OnSuccessListener<Uri>() {
+                            @Override
+                            public void onSuccess(Uri uri) {
+                                final String downloadUrl = uri.toString();
+                                UsersRef.child("profileimage").setValue(downloadUrl).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if(task.isSuccessful()){
+                                            Toast.makeText(PersonalProfile.this, "Image Stored", Toast.LENGTH_SHORT).show();
+                                            loadingBar.dismiss();
+                                        }
+                                        else {
+                                            String message = task.getException().getMessage();
+                                            Toast.makeText(PersonalProfile.this, "Error:" + message, Toast.LENGTH_SHORT).show();
+                                            loadingBar.dismiss();
+                                        }
+                                    }
+                                });
+                            }
+
+                        });
+
+                    }
+
+                });
+            }
+            else
+            {
+                Toast.makeText(this, "Error Occured: Image can not be cropped. Try Again.", Toast.LENGTH_SHORT).show();
+                loadingBar.dismiss();
+            }
+        }
+    }
+
     private int countAge(Date birthDay) {
         Calendar cal = Calendar.getInstance();
 

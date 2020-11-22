@@ -18,11 +18,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar.FullScreen">
-        =======
-        <activity android:name=".food.ScreenSlidePagerActivity"></activity>
-        <activity android:name=".ui.profile.UserEdit"
-            tools:ignore="DuplicateActivity" />
->>>>>>> Stashed changes
+        <activity android:name=".ui.profile.About"></activity>
+        <activity android:name=".food.ScreenSlidePagerActivity" />
         <activity android:name=".ui.dashboard.OneFoodRecord" />
         <activity android:name=".ui.profile.PersonalProfile" />
         <activity android:name=".FastRecordsActivity" />
@@ -92,6 +89,10 @@
         <service
             android:name=".FastingJobService"
             android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <activity
+            android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
+            android:theme="@style/Base.Theme.AppCompat" />
     </application>
 
 </manifest>

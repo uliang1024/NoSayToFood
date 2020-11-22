@@ -159,7 +159,7 @@ public class URLTagHandler implements Html.TagHandler {
                 }
 
                 @Override
-                public void onBitmapFailed(Drawable errorDrawable) {
+                public void onBitmapFailed(Exception e, Drawable errorDrawable) {
                     tecent_chat_image.setImageDrawable(errorDrawable);
                 }
 

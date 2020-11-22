@@ -25,7 +25,14 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.User;
+import com.squareup.picasso.Picasso;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -34,6 +41,7 @@ import java.net.URL;
 
 import javax.annotation.Nullable;
 
+import de.hdodenhof.circleimageview.CircleImageView;
 import info.androidhive.firebaseauthapp.MainActivity;
 import info.androidhive.firebaseauthapp.R;
 
@@ -42,14 +50,15 @@ import info.androidhive.firebaseauthapp.R;
  */
 
 public class ProfileFragment extends Fragment {
-    private static final String KEY_USERNAME = "Username";
-    private static final String KEY_EMAIL = "Email";
-   // private Button mlogoutBtn;
+
     private FirebaseAuth mAuth;
+    private DatabaseReference UsersRef;
     private TextView welconeText;
     private ImageView imageView;
-    private LinearLayout ll_logout,ll_editor;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private LinearLayout ll_logout,ll_editor,ll_about,ll_share;
+    private CircleImageView userface;
+    String  currentUserID;
+
     @SuppressLint("StaticFieldLeak")
     @Nullable
     @Override
@@ -58,42 +67,36 @@ public class ProfileFragment extends Fragment {
         init(fragment_profile);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-        if (user != null) {
-            // Name, email address, and profile photo Url
-            String name = user.getDisplayName();
-            String email = user.getEmail();
-            Uri photoUrl = user.getPhotoUrl();
-            welconeText.setText(name);
-
-            //建立一個AsyncTask執行緒進行圖片讀取動作，並帶入圖片連結網址路徑
-            new AsyncTask<String, Void, Bitmap>()
-            {
-                @Override
-                protected Bitmap doInBackground(String... params)
-                {
-                    String url = params[0];
-                    return getBitmapFromURL(url);
-                }
-
-                @Override
-                protected void onPostExecute(Bitmap result)
-                {
-                    imageView. setImageBitmap (result);
-                    super.onPostExecute(result);
-                }
-            }.execute(String.valueOf(photoUrl));
-
-            // Check if user's email is verified
-            boolean emailVerified = user.isEmailVerified();
-
-            // The user's ID, unique to the Firebase project. Do NOT use this value to
-            // authenticate with your backend server, if you have one. Use
-            // FirebaseUser.getIdToken() instead.
-            String uid = user.getUid();
-        }
-
         mAuth = FirebaseAuth.getInstance();
+        currentUserID = mAuth.getCurrentUser().getUid();
+        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+        UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if(dataSnapshot.exists()){
+                    String fullname = dataSnapshot.child("Username").getValue().toString();
+                    String image = dataSnapshot.child("profileimage").getValue().toString();
+                    welconeText.setText(fullname);
+                    Picasso.get().load(image).placeholder(R.drawable.com_facebook_profile_picture_blank_square).into(userface);
+                }
+            }
 
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        ll_share.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent shareIntent = new Intent();
+                shareIntent.setAction(Intent.ACTION_SEND);
+                shareIntent.putExtra(Intent.EXTRA_TEXT, "該斷食了吧!");
+                shareIntent.setType("text/jpeg");
+                startActivity(Intent.createChooser(shareIntent, "讓更多人知道我們"));
+            }
+        });
         ll_editor.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -121,29 +124,16 @@ public class ProfileFragment extends Fragment {
                 });
             }
         });
-
+        ll_about.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent accountIntent = new Intent(ProfileFragment.super.getContext(), About.class);
+                startActivity(accountIntent);
+            }
+        });
         return fragment_profile;
     }
 
-    //讀取網路圖片，型態為Bitmap
-    private static Bitmap getBitmapFromURL(String imageUrl)
-    {
-        try
-        {
-            URL url = new URL(imageUrl);
-            HttpURLConnection connection = (HttpURLConnection) url.openConnection();
-            connection.setDoInput(true);
-            connection.connect();
-            InputStream input = connection.getInputStream();
-            Bitmap bitmap = BitmapFactory.decodeStream(input);
-            return bitmap;
-        }
-        catch (IOException e)
-        {
-            e.printStackTrace();
-            return null;
-        }
-    }
     @Override
     public void onStart() {
         super.onStart();
@@ -170,6 +160,9 @@ public class ProfileFragment extends Fragment {
         imageView = (ImageView)v.findViewById(R.id.imageView);
         ll_logout = (LinearLayout)v.findViewById(R.id.ll_logout);
         ll_editor = (LinearLayout)v.findViewById(R.id.ll_editor);
+        userface = (CircleImageView)v.findViewById(R.id.userface);
+        ll_about = (LinearLayout)v.findViewById(R.id.ll_about);
+        ll_share = (LinearLayout)v.findViewById(R.id.ll_share);
     }
 
 

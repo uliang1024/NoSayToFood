@@ -40,12 +40,14 @@ public class URLImageGetter implements ImageGetter {
             }
 
             @Override
-            public void onBitmapFailed(Drawable errorDrawable) {
+            public void onBitmapFailed(Exception e, Drawable errorDrawable) {
                 errorDrawable.setBounds(0, 0, errorDrawable.getIntrinsicWidth(), errorDrawable.getIntrinsicHeight());
                 urlDrawable.setBounds(0, 0, errorDrawable.getIntrinsicWidth(), errorDrawable.getIntrinsicHeight());
                 urlDrawable.setDrawable(errorDrawable);
                 tv_image.invalidate();
             }
+
+
 
             @Override
             public void onPrepareLoad(Drawable placeHolderDrawable) {

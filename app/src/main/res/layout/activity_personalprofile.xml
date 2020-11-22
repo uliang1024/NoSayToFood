@@ -9,26 +9,35 @@
 
     <ImageView
         android:id="@+id/iv_leftarrow"
-        android:layout_width="70dp"
-        android:layout_height="70dp"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
         android:src="@drawable/leftarrow"
-        android:padding="25dp"/>
+        android:layout_margin="30dp"/>
 
     <TextView
         android:id="@+id/title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="30dp"
         android:text="個人資料"
         android:textSize="25sp"
         android:layout_centerHorizontal="true"
         android:layout_margin="30dp"
         android:textStyle="bold"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userface"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/com_facebook_profile_picture_blank_square"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        />
     <LinearLayout
         android:id="@+id/ll_gender"
         android:layout_width="match_parent"
         android:layout_height="50dp"
         android:layout_margin="10dp"
-        android:layout_below="@id/title"
+        android:layout_below="@id/userface"
         >
 
         <ImageView
@@ -58,6 +67,7 @@
         <ImageView
             android:layout_width="15sp"
             android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
             android:src="@drawable/next" />
 
 
@@ -94,7 +104,8 @@
         <ImageView
             android:layout_width="15sp"
             android:layout_height="match_parent"
-            android:src="@drawable/next" />
+            android:src="@drawable/next"
+            android:layout_marginEnd="20dp"/>
     </LinearLayout>
     <LinearLayout
         android:id="@+id/ll_height"
@@ -128,7 +139,8 @@
         <ImageView
             android:layout_width="15sp"
             android:layout_height="match_parent"
-            android:src="@drawable/next" />
+            android:src="@drawable/next"
+            android:layout_marginEnd="20dp"/>
     </LinearLayout>
 
 
@@ -164,7 +176,8 @@
         <ImageView
             android:layout_width="15sp"
             android:layout_height="match_parent"
-            android:src="@drawable/next" />
+            android:src="@drawable/next"
+            android:layout_marginEnd="20dp"/>
     </LinearLayout>
 
     <LinearLayout
@@ -199,7 +212,8 @@
         <ImageView
             android:layout_width="15sp"
             android:layout_height="match_parent"
-            android:src="@drawable/next" />
+            android:src="@drawable/next"
+            android:layout_marginEnd="20dp"/>
     </LinearLayout>
 
 </RelativeLayout>
