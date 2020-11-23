@@ -17,15 +17,27 @@
         android:orientation="vertical">
 
         <TextView
+            android:layout_width="200dp"
+            android:layout_height="wrap_content"
+            android:text="食物紀錄"
+            android:textSize="20sp"
+            android:background="@drawable/bg_button_white"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:layout_margin="15dp"
+            android:padding="5dp"/>
+
+        <CalendarView
+            android:id="@+id/calendarView"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:paddingTop="20dp"
-            android:text="食物紀錄"
-            android:textSize="30sp"/>
+            android:background="@drawable/food_record_rounde"
+            android:layout_margin="10dp"/>
 
         <ListView
             android:id="@+id/user_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
+            android:layout_height="wrap_content"
+            />
 
     </LinearLayout>   </ScrollView></LinearLayout>

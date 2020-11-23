@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- 預設時 -->
+    <item android:color="@android:color/black">
+        <shape android:shape="rectangle"  >
+            <corners android:radius="15dip" />
+            <gradient android:angle="-90" android:startColor="#c1f3fa" android:endColor="#efe5a8"  />
+        </shape>
+    </item>
+
+</selector>

@@ -1,5 +1,6 @@
 package info.androidhive.firebaseauthapp.ui.dashboard;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
@@ -7,8 +8,10 @@ import android.database.Cursor;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.CalendarView;
 import android.widget.ListView;
 import android.widget.SimpleAdapter;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -22,12 +25,16 @@ import java.util.Set;
 
 import info.androidhive.firebaseauthapp.SQLite.DatabaseHelper;
 import info.androidhive.firebaseauthapp.R;
+import info.androidhive.firebaseauthapp.food.foodClassification;
 
 public class Food_Record extends AppCompatActivity {
     DatabaseHelper myDb;
     private ListView listView;
     private SimpleAdapter simpleAdapter;
     private ArrayList<String> date = new ArrayList<>();
+
+    private CalendarView calendarView;
+    private Boolean exist = false;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -82,6 +89,31 @@ public class Food_Record extends AppCompatActivity {
                 bundle.putString("datee",listView.getItemAtPosition(arg2).toString());
                 intent.putExtras(bundle);
                 startActivity(intent);
+            }
+        });
+
+        calendarView = (CalendarView)findViewById(R.id.calendarView);
+
+        calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
+            @Override
+            public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
+                String dateee =year+"年"+(month+1)+"月"+dayOfMonth+"日";
+               for (int i=0;i<date.size();i++){
+                   if(dateee.equals(date.get(i))){
+                       exist=true;
+                       Intent intent = new Intent();
+                       intent.setClass(Food_Record.this,OneFoodRecord.class);
+                       Bundle bundle = new Bundle();
+                       bundle.putString("datee","000000"+dateee+"0");
+                       intent.putExtras(bundle);
+                       startActivity(intent);
+                       finish();
+                       break;
+                   }
+               }
+                if(!exist){
+                    Toast.makeText(Food_Record.this,dateee+"沒有任何紀錄",Toast.LENGTH_LONG).show();
+                }
             }
         });
     }

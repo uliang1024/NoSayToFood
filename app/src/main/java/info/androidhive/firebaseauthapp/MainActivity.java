@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
@@ -35,11 +36,18 @@ import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
+import com.squareup.picasso.Picasso;
 
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.TimeZone;
 
 import info.androidhive.firebaseauthapp.SQLite.PersonalInformation;
@@ -56,6 +64,7 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout rl_bg;
     private TextView title;
     private Handler handler = new Handler();
+    private Button button2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,16 +78,17 @@ public class MainActivity extends AppCompatActivity {
 
         rl_bg = (RelativeLayout)findViewById(R.id.rl_bg);
         title = (TextView)findViewById(R.id.title);
+        button2 = (Button)findViewById(R.id.button2);
 
         Calendar calendar= Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
 
         if(hour>=6 && hour<18){
             rl_bg.setBackgroundResource(R.drawable.morning_bg);
-            title.setText("Good Morning");
+            title.setText("別一減肥就怕會失敗  \n  許多奇蹟我們相信才會存在。");
         }else{
             rl_bg.setBackgroundResource(R.drawable.night_bg);
-            title.setText("Good Night");
+            title.setText("證明自我的潛質：\n斷食能完成，什麼事完成不了？");
         }
 
         mAuth = FirebaseAuth.getInstance();
@@ -146,6 +156,13 @@ public class MainActivity extends AppCompatActivity {
                         // ...
                     }
                 });
+            }
+        });
+
+        button2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startActivity(new Intent(MainActivity.this, EmailLogin.class));
             }
         });
     }
@@ -223,6 +240,39 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            String email = user.getEmail();
+                            String uid = user.getUid();
+                            String username = user.getDisplayName();
+                            String image = user.getPhotoUrl().toString();
+
+                            DatabaseReference UsersRef;
+                            UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+                            UsersRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.exists()){
+                                        if(!dataSnapshot.hasChild("profileimage")){
+                                            Log.e("show" , ""+dataSnapshot.hasChild("profileimage"));
+                                            HashMap<Object,String> hashMap = new HashMap<>();
+                                            hashMap.put("Email",email);
+                                            hashMap.put("Uid",uid);
+                                            hashMap.put("Username",username);
+                                            hashMap.put("profileimage",image);
+
+                                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                            DatabaseReference reference = database.getReference("Users");
+                                            reference.child(uid).setValue(hashMap);
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
                             updateUI();
                         } else {
                             // If sign in fails, display a message to the user.
@@ -247,6 +297,39 @@ public class MainActivity extends AppCompatActivity {
                             // Sign in success, update UI with the signed-in user's information
                             Log.d(TAG, "signInWithCredential:success");
                             FirebaseUser user = mAuth.getCurrentUser();
+
+                            String email = user.getEmail();
+                            String uid = user.getUid();
+                            String username = user.getDisplayName();
+                            String image = user.getPhotoUrl().toString();
+
+                            DatabaseReference UsersRef;
+                            UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+                            UsersRef.addValueEventListener(new ValueEventListener() {
+                                @Override
+                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                    if(dataSnapshot.exists()){
+                                        if(!dataSnapshot.hasChild("profileimage")){
+                                            Log.e("show" , ""+dataSnapshot.hasChild("profileimage"));
+                                            HashMap<Object,String> hashMap = new HashMap<>();
+                                            hashMap.put("Email",email);
+                                            hashMap.put("Uid",uid);
+                                            hashMap.put("Username",username);
+                                            hashMap.put("profileimage",image);
+
+                                            FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                            DatabaseReference reference = database.getReference("Users");
+                                            reference.child(uid).setValue(hashMap);
+                                        }
+                                    }
+                                }
+
+                                @Override
+                                public void onCancelled(@NonNull DatabaseError databaseError) {
+
+                                }
+                            });
+
                             mFacrbookIma.setEnabled(true);
                             updateUI();
                         } else {

@@ -3,9 +3,12 @@ package info.androidhive.firebaseauthapp.fasting;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
+import android.widget.MediaController;
+import android.widget.VideoView;
 
 import info.androidhive.firebaseauthapp.HomeActivity;
 import info.androidhive.firebaseauthapp.R;
@@ -21,6 +24,16 @@ public class Fasting_Complete extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.fasting__complete);
 
+        VideoView videoView = (VideoView) this.findViewById(R.id.videoView);
+        MediaController mc = new MediaController(this);
+        videoView.setMediaController(mc);
+
+        videoView.setVideoURI(Uri.parse("android.resource://" + getPackageName() + "/" + R.raw.testmovie));
+
+        videoView.setMediaController(null);
+        videoView.requestFocus();
+        videoView.start();
+
         back = (Button)findViewById(R.id.back);
         back.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -30,4 +43,5 @@ public class Fasting_Complete extends AppCompatActivity {
             }
         });
     }
+
 }

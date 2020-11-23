@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#e8dfd2" >
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -37,103 +38,5 @@
             android:src="@drawable/good_milk"/>
 
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="乳品類的營養成分及功能
-"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:layout_margin="5dp"
-            android:textColor="#0E1682"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="乳品類食物主要提供鈣質，且含
-有優質蛋白質、乳糖、脂肪、多種維
-生素、礦物質等。國人飲食中鈣質攝取
-量大多不足，而每日攝取 1 ～ 2 杯乳品是
-最容易滿足鈣質需求的方法，故將乳製品於六
-大類食物中單獨另列一類。不吃乳品（如全素者）
-必需特別注意每天都要選擇其他高鈣食物，如高鈣豆製
-品、深色葉菜類、芝麻或鈣強化食品等，以得到充足的鈣質。
-"
-            android:textSize="15dp"
-            android:layout_margin="5dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="乳品類食物簡介"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:layout_margin="5dp"
-            android:textColor="#0E1682"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="乳類食品為哺乳動物的乳汁及其製品，市面上最多是牛
-乳製品，其次為羊乳製品。乳品類食品包括鮮乳、低脂乳、
-脫脂乳、保久乳、奶粉、優酪乳、優格、各式乳酪（起司）等。
-優酪乳是牛乳或羊乳中加入乳酸菌經醱酵製成，乳酸菌將乳
-糖轉換為乳酸，乳酸的酸性使原本乳中的蛋白質凝固，成為
-凝態。但也同時造成酸味，故產品中常加入較多的糖，增加
-適口性，故熱量較鮮乳高。選擇各種乳品時，應注意避免同
-時吃入過多添加糖。"
-            android:textSize="15dp"
-            android:layout_margin="5dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="乳糖耐受性不良"
-            android:textSize="15dp"
-            android:textColor="#000000"
-            android:layout_margin="5dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="乳糖是天然存在於乳汁中的雙醣，吃入後需經小腸的乳
-糖酵素分解成單糖才能被吸收。許多人在嬰幼兒期「斷奶」
-之後，因不常喝奶，小腸的乳糖酵素逐漸減少。造成喝奶後
-因乳糖不能被分解，使得大腸中細菌大量分解乳糖而產氣，
-類
-品
-乳
-優格
-造成脹氣或放屁，或因大量乳糖在大腸中使滲透壓升高而造成腹
-瀉。此即為「乳糖耐受性不良」的症狀。在臺灣約 95% 的成人分
-解乳糖的功能是不佳的 (40 % 有脹氣或放屁的症狀，15% 有腹瀉
-的症狀 )。而乳糖的吸收不良可能是造成鈣質不足的一個危險因
-子，並不是因為無法吸收鈣質，而是因為乳糖耐受不良的症狀而
-避免乳製品的使用，造成鈣質攝取不足。雖然有些極端乳
-糖耐受不良的人必須避免乳製品，但有大部份人是
-可以從中量或少量的乳製品開始，如加幾湯匙鮮
-奶或一湯匙奶粉到常用飲料中，逐漸適應而
-慢慢增加食用量。或者是將一次的份量分
-開二或多次食用。可以逐漸克服乳糖不耐
-的困擾。"
-            android:textSize="15dp"
-            android:layout_margin="5dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="試著建立起規則食用含乳糖的食
-物，如：從少量少次開始，逐步養成每
-天喝牛奶的習慣。也可幫助身體重新適
-應乳糖而減少乳糖耐受不良的症狀。此
-外，醱酵乳製品包括只含有少量乳糖的乳
-酪（起司）、含有益生菌幫助分解乳糖的
-優格、優酪乳，或是低乳糖或沒有乳糖的牛
-奶，都可以提供乳糖耐受不良的人做選擇。"
-            android:textSize="15dp"
-            android:layout_margin="5dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="註：牛奶過敏與乳糖耐受性不良節錄自「學童骨質健康與鈣質攝
-取」，台北榮民總醫院吳子聰醫師 (「臨床醫學」雜誌，2009)"
-            android:textSize="10dp"
-            android:layout_margin="5dp"/>
-
-
     </LinearLayout>
-</ScrollView>
+</LinearLayout>

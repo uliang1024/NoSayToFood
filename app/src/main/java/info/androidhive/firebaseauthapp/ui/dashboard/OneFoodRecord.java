@@ -2,9 +2,11 @@ package info.androidhive.firebaseauthapp.ui.dashboard;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.KeyEvent;
 import android.widget.TextView;
 
 import com.github.mikephil.charting.charts.BarChart;
@@ -32,7 +34,7 @@ public class OneFoodRecord extends AppCompatActivity {
     private ArrayList<String> name = new ArrayList<>();
     private ArrayList<Float> amount = new ArrayList<>();
     private float x1,x2,x3,x4,x5,x6;
-    private TextView tv_milk,tv_fruit,tv_vegetables,tv_meet,tv_grain,tv_oil;
+    private TextView today_date,tv_milk,tv_fruit,tv_vegetables,tv_meet,tv_grain,tv_oil;
 
     private BarChart chart;
     float barWidth=0.3f;
@@ -43,7 +45,6 @@ public class OneFoodRecord extends AppCompatActivity {
     private int user_exercise_level,age;
     private String gender;
     private float height,width;
-    private double bmr,tdee;
     private double good_milk,good_fruit,good_vegetables,good_meet,good_grain,good_oil;
 
     @Override
@@ -70,7 +71,7 @@ public class OneFoodRecord extends AppCompatActivity {
             }
         }
         for(int i=0;i<name.size();i++){
-            if(name.get(i).equals("全穀雜糧類")){
+            if(name.get(i).equals("全榖雜糧類")){
                 x1=x1+amount.get(i);
             }else if(name.get(i).equals("豆魚蛋肉類")){
                 x2=x2+amount.get(i);
@@ -91,6 +92,8 @@ public class OneFoodRecord extends AppCompatActivity {
         tv_vegetables = (TextView)findViewById(R.id.tv_vegetables);
         tv_fruit = (TextView)findViewById(R.id.tv_fruit);
         tv_oil = (TextView)findViewById(R.id.tv_oil);
+        today_date = (TextView)findViewById(R.id.today_date);
+        today_date.setText(datee);
 
         tv_grain.setText(String.valueOf(x1));
         tv_meet.setText(String.valueOf(x2));
@@ -103,74 +106,76 @@ public class OneFoodRecord extends AppCompatActivity {
         Cursor res2 = myDb2.getAllData();
         while (res2.moveToNext()) {
             if(uid.equals(res2.getString(0))){
-                user_exercise_level = res2.getInt(8);
-                gender = res2.getString(2);
-                age = res2.getInt(3);
-                height = res2.getFloat(4);
-                width = res2.getFloat(5);
+                user_exercise_level = res2.getInt(7);
+                gender = res2.getString(1);
+                age = res2.getInt(2);
+                height = res2.getFloat(3);
+                width = res2.getFloat(4);
             }
         }
 
+        float bmr;
         if(gender.equals("男性")){
-            bmr = 10*width+6.25*height-5*age-161;
+            bmr = (float)((10*width)+(6.25*height)-(5*age)+5);
         }else{
-            bmr = 10*width+6.25*height-5*age+5;
+            bmr = (float)((10*width)+(6.25*height)-(5*age)-161);
         }
+        float tdee;
         if(user_exercise_level == 0){
-            tdee = 1.2*bmr;
+            tdee = (float)(1.2* bmr);
         }else if(user_exercise_level == 1){
-            tdee = 1.375*bmr;
+            tdee = (float)(1.375* bmr);
         }else if(user_exercise_level == 2){
-            tdee = 1.55*bmr;
+            tdee = (float)(1.55* bmr);
         }else if(user_exercise_level == 3){
-            tdee = 1.725*bmr;
+            tdee = (float)(1.725* bmr);
         }else{
-            tdee = 1.9*bmr;
+            tdee = (float)(1.9* bmr);
         }
 
-        if(tdee>=2700){
+        if(tdee >=2700){
             good_grain = 4;
             good_meet = 8;
             good_milk = 2;
             good_vegetables= 5;
             good_fruit=4;
             good_oil=7;
-        }else if(tdee <2700 && tdee>=2500){
+        }else if(tdee >=2500 && tdee <2700){
             good_grain = 4;
             good_meet = 7;
             good_milk = 1.5;
             good_vegetables= 5 ;
             good_fruit=4;
             good_oil=6;
-        }else if(tdee <2500 && tdee>=2200){
+        }else if(tdee>=2200  && tdee<2500 ){
             good_grain = 3.5;
             good_meet = 6;
             good_milk = 1.5;
             good_vegetables= 4 ;
             good_fruit=3.5;
             good_oil=5;
-        }else if(tdee <2200 && tdee>=2000){
+        }else if(tdee>=2000  && tdee <2200){
             good_grain = 3;
             good_meet = 6;
             good_milk = 1.5;
             good_vegetables= 4 ;
             good_fruit=3;
             good_oil=5;
-        }else if(tdee <2000 && tdee>=1800){
+        }else if(tdee>=1800  && tdee<2000 ){
             good_grain = 3;
             good_meet = 5;
             good_milk = 1.5;
             good_vegetables= 3;
             good_fruit=2 ;
             good_oil=4;
-        }else if(tdee <1800 && tdee>=1500){
+        }else if(tdee >=1500&& tdee <1800 ){
             good_grain = 2.5;
             good_meet = 4;
             good_milk = 1.5;
             good_vegetables= 3;
             good_fruit=2 ;
             good_oil=3;
-        }else{
+        }else if(tdee <1500){
             good_grain = 1.5;
             good_meet = 3;
             good_milk = 1.5;
@@ -190,7 +195,7 @@ public class OneFoodRecord extends AppCompatActivity {
 
         ArrayList xVals = new ArrayList();
 
-        xVals.add("全穀雜糧");
+        xVals.add("全榖雜糧");
         xVals.add("豆魚蛋肉");
         xVals.add("乳品");
         xVals.add("蔬菜");
@@ -255,5 +260,13 @@ public class OneFoodRecord extends AppCompatActivity {
         leftAxis.setSpaceTop(35f);
         leftAxis.setAxisMinimum(0f);
 
+    }
+    public boolean onKeyDown(int keyCode, KeyEvent event) {//捕捉返回鍵
+        if ((keyCode == KeyEvent.KEYCODE_BACK)) {
+            startActivity(new Intent(OneFoodRecord.this,Food_Record.class));
+            finish();
+            return true;
+        }
+        return super.onKeyDown(keyCode, event);
     }
 }

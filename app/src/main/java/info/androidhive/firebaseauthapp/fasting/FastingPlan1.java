@@ -85,7 +85,7 @@ public class FastingPlan1 extends AppCompatActivity {
             calendar2.set(Calendar.MINUTE, 30);
             calendar2.set(Calendar.SECOND,0);
             calendar2.set(Calendar.MILLISECOND,0);
-            calendar2.add(Calendar.HOUR_OF_DAY,16);
+            calendar2.add(Calendar.HOUR_OF_DAY,14);
             date2 =calendar2.getTime();
             SimpleDateFormat formatter2 = new SimpleDateFormat("EEHH:mm");
             time_end[i] = formatter2.format(date2);
@@ -508,7 +508,7 @@ public class FastingPlan1 extends AppCompatActivity {
                 calendar2.set(Calendar.MINUTE, minute);
                 calendar2.set(Calendar.SECOND,0);
                 calendar2.set(Calendar.MILLISECOND,0);
-                calendar2.add(Calendar.HOUR_OF_DAY,16);//把日期往前減少一天，若想把日期向後推一天則將負數改為正數
+                calendar2.add(Calendar.HOUR_OF_DAY,14);//把日期往前減少一天，若想把日期向後推一天則將負數改為正數
                 date2 =calendar2.getTime();
                 SimpleDateFormat formatter2 = new SimpleDateFormat("EEHH:mm");
                 long diff2 = date2.getTime();

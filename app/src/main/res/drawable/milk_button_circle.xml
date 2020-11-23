@@ -4,15 +4,15 @@
     <!-- 按壓時 -->
     <item android:state_pressed="true">
         <shape android:shape="oval">
-            <stroke android:color="#ffffff" android:width="10dp" />
-            <solid android:color="#B0CEE3"/>
+            <stroke android:color="#deb595" android:width="4dp" />
+            <solid android:color="#e5fffb"/>
             <size android:width="75dp" android:height="75dp"/>
         </shape>
     </item>
     <item>
         <shape android:shape="oval">
-            <stroke android:color="#ffffff" android:width="10dp" />
-            <solid android:color="#5DADE2"/>
+            <stroke android:color="#deb595" android:width="4dp" />
+            <solid android:color="#e5fffb"/>
             <size android:width="75dp" android:height="75dp"/>
         </shape>
     </item>

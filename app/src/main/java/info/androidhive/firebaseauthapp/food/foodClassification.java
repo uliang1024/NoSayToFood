@@ -71,28 +71,28 @@ public class foodClassification extends AppCompatActivity {
         Cursor res = myDb2.getAllData();
         while (res.moveToNext()) {
             if(uid.equals(res.getString(0))){
-                user_exercise_level = res.getInt(8);
-                gender = res.getString(2);
-                age = res.getInt(3);
-                height = res.getFloat(4);
-                width = res.getFloat(5);
+                user_exercise_level = res.getInt(7);
+                gender = res.getString(1);
+                age = res.getInt(2);
+                height = res.getFloat(3);
+                width = res.getFloat(4);
             }
         }
         if(gender.equals("男性")){
-            bmr = 10*width+6.25*height-5*age-161;
+            bmr = (float)((10*width)+(6.25*height)-(5*age)+5);
         }else{
-            bmr = 10*width+6.25*height-5*age+5;
+            bmr = (float)((10*width)+(6.25*height)-(5*age)-161);
         }
         if(user_exercise_level == 0){
-            tdee = 1.2*bmr;
+            tdee = (float)(1.2*bmr);
         }else if(user_exercise_level == 1){
-            tdee = 1.375*bmr;
+            tdee = (float)(1.375*bmr);
         }else if(user_exercise_level == 2){
-            tdee = 1.55*bmr;
+            tdee = (float)(1.55*bmr);
         }else if(user_exercise_level == 3){
-            tdee = 1.725*bmr;
+            tdee = (float)(1.725*bmr);
         }else{
-            tdee = 1.9*bmr;
+            tdee = (float)(1.9*bmr);
         }
 
         if(tdee>=2700){
@@ -102,35 +102,35 @@ public class foodClassification extends AppCompatActivity {
             good_vegetables= "5 份";
             good_fruit="4 份";
             good_oil="7 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
-        }else if(tdee <2700 && tdee>=2500){
+        }else if(tdee >=2500 && tdee<2700){
             good_grain = "4";
             good_meet = "7";
             good_milk = "1.5杯 (360 ml)";
             good_vegetables= "5 份";
             good_fruit="4 份";
             good_oil="6 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
-        }else if(tdee <2500 && tdee>=2200){
+        }else if(tdee>=2200  && tdee<2500){
             good_grain = "3.5";
             good_meet = "6";
             good_milk = "1.5杯 (360 ml)";
             good_vegetables= "4 份";
             good_fruit="3.5 份";
             good_oil="5 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
-        }else if(tdee <2200 && tdee>=2000){
+        }else if(tdee>=2000  && tdee<2200){
             good_grain = "3";
             good_meet = "6";
             good_milk = "1.5杯 (360 ml)";
             good_vegetables= "4 份";
             good_fruit="3 份";
             good_oil="5 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
-        }else if(tdee <2000 && tdee>=1800){
+        }else if(tdee>=1800  && tdee<2000){
             good_grain = "3";
             good_meet = "5";
             good_milk = "1.5杯 (360 ml)";
             good_vegetables= "3 份";
             good_fruit="2 份";
             good_oil="4 茶匙油 ( 約 35 公克 ) + 1 份堅果種子";
-        }else if(tdee <1800 && tdee>=1500){
+        }else if(tdee >=1500 && tdee<1800){
             good_grain = "2.5";
             good_meet = "4( 青少年高鈣豆製品至少占 1.3 份 )";
             good_milk = "1.5杯 (360 ml)";
@@ -168,7 +168,7 @@ public class foodClassification extends AppCompatActivity {
             public void onClick(View v) {
                 new AlertDialog.Builder(foodClassification.this)
                         .setTitle("六大類飲食建議份數")
-                        .setMessage("全穀雜糧類 ( 碗 )"+good_grain+"碗\n"+
+                        .setMessage("全榖雜糧類 ( 碗 )"+good_grain+"碗\n"+
                                 "豆魚蛋肉類 ( 份 )"+ good_meet+"份\n"+
                                 "乳品類 ( 杯 )"+good_milk+"杯\n"+
                                 "蔬菜類 ( 份 )"+good_vegetables+"份\n"+

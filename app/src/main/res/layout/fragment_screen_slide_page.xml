@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent"
+    android:background="#e8dfd2">
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -37,69 +38,8 @@
             android:layout_height="400dp"
             android:src="@drawable/good_grain"/>
 
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="全穀雜糧類食物的營養成分及功能"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:layout_margin="5dp"
-            android:textColor="#0E1682"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="全穀雜糧類食物富含澱粉，所以主
-要功能為提供熱量。由於目前國人生活
-多趨向靜態，熱量需求不高。必需由富含
-熱量食物中同時吃入人體必需之維生素、礦物
-質、膳食纖維等微量營養素，才能達到「營養均衡」
-的目標。未精製全穀雜糧類中含有各種維生素、礦物質和
-膳食纖維，然而這些有益於健康的營養素和成分常於精製加
-工過程大量流失。以稻榖為例，稻穀碾去稻殼即為糙米，糙
-米再經碾磨去掉米糠層，即為胚芽米。若是碾磨時將米糠層
-及胚芽一起碾掉，只剩下胚乳部份，即為精製白米。精製白
-米中只含大量澱粉，其他營養素含量非常少。而未精製全
-穀雜糧類則為我們提供熱量以及豐富的維生素 B 群、維生
-素 E、礦物質及膳食纖維等。相反地，各式各樣可口的加工
-食品多以碾白之精製穀類為原料，且加入許多糖和油脂，不
-但吃不到未精製全穀的營養成分，還容易吃進過多的熱量，
-長期下來可能造成肥胖和相關各種慢性疾病，不可不慎。因
-此，三餐應選擇全穀為主食，或至少應有 1/3 為未精製全穀
-雜糧。"
-            android:textSize="15dp"
-            android:layout_margin="5dp"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="全穀雜糧類食物簡介"
-            android:textSize="25dp"
-            android:textStyle="bold"
-            android:layout_margin="5dp"
-            android:textColor="#0E1682"/>
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="全穀雜糧類食物除了大家熟知的各種穀類外，還包括
-富含澱粉的雜糧類，如食用其根莖的薯類、食用其種子的豆
-類和食用其果實的富含澱粉食物。這類食物傳統上稱為「主
-食」，於飲食中食用量最多。惟此類食物若經加工精製（如
-稻麥碾白）則大量流失有益健康的成分，故本版飲食指南
-強調盡量以「維持原態」之全穀雜糧為主食。例如：糙米
-飯、紫米飯、胚芽米飯、全麥麵包、全麥麵、全麥饅頭及
-其他全麥製品、燕麥、全蕎麥、全粒玉米、糙薏仁、小米、
-紅藜（藜麥）、甘藷、馬鈴薯、芋頭、南瓜、山藥、蓮藕、
-紅豆、綠豆、花豆、蠶豆、皇帝豆等澱粉含量豐富
-的豆類，以及栗子、蓮子、菱角等等。建議三餐
-應以「維持原態」的全穀雜糧為主食，或至
-少應有 1/3 為未精製全穀雜糧。將前述原態
-全穀雜糧食物，以 1：2 的比例，加入白
-米共煮，就可達到「1/3 為未精製全穀雜
-糧」之主食。或者三餐中至少有一餐主
-食為全穀亦可達到「1/3 為未精製全穀
-雜糧」之目的。"
-            android:textSize="15dp"
-            android:layout_margin="5dp"/>
+
 
     </LinearLayout>
 
-</ScrollView>
+</LinearLayout>

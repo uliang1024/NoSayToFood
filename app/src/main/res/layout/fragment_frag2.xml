@@ -1,9 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     tools:context=".ui.home.Frag1">
+    <ScrollView
+        android:layout_height="match_parent"
+        android:layout_width="match_parent"
+        tools:context=".ui.dashboard.Food_Record"
+        android:fillViewport="true">
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -18,16 +23,34 @@
             android:textSize="20sp"
             android:textStyle="bold"/>
 
-
-
         <ExpandableListView
             android:background="@drawable/ll_bg"
             android:id="@+id/user_list"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="200dp"
             android:dividerHeight="1dp"
-            android:layout_margin="15sp"/>
+            android:layout_margin="5dp"
+            android:visibility="gone"/>
+
+        <com.github.mikephil.charting.charts.PieChart
+            android:background="@drawable/ll_bg"
+            android:id="@+id/chart1"
+            android:layout_width="match_parent"
+            android:layout_height="250dp"
+            android:layout_margin="5dp"
+            android:padding="3dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_food"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:text="今日未新增任何用餐紀錄"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
+
 
     </LinearLayout>
-
-</FrameLayout>
+    </ScrollView>
+</LinearLayout>

@@ -73,10 +73,9 @@ public class HelloUser extends AppCompatActivity {
     private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
     private Button btn_ok;
     private String uid;
-    private String name = user.getDisplayName();
     private String email = user.getEmail();
     private FirebaseAuth mAuth;
-    String[] gender = {"男性","女性","其他"};
+    String[] gender = {"男性","女性"};
     //0 = 久坐, 1=輕量活動 , 2=中度活動量, 3=高度活動量,4 = 非常高度活動量
     private int exercise_level;
     String[] exercise = {"久坐","輕量活動","中度活動量","高度活動量","非常高度活動量"};
@@ -91,7 +90,6 @@ public class HelloUser extends AppCompatActivity {
     private Integer age_data;
     private float height_data,width_data,waistline_data,fat_data;
     private float profit;
-
     private BarChart chart,chart2;
 
     @Override
@@ -279,7 +277,6 @@ public class HelloUser extends AppCompatActivity {
     public  void AddData() {
         boolean isInserted = false;
         isInserted = myDb.insertData(uid,
-                name,
                 gender_data,
                 age_data,
                 height_data,
@@ -301,8 +298,6 @@ public class HelloUser extends AppCompatActivity {
         else {
             Toast.makeText(HelloUser.this, "Data not Inserted", Toast.LENGTH_LONG).show();
         }
-        mDatabase.child("Users").child(uid).child("Username").setValue(name);
-        mDatabase.child("Users").child(uid).child("Email").setValue(email);
     }
     //根據生日計算年齡
     private int countAge(Date birthDay) {

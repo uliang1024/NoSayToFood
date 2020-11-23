@@ -1,104 +1,219 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.profile.PersonalProfile"
     android:orientation="vertical">
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_margin="10dp">
 
+    <ImageView
+        android:id="@+id/iv_leftarrow"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@drawable/leftarrow"
+        android:layout_margin="30dp"/>
+
+    <TextView
+        android:id="@+id/title"
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:text="個人資料"
+        android:textSize="25sp"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="30dp"
+        android:textStyle="bold"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:id="@+id/userface"
+        android:layout_width="150dp"
+        android:layout_height="150dp"
+        android:src="@drawable/com_facebook_profile_picture_blank_square"
+        android:layout_below="@id/title"
+        android:layout_centerHorizontal="true"
+        />
+    <LinearLayout
+        android:id="@+id/ll_gender"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:layout_below="@id/userface"
+        >
+
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/profilegender"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center"
+            />
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="性別"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/tv_gender"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:textSize="15sp"
+            android:paddingEnd="20dp" />
+
+        <ImageView
+            android:layout_width="15sp"
+            android:layout_height="match_parent"
+            android:layout_marginEnd="20dp"
+            android:src="@drawable/next" />
+
+
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ll_age"
+        android:layout_below="@id/ll_gender"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_margin="10dp">
-
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        >
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/profilebirthday"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="年齡"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/tv_age"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:textSize="15sp"
+            android:paddingEnd="20dp"/>
+        <ImageView
+            android:layout_width="15sp"
+            android:layout_height="match_parent"
+            android:src="@drawable/next"
+            android:layout_marginEnd="20dp"/>
     </LinearLayout>
     <LinearLayout
+        android:id="@+id/ll_height"
+        android:layout_below="@id/ll_age"
         android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_margin="10dp">
-
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:onClick="height">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/profileheight"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="身高"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/tv_height"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:textSize="15sp"
+            android:paddingEnd="20dp"/>
+        <ImageView
+            android:layout_width="15sp"
+            android:layout_height="match_parent"
+            android:src="@drawable/next"
+            android:layout_marginEnd="20dp"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_margin="10dp">
 
+
+    <LinearLayout
+        android:id="@+id/ll_fat"
+        android:layout_below="@id/ll_height"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:onClick="fat">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/profilefat"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:text="體重"
+            android:text="體脂率"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
 
         <TextView
-            android:id="@+id/tv_width"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_weight="1"
+            android:id="@+id/tv_fat"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:textSize="15sp"
+            android:paddingEnd="20dp"/>
+        <ImageView
+            android:layout_width="15sp"
+            android:layout_height="match_parent"
+            android:src="@drawable/next"
+            android:layout_marginEnd="20dp"/>
     </LinearLayout>
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="75dp"
-        android:layout_margin="10dp">
 
+    <LinearLayout
+        android:id="@+id/ll_exercise"
+        android:layout_below="@id/ll_fat"
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_margin="10dp"
+        android:onClick="exercise">
+        <ImageView
+            android:layout_width="20dp"
+            android:layout_height="20dp"
+            android:src="@drawable/profilebarbell"
+            android:layout_marginEnd="20dp"
+            android:layout_marginStart="20dp"
+            android:layout_gravity="center"/>
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:text="活動量"
             android:gravity="center"
-            android:textSize="20sp"/>
+            android:textSize="15sp"/>
 
         <TextView
+            android:layout_weight="1"
             android:id="@+id/tv_exercise"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:gravity="end|center_vertical"
+            android:textSize="15sp"
+            android:paddingEnd="20dp"/>
+        <ImageView
+            android:layout_width="15sp"
+            android:layout_height="match_parent"
+            android:src="@drawable/next"
+            android:layout_marginEnd="20dp"/>
     </LinearLayout>
 
-    <Button
-        android:id="@+id/bt_setting"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="編輯資料"
-        android:textSize="15sp"
-        android:layout_marginStart="75dp"
-        android:layout_marginEnd="75dp"/>
-
-</LinearLayout>
+</RelativeLayout>

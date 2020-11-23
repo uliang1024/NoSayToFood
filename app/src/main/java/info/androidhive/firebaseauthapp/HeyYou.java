@@ -34,10 +34,6 @@ public class HeyYou extends AppCompatActivity {
         setContentView(R.layout.activity_hey_you);
 
          String uid = user.getUid();
-         String name = user.getDisplayName();
-         String email = user.getEmail();
-        mDatabase.child("Users").child(uid).child("Username").setValue(name);
-        mDatabase.child("Users").child(uid).child("Email").setValue(email);
         mDatabase.child("Users").child(uid).child("Uid").setValue(uid);
 
         myDb = new PersonalInformation(this);
