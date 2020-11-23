@@ -40,6 +40,7 @@ import java.util.Date;
 
 import info.androidhive.firebaseauthapp.SQLite.BodyRecord;
 import info.androidhive.firebaseauthapp.SQLite.FastRecord;
+import info.androidhive.firebaseauthapp.SQLite.PersonalInformation;
 import info.androidhive.firebaseauthapp.first.HelloUser;
 import info.androidhive.firebaseauthapp.models.fastRecords;
 
@@ -59,6 +60,7 @@ public class RecordThis extends AppCompatActivity {
     private int emoji = 0;
     private int series1Index;
     private float weight =0,height =0,waist =0,fat =0;
+    PersonalInformation myDb;
     BodyRecord myDb2;
     FastRecord myDb3;
     FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
@@ -74,8 +76,8 @@ public class RecordThis extends AppCompatActivity {
     private ArrayList<fastRecords> fast_records = new ArrayList<>();
 
     // TODO: 2020/11/20 到休息時間時記得把這改成讀入的時間
-    long startdate = 1606419000000l;
-    long enddate = 1606476600000l;
+    long startdate = 0;
+    long enddate = 0;
     int status;
 
 
@@ -104,8 +106,6 @@ public class RecordThis extends AppCompatActivity {
         record_show_waist.setText(fdf.format(Waists.get(Waists.size()-1))+" cm");
         record_show_fat.setText(fdf.format(Body_fats.get(Body_fats.size()-1))+" %");
 
-        //tv_endtime.setText(enddate);
-        //tv_time_span.setText(startdate+" 到 "+enddate);
 
         decoView.addSeries(new SeriesItem.Builder(Color.argb(255, 218, 218, 218))
                 .setRange(0, 100, 100)
@@ -196,6 +196,9 @@ public class RecordThis extends AppCompatActivity {
                     .repeat(0)
                     .playOn(findViewById(R.id.img_easy));
 
+            SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+            tv_endtime.setText(df.format(enddate));
+            tv_time_span.setText(df.format(startdate)+" 到 "+df.format(enddate));
 
             img_show_weight.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -445,6 +448,14 @@ public class RecordThis extends AppCompatActivity {
             Log.e("update","updated:"+isupdated);
         }
 
+        boolean updateBodyData = myDb.updateBodyData(uid,
+                height,
+                weight,
+                waist,
+                fat);
+
+        Log.e("update personal profile body data",""+updateBodyData);
+
     }
     public void init(){
         tv_endtime = findViewById(R.id.tv_endtime);
@@ -472,6 +483,7 @@ public class RecordThis extends AppCompatActivity {
         img_soso = findViewById(R.id.img_soso);
         img_hard = findViewById(R.id.img_hard);
 
+        myDb = new PersonalInformation(this);
         myDb2 = new BodyRecord(this);
         myDb3 = new FastRecord(this);
     }

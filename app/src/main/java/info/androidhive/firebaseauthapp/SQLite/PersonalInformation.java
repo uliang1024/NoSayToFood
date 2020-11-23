@@ -101,6 +101,18 @@ public class PersonalInformation extends SQLiteOpenHelper {
         db.update(TABLE_NAME1, contentValues, "UID = ?",new String[] { uid });
         return true;
     }
+    public boolean updateBodyData(String uid,Float Height,Float Weight,Float Waistline,Float Body_fat_percentage) {
+        SQLiteDatabase db = this.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put(COL_1,uid);
+        contentValues.put(COL_5,Height);
+        contentValues.put(COL_6,Weight);
+        contentValues.put(COL_7,Waistline);
+        contentValues.put(COL_8,Body_fat_percentage);
+
+        db.update(TABLE_NAME1, contentValues, "UID = ?",new String[] { uid });
+        return true;
+    }
 
     public Integer deleteData (String id) {
         SQLiteDatabase db = this.getWritableDatabase();

@@ -106,6 +106,7 @@ public class DashboardFragment extends Fragment {
 
     private float weight_data;
     private float height = 0;
+    private float waist =0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -165,6 +166,7 @@ public class DashboardFragment extends Fragment {
             }
         }
         height = Heights.get(Heights.size()-1);
+        waist= Waists.get(Waists.size()-1);
         setUiData();
 
 
@@ -331,7 +333,7 @@ public class DashboardFragment extends Fragment {
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         date_picker.setText(df.format(date));
 
-        btn_setHeight.setText(""+Heights.get(Heights.size()-1));
+        btn_setHeight.setText(""+Waists.get(Waists.size()-1));
 
         editTextWeight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -366,18 +368,30 @@ public class DashboardFragment extends Fragment {
                 LayoutInflater inflater = LayoutInflater.from(getContext());
                 final View view = inflater.inflate(R.layout.height_input_dialog, null);
                 new AlertDialog.Builder(getContext())
-                        .setTitle("請輸入你的身高")
+                        .setTitle("請輸入你的腰圍")
                         .setView(view)
                         .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 EditText editText = (EditText) (view.findViewById(R.id.edit_height));
-                                if(editText.getText().toString().equals("")) {
-                                    Toast.makeText(getContext(), "u hasnt put any value", Toast.LENGTH_SHORT).show();
-                                    height = 0;
+                                if(editText.getText().toString().equals("")|| editText.getText().toString().trim().equals("0")) {
+                                    LayoutInflater inflater = LayoutInflater.from(getContext());
+                                    final View v = inflater.inflate(R.layout.empty_value_alert, null);
+                                    new AlertDialog.Builder(getContext())
+                                            .setTitle("無輸入值!")
+                                            .setView(v)
+                                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+                                                    waist = Waists.get(Waists.size()-1);
+                                                }
+                                            })
+                                            .show();
+                                    waist = Waists.get(Waists.size()-1);
+                                    Log.e("waist 空值",waist+"");
                                 }else{
                                     btn_setHeight.setText(editText.getText().toString());
-                                    height = Float.parseFloat(editText.getText().toString());
+                                    waist = Float.parseFloat(editText.getText().toString());
                                 }
                             }
                         })
@@ -430,7 +444,25 @@ public class DashboardFragment extends Fragment {
                         //tv_KG.setText(editText.getText().toString());
                         Log.e("get weight",""+editTextWeight.getText().toString());
                     }
-                    weight_data = Float.parseFloat(editTextWeight.getText().toString());
+
+                    if (Float.parseFloat(editTextWeight.getText().toString().trim())!= 0){
+                        weight_data = Float.parseFloat(editTextWeight.getText().toString());
+                    }else{
+                        LayoutInflater inflater = LayoutInflater.from(getContext());
+                        final View v = inflater.inflate(R.layout.empty_value_alert, null);
+                        new AlertDialog.Builder(getContext())
+                                .setTitle("無輸入值!")
+                                .setView(v)
+                                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        weight_data = KGs.get(KGs.size()-1);
+                                    }
+                                })
+                                .show();
+                        weight_data = KGs.get(KGs.size()-1);
+                    }
+
 
                     try {
                         AddData(date_picker.getText().toString());
@@ -444,97 +476,6 @@ public class DashboardFragment extends Fragment {
             }
         });
     }
-    //設定line chart的資料
-    //Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_blue);
-//    private void setUpLineChart() throws ParseException {
-//
-//
-//
-//        ArrayList<Entry> valuesWeight = new ArrayList<>();
-//
-//
-//        for (int i = 0; i < 33; i++) {
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.add(Calendar.DAY_OF_MONTH,i-30);
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-//            String dateStr = sdf.format(calendar.getTime());
-//            for(int j = 0;j<Dates.size();j++){
-//                if(dateStr.equals(Dates.get(j))){
-//                    valuesWeight.add(new Entry(i, KGs.get(j)));
-//                }
-//            }
-//        }
-//        LineDataSet weightDataSet = new LineDataSet(valuesWeight, "體重變化");
-//        weightDataSet.setLineWidth(2.5f);
-//        weightDataSet.setDrawValues(true);
-//        weightDataSet.setDrawFilled(true);
-//        weightDataSet.setCircleColor(Color.rgb(64, 150, 255));//圓點顏色
-//        weightDataSet.setCircleRadius(5);//圓點大小
-//        weightDataSet.setDrawCircleHole(false);//圓點為實心(預設空心)
-//        weightDataSet.setFillDrawable(drawable);
-//
-//
-//        ArrayList<Entry> valuesIdealWeight = new ArrayList<>();
-//        float good_kg = (Heights.get(Heights.size()-1)/100)*(Heights.get(Heights.size()-1)/100)*22;
-//        for (int i = 0; i < 33; i++) {
-//            valuesIdealWeight.add(new Entry(i, good_kg));
-//        }
-//
-//        LineDataSet dealWeightDataSet = new LineDataSet(valuesIdealWeight, "理想體重");
-//        dealWeightDataSet.setLineWidth(2.5f);
-//        dealWeightDataSet.setCircleRadius(4.5f);
-//        dealWeightDataSet.setColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-//        dealWeightDataSet.setCircleColor(ColorTemplate.VORDIPLOM_COLORS[0]);
-//        dealWeightDataSet.setDrawValues(false);
-//        dealWeightDataSet.setDrawCircles(false);
-//
-//
-//        ArrayList<ILineDataSet> WeightSets = new ArrayList<>();
-//        WeightSets.add(weightDataSet);
-//        WeightSets.add(dealWeightDataSet);
-//
-//        LineData weightData = new LineData(WeightSets);
-//        weight_chart.setData(weightData);
-//        weight_chart.invalidate();
-//
-////        XAxis xAxis = weight_chart.getXAxis();
-////        xAxis.setValueFormatter(new XAxisValueFormatter());
-//        //=====bmi 圖表======//
-//        ArrayList<Entry> valuesBmi = new ArrayList<>();
-//        for (int i = 0; i < 33; i++) {
-//            Calendar calendar = Calendar.getInstance();
-//            calendar.add(Calendar.DAY_OF_MONTH,i-30);
-//            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-//            String dateStr = sdf.format(calendar.getTime());
-//            for(int j = 0;j<Dates.size();j++){
-//                if(dateStr.equals(Dates.get(j))){
-//
-//                    float bmi =  KGs.get(j)/((Heights.get(j)/100)*(Heights.get(j)/100));
-//
-//                    Log.e("得到bmi",""+bmi);
-//                    valuesBmi.add(new Entry(i,bmi));
-//                }
-//            }
-//        }
-//
-//        LineDataSet bmiDataSet = new LineDataSet(valuesBmi, "BMI變化");
-//        bmiDataSet.setLineWidth(2.5f);
-//        bmiDataSet.setCircleRadius(4.5f);
-//        bmiDataSet.setDrawValues(true);
-//        bmiDataSet.setDrawFilled(true);
-//        bmiDataSet.setCircleColor(Color.rgb(64, 150, 255));//圓點顏色
-//        bmiDataSet.setCircleRadius(5);//圓點大小
-//        bmiDataSet.setDrawCircleHole(false);//圓點為實心(預設空心)
-//        bmiDataSet.setFillDrawable(drawable);
-//        ArrayList<ILineDataSet> BmiSets = new ArrayList<>();
-//        BmiSets.add(bmiDataSet);
-//        LineData bmiData = new LineData(BmiSets);
-//
-//        bmi_chart.setData(bmiData);
-//        bmi_chart.invalidate();
-//
-//    }
-
 
 
     //設定ui的資料
@@ -619,38 +560,58 @@ public class DashboardFragment extends Fragment {
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         Date getDate = df.parse(date);
         long timestamp = getDate.getTime();
-        //如果該日期沒有資料
+        //如果該日期沒有資料，建立一筆日期為今天的新資料
         if(Dates.indexOf(date) ==-1){
             //如果使用者沒輸入資料
-            if (height ==0){
+            if (waist ==0 ){
                 if (Dates.size()>=2){
                     boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(Heights.size()-1),Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1),date,timestamp);
-                    Log.e("insert:",""+isInserted2);
+                    boolean updatePersonal = myDb.updateBodyData(uid,Heights.get(Heights.size()-1),weight_data,Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1));
+                    Log.e("insert: 0 ",""+isInserted2);
+                    Log.e("update user body info: 0 ",""+updatePersonal);
                 }else{
                     boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(0),Waists.get(0),Body_fats.get(0),date,timestamp);
-                    Log.e("insert:",""+isInserted2);
+                    boolean updatePersonal = myDb.updateBodyData(uid,Heights.get(0),weight_data,Waists.get(0),Body_fats.get(0));
+                    Log.e("insert: 1 ",""+isInserted2);
+                    Log.e("update user body info: 1 ",""+updatePersonal);
                 }
-            }else{
+            }
+            //如果使用者有輸入資料
+            else{
                 if (Dates.size()>=2){
-                    boolean isInserted2 = myDb2.insertData(uid,weight_data,height,Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1),date,timestamp);
-                    Log.e("insert:",""+isInserted2);
+                    boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(Heights.size()-1),Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1),date,timestamp);
+                    boolean updatePersonal = myDb.updateBodyData(uid,height,weight_data,waist,Body_fats.get(Body_fats.size()-1));
+                    Log.e("insert: 2 ",""+isInserted2);
+                    Log.e("update user body info: 2 ",""+updatePersonal);
                 }else{
-                    boolean isInserted2 = myDb2.insertData(uid,weight_data,height,Waists.get(0),Body_fats.get(0),date,timestamp);
-                    Log.e("insert:",""+isInserted2);
+                    boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(0),Waists.get(0),Body_fats.get(0),date,timestamp);
+                    boolean updatePersonal = myDb.updateBodyData(uid,height,weight_data,waist,Body_fats.get(0));
+                    Log.e("insert: 3 ",""+isInserted2);
+                    Log.e("update user body info: 3 ",""+updatePersonal);
                 }
             }
 
         }
-        //如果資料存在
+        //如果資料存在，就更新
         else{
-            //如果使用者沒輸入資料
-            if (height==0){
+            //如果使用者沒輸入waist就用讀下來的最新一筆資料當waist
+            if (waist==0){
                 Log.e("found data ","data updated:" +Dates.get(Dates.indexOf(date)));
                 boolean isupdated = false;
-                isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(date)), weight_data,Heights.get(Heights.size()-1),timestamp);
-            }else {
+                isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(date)), weight_data,Waists.get(Waists.size()-1),timestamp);
+                boolean updatePersonal = myDb.updateBodyData(uid,Heights.get(Heights.size()-1),weight_data,Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1));
+                Log.e("insert: 4 ",""+isupdated);
+                Log.e("update user body info: 4 ",""+updatePersonal);
+
+            }
+            //如果使用者有輸入waist就用使用者輸入的
+            //exed
+            else {
                 boolean isupdated = false;
-                isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(date)), weight_data,height,timestamp);
+                isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(date)), weight_data,waist,timestamp);
+                boolean updatePersonal = myDb.updateBodyData(uid,height,weight_data,waist,Body_fats.get(Body_fats.size()-1));
+                Log.e("insert: 5 ",""+isupdated);
+                Log.e("update user body info: 5 ",""+updatePersonal);
             }
 
         }
@@ -680,19 +641,6 @@ public class DashboardFragment extends Fragment {
         ChartDataAdapter cda = new ChartDataAdapter(getContext(), list);
         lv.setAdapter(cda);
     }
-
-    private class XAxisValueFormatter implements IAxisValueFormatter {
-        SimpleDateFormat df = new SimpleDateFormat("MM/dd");
-
-        @Override
-        public String getFormattedValue(float value, AxisBase axis) {
-
-            Date date = new Date();
-            date.setTime((long) value);
-            return df.format(date);
-        }
-    }
-
 
     private void init(View v) {
 //        weight_chart = v.findViewById(R.id.weight_chart);

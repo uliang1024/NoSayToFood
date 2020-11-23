@@ -344,8 +344,10 @@ public class Frag1 extends Fragment {
         Date date = new Date();
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         int target_day = 0;
+        //如果現在的時間在結束時間之後
         if (date.after(end_date.get(end_date.size()-1))){
             Log.e("oops","something wrong");
+            return;
         }
 
         for (int i = 0;i<=end_date.size();i++){
@@ -355,12 +357,13 @@ public class Frag1 extends Fragment {
 
             }
         }
+
         Log.e("target day","index"+target_day);
         Log.e("today day","today"+date);
 
 
-        long startdate = (start_date.get(target_day-1).getTime());
-        long enddate = (end_date.get(target_day-1).getTime());
+        long startdate = (start_date.get(target_day).getTime());
+        long enddate = (end_date.get(target_day).getTime());
 
 
         Intent intent = new Intent(getContext(),RecordThis.class);

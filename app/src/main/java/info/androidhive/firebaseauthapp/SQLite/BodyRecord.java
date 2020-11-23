@@ -62,12 +62,12 @@ public class BodyRecord extends SQLiteOpenHelper {
         return res;
     }
 
-    public boolean updateWeightData(Integer id, Float kg,Float height,Long timestamp) {
+    public boolean updateWeightData(Integer id, Float kg,Float waist,Long timestamp) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1,id);
         contentValues.put(COL_3,kg);
-        contentValues.put(COL_4,height);
+        contentValues.put(COL_5,waist);
         contentValues.put(COL_8,timestamp);
         db.update(TABLE_NAME, contentValues, "ID = ?",new String[] {String.valueOf(id)});
         return true;
