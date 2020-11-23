@@ -71,11 +71,11 @@ public class foodClassification extends AppCompatActivity {
         Cursor res = myDb2.getAllData();
         while (res.moveToNext()) {
             if(uid.equals(res.getString(0))){
-                user_exercise_level = res.getInt(8);
-                gender = res.getString(2);
-                age = res.getInt(3);
-                height = res.getFloat(4);
-                width = res.getFloat(5);
+                user_exercise_level = res.getInt(7);
+                gender = res.getString(1);
+                age = res.getInt(2);
+                height = res.getFloat(3);
+                width = res.getFloat(4);
             }
         }
         if(gender.equals("男性")){

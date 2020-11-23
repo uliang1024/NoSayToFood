@@ -106,11 +106,11 @@ public class OneFoodRecord extends AppCompatActivity {
         Cursor res2 = myDb2.getAllData();
         while (res2.moveToNext()) {
             if(uid.equals(res2.getString(0))){
-                user_exercise_level = res2.getInt(8);
-                gender = res2.getString(2);
-                age = res2.getInt(3);
-                height = res2.getFloat(4);
-                width = res2.getFloat(5);
+                user_exercise_level = res2.getInt(7);
+                gender = res2.getString(1);
+                age = res2.getInt(2);
+                height = res2.getFloat(3);
+                width = res2.getFloat(4);
             }
         }
 

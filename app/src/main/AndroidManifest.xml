@@ -18,7 +18,13 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme.NoActionBar.FullScreen">
-        <activity android:name=".ui.profile.About"></activity>
+        <activity android:name=".fasting.FastingPlan4"></activity>
+        <activity android:name=".fasting.FastingPlan3" />
+        <activity android:name=".fasting.FastingPlan2" />
+        <activity android:name=".LoginActivity" />
+        <activity android:name=".RegisterActivity" />
+        <activity android:name=".EmailLogin" />
+        <activity android:name=".ui.profile.About" />
         <activity android:name=".food.ScreenSlidePagerActivity" />
         <activity android:name=".ui.dashboard.OneFoodRecord" />
         <activity android:name=".ui.profile.PersonalProfile" />

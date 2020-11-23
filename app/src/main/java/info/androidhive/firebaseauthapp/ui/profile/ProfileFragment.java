@@ -77,7 +77,9 @@ public class ProfileFragment extends Fragment {
                     String fullname = dataSnapshot.child("Username").getValue().toString();
                     String image = dataSnapshot.child("profileimage").getValue().toString();
                     welconeText.setText(fullname);
-                    Picasso.get().load(image).placeholder(R.drawable.com_facebook_profile_picture_blank_square).into(userface);
+                    if(!image.equals("")){
+                        Picasso.get().load(image).placeholder(R.drawable.com_facebook_profile_picture_blank_square).into(userface);
+                    }
                 }
             }
 

@@ -33,21 +33,21 @@ public class FirstFasting extends AppCompatActivity {
         plan2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(FirstFasting.this, FastingPlan1.class));
+                startActivity(new Intent(FirstFasting.this, FastingPlan2.class));
                 finish();
             }
         });
         plan3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(FirstFasting.this, FastingPlan1.class));
+                startActivity(new Intent(FirstFasting.this, FastingPlan3.class));
                 finish();
             }
         });
         plan4.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(FirstFasting.this, FastingPlan1.class));
+                startActivity(new Intent(FirstFasting.this, FastingPlan4.class));
                 finish();
             }
         });

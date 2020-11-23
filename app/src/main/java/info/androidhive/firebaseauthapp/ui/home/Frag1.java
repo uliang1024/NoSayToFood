@@ -49,8 +49,12 @@ import info.androidhive.firebaseauthapp.FitnessActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.SQLite.FastingPlan;
 import info.androidhive.firebaseauthapp.fasting.FastingPlan1;
+import info.androidhive.firebaseauthapp.fasting.FastingPlan2;
+import info.androidhive.firebaseauthapp.fasting.FastingPlan3;
+import info.androidhive.firebaseauthapp.fasting.FastingPlan4;
 import info.androidhive.firebaseauthapp.fasting.Fasting_Complete;
 import info.androidhive.firebaseauthapp.fasting.FirstFasting;
+import info.androidhive.firebaseauthapp.food.foodClassification;
 import me.itangqi.waveloadingview.WaveLoadingView;
 
 public class Frag1 extends Fragment {
@@ -68,7 +72,6 @@ public class Frag1 extends Fragment {
     private ArrayList<Long> start_time = new ArrayList<>();
     private ArrayList<Long> end_time = new ArrayList<>();
     private ArrayList<Integer> off_day = new ArrayList<>();
-    private Button bt_fitness;
     private Button btn_check_fasting;
     //儲存Date
     ArrayList<Date> start_date = new ArrayList<>();
@@ -92,6 +95,7 @@ public class Frag1 extends Fragment {
     public static final String SHARED_PREFS = "shared_prefs";
     public static final String STATUS = "status";
     private SharedPreferences sharedPreferences;
+    private Button bt_eat;
 
     public interface Frag1TimeListener{
         void onTimeChanged(ArrayList<Long> start_time,ArrayList<Long> end_time,ArrayList<Integer> off_day);
@@ -245,12 +249,6 @@ public class Frag1 extends Fragment {
                 }
             });
 
-            bt_fitness.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(Frag1.super.getContext(), FitnessActivity.class));
-                }
-            });
             Log.e("是否記錄此次斷食",""+isFastingRecord());
             btn_check_fasting.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -264,6 +262,13 @@ public class Frag1 extends Fragment {
                         saveFastingData(true);
                     }
 
+                }
+            });
+
+            bt_eat.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    startActivity(new Intent(Frag1.super.getContext(), foodClassification.class));
                 }
             });
 
@@ -305,19 +310,19 @@ public class Frag1 extends Fragment {
             plan2.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Frag1.super.getContext(), FastingPlan1.class));
+                    startActivity(new Intent(Frag1.super.getContext(), FastingPlan2.class));
                 }
             });
             plan3.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Frag1.super.getContext(), FastingPlan1.class));
+                    startActivity(new Intent(Frag1.super.getContext(), FastingPlan3.class));
                 }
             });
             plan4.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    startActivity(new Intent(Frag1.super.getContext(), FastingPlan1.class));
+                    startActivity(new Intent(Frag1.super.getContext(), FastingPlan4.class));
                 }
             });
         }
@@ -527,7 +532,7 @@ public class Frag1 extends Fragment {
 
     private void init(View v) {
         sharedPreferences = v.getContext().getSharedPreferences(SHARED_PREFS,Context.MODE_PRIVATE);
-        bt_fitness = v.findViewById(R.id.bt_fitness);
+        bt_eat = v.findViewById(R.id.bt_eat);
         btn_check_fasting = v.findViewById(R.id.btn_check_fasting);
         progress = v.findViewById(R.id.tv_progress);
         textPercentage = (TextView) v.findViewById(R.id.textPercentage);
@@ -619,7 +624,8 @@ public class Frag1 extends Fragment {
                             textPercentage.setText(getTimeLeft(mytime/1000));
                             start.setText("在"+sdf.format(start_date.get(index))+"開始斷食");
                             //listener.onTimeChanged("距離斷時開始還有"+getTimeLeft(mytime/1000));
-                            btn_check_fasting.setVisibility(View.INVISIBLE);
+                            btn_check_fasting.setVisibility(View.GONE);
+                            bt_eat.setVisibility(View.GONE);
                             //在這進行progressbar
                         }else{
                             //其它天的休息日
@@ -637,6 +643,7 @@ public class Frag1 extends Fragment {
                             //listener.onTimeChanged("距離斷時開始還有"+getTimeLeft(mytime/1000));
                             add_progress(Float.parseFloat(getPercent(now_time,true)));
                             btn_check_fasting.setVisibility(View.VISIBLE);
+                            bt_eat.setVisibility(View.VISIBLE);
 
                             //在這進行progressbar
                         }
@@ -654,7 +661,8 @@ public class Frag1 extends Fragment {
                         add_progress(Float.parseFloat(getPercent(now_time,false)));
                         //開啟一輪新的斷食要重置為為記錄此次斷食
                         saveFastingData(false);
-                        btn_check_fasting.setVisibility(View.INVISIBLE);
+                        btn_check_fasting.setVisibility(View.GONE);
+                        bt_eat.setVisibility(View.GONE);
                     }
                 }else {
                     status.setText("斷食結束");

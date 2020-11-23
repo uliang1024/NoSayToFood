@@ -122,7 +122,9 @@ public class PersonalProfile extends AppCompatActivity {
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 if(dataSnapshot.exists()){
                     String image = dataSnapshot.child("profileimage").getValue().toString();
-                    Picasso.get().load(image).placeholder(R.drawable.com_facebook_profile_picture_blank_square).into(userface);
+                    if(!image.equals("")){
+                        Picasso.get().load(image).placeholder(R.drawable.com_facebook_profile_picture_blank_square).into(userface);
+                    }
                 }
             }
 
@@ -147,11 +149,11 @@ public class PersonalProfile extends AppCompatActivity {
         Cursor res = myDb.getAllData();
         while (res.moveToNext()) {
             if(uid.equals(res.getString(0))){
-                user_exercise_level = res.getInt(8);
-                gender = res.getString(2);
-                age = res.getInt(3);
-                height = res.getFloat(4);
-                fat = res.getFloat(7);
+                user_exercise_level = res.getInt(7);
+                gender = res.getString(1);
+                age = res.getInt(2);
+                height = res.getFloat(3);
+                fat = res.getFloat(6);
             }
         }
         gender_data=gender;

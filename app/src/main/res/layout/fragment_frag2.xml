@@ -29,7 +29,8 @@
             android:layout_width="match_parent"
             android:layout_height="200dp"
             android:dividerHeight="1dp"
-            android:layout_margin="5dp"/>
+            android:layout_margin="5dp"
+            android:visibility="gone"/>
 
         <com.github.mikephil.charting.charts.PieChart
             android:background="@drawable/ll_bg"
@@ -37,7 +38,17 @@
             android:layout_width="match_parent"
             android:layout_height="250dp"
             android:layout_margin="5dp"
-            android:padding="3dp"/>
+            android:padding="3dp"
+            android:visibility="gone"/>
+
+        <TextView
+            android:id="@+id/tv_food"
+            android:layout_width="match_parent"
+            android:layout_height="400dp"
+            android:text="今日未新增任何用餐紀錄"
+            android:textSize="30sp"
+            android:textStyle="bold"
+            android:gravity="center"/>
 
 
     </LinearLayout>

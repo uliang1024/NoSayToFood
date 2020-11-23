@@ -129,9 +129,9 @@ public class DashboardFragment extends Fragment {
         Cursor res = myDb.getAllData();
         while (res.moveToNext()) {
             if(uid.equals(res.getString(0))){
-                user_exercise_level = res.getInt(8);
-                gender = res.getString(2);
-                age = res.getInt(3);
+                user_exercise_level = res.getInt(7);
+                gender = res.getString(1);
+                age = res.getInt(2);
             }
         }
 

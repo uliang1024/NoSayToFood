@@ -17,14 +17,13 @@ public class PersonalInformation extends SQLiteOpenHelper {
     public static final String TABLE_NAME3 = "foodRecord_table";
     public static final String TABLE_NAME4 = "BodyRecord";
     public static final String COL_1 = "Uid";
-    public static final String COL_2 = "Name";
-    public static final String COL_3 = "Gender";
-    public static final String COL_4 = "Age";
-    public static final String COL_5 = "Height";
-    public static final String COL_6 = "Weight";
-    public static final String COL_7 = "Waistline";
-    public static final String COL_8 = "Body_fat_percentage";
-    public static final String COL_9 = "Activity";
+    public static final String COL_2 = "Gender";
+    public static final String COL_3 = "Age";
+    public static final String COL_4 = "Height";
+    public static final String COL_5 = "Weight";
+    public static final String COL_6 = "Waistline";
+    public static final String COL_7 = "Body_fat_percentage";
+    public static final String COL_8 = "Activity";
 
 
     public PersonalInformation(Context context) {
@@ -34,7 +33,7 @@ public class PersonalInformation extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL("create table IF NOT EXISTS " + TABLE_NAME1 +" (UID TEXT PRIMARY KEY,NAME TEXT,GENDER TEXT,AGE INTEGER,HEIGHT FLOAT,WEIGHT FLOAT,WAISTLINE FLOAT,BODY_FAT_PERCENTAGE FLOAT,ACTIVITY INTEGER)");
+        db.execSQL("create table IF NOT EXISTS " + TABLE_NAME1 +" (UID TEXT PRIMARY KEY,GENDER TEXT,AGE INTEGER,HEIGHT FLOAT,WEIGHT FLOAT,WAISTLINE FLOAT,BODY_FAT_PERCENTAGE FLOAT,ACTIVITY INTEGER)");
         db.execSQL("create table IF NOT EXISTS " + TABLE_NAME2 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,START_TIME LONG,END_TIME LONG,OFF_DAY INTEGER,UID TEXT,NOW_TIME LONG,DAY INTEGER)");
         db.execSQL("create table IF NOT EXISTS " + TABLE_NAME3 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,NAME TEXT,DATE TEXT,AMOUNT TEXT,UID TEXT,MEAL INTEGER)");
         db.execSQL("create table IF NOT EXISTS " + TABLE_NAME4 +" (ID INTEGER PRIMARY KEY AUTOINCREMENT,UID TEXT,KG FLOAT,HEIGHT FLOAT,WAISTLINE FLOAT,BODYFAT FLOAT,DATE TEXT,TS INTEGER)");
@@ -49,18 +48,17 @@ public class PersonalInformation extends SQLiteOpenHelper {
         onCreate(db);
     }
 
-    public boolean insertData(String uid,String name,String gender,Integer age,Float height,Float weight,Float waistline,Float body_fat_percentage,Integer activity) {
+    public boolean insertData(String uid,String gender,Integer age,Float height,Float weight,Float waistline,Float body_fat_percentage,Integer activity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1,uid);
-        contentValues.put(COL_2,name);
-        contentValues.put(COL_3,gender);
-        contentValues.put(COL_4,age);
-        contentValues.put(COL_5,height);
-        contentValues.put(COL_6,weight);
-        contentValues.put(COL_7,waistline);
-        contentValues.put(COL_8,body_fat_percentage);
-        contentValues.put(COL_9,activity);
+        contentValues.put(COL_2,gender);
+        contentValues.put(COL_3,age);
+        contentValues.put(COL_4,height);
+        contentValues.put(COL_5,weight);
+        contentValues.put(COL_6,waistline);
+        contentValues.put(COL_7,body_fat_percentage);
+        contentValues.put(COL_8,activity);
         long result = db.insert(TABLE_NAME1,null ,contentValues);
         if(result == -1)
             return false;
@@ -88,11 +86,11 @@ public class PersonalInformation extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1,uid);
-        contentValues.put(COL_3,Gender);
-        contentValues.put(COL_4,Age);
-        contentValues.put(COL_5,Height);
-        contentValues.put(COL_8,Body_fat_percentage);
-        contentValues.put(COL_9,Activity);
+        contentValues.put(COL_2,Gender);
+        contentValues.put(COL_3,Age);
+        contentValues.put(COL_4,Height);
+        contentValues.put(COL_7,Body_fat_percentage);
+        contentValues.put(COL_8,Activity);
         db.update(TABLE_NAME1, contentValues, "UID = ?",new String[] { uid });
         return true;
     }

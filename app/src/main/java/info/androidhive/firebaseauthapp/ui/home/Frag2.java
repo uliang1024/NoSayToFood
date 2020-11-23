@@ -48,6 +48,7 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
     private ArrayList<String> list11 = new ArrayList<String>();
     private ArrayList<Float> list22 = new ArrayList<Float>();
     private Button bt_eat;
+    private TextView tv_food;
 
     private PieChart chart;
     private float x1,x2,x3,x4,x5,x6;
@@ -98,17 +99,51 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
                 }
             }
         }
-        user_list.setAdapter(new Frag2.MyExpandableListView());
 
-        // Listview on child click listener
-        user_list.setOnChildClickListener(new ExpandableListView.
-                OnChildClickListener() {
-            @Override
-            public boolean onChildClick(ExpandableListView parent, View v,
-                                        int groupPosition, int childPosition, long id) {
-                return false;
-            }
-        });
+        if(!(list.get(meal1).size() ==1)){
+            user_list.setVisibility(View.VISIBLE); //顯示
+            chart.setVisibility(View.VISIBLE); //顯示
+            tv_food.setVisibility(View.GONE); // 隱藏
+
+            list.get(meal1).remove(0);
+            list2.get(meal1).remove(0);
+
+            user_list.setAdapter(new Frag2.MyExpandableListView());
+
+            // Listview on child click listener
+            user_list.setOnChildClickListener(new ExpandableListView.
+                    OnChildClickListener() {
+                @Override
+                public boolean onChildClick(ExpandableListView parent, View v,
+                                            int groupPosition, int childPosition, long id) {
+                    return false;
+                }
+            });
+
+
+            chart.getDescription().setEnabled(false);
+
+            chart.setCenterText(generateCenterText());
+            chart.setCenterTextSize(10f);
+
+            // radius of the center hole in percent of maximum radius
+            chart.setHoleRadius(45f);
+            chart.setTransparentCircleRadius(50f);
+
+            Legend l = chart.getLegend();
+            l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
+            l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
+            l.setOrientation(Legend.LegendOrientation.VERTICAL);
+            l.setDrawInside(false);
+
+            chart.setData(generatePieData());
+        }else{
+            user_list.setVisibility(View.GONE);
+            chart.setVisibility(View.GONE);
+            tv_food.setVisibility(View.VISIBLE);
+        }
+
+
 
         bt_eat.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -118,22 +153,7 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
         });
 
 
-        chart.getDescription().setEnabled(false);
 
-        chart.setCenterText(generateCenterText());
-        chart.setCenterTextSize(10f);
-
-        // radius of the center hole in percent of maximum radius
-        chart.setHoleRadius(45f);
-        chart.setTransparentCircleRadius(50f);
-
-        Legend l = chart.getLegend();
-        l.setVerticalAlignment(Legend.LegendVerticalAlignment.TOP);
-        l.setHorizontalAlignment(Legend.LegendHorizontalAlignment.RIGHT);
-        l.setOrientation(Legend.LegendOrientation.VERTICAL);
-        l.setDrawInside(false);
-
-        chart.setData(generatePieData());
 
 
         return fragment_frag2;
@@ -174,33 +194,21 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
         if(x1!=0){
             entries1.add(new PieEntry((float) x1, "全榖雜糧類"));
-        }else {
-            entries1.add(new PieEntry((float) x1));
         }
         if(x2!=0){
             entries1.add(new PieEntry((float) x2, "豆魚蛋肉類"));
-        }else {
-            entries1.add(new PieEntry((float) x2));
         }
         if(x3!=0){
             entries1.add(new PieEntry((float) x3, "乳品類"));
-        }else {
-            entries1.add(new PieEntry((float) x3));
         }
         if(x4!=0){
             entries1.add(new PieEntry((float) x4, "蔬菜類"));
-        }else {
-            entries1.add(new PieEntry((float) x4));
         }
         if(x5!=0){
             entries1.add(new PieEntry((float) x5, "水果類"));
-        }else {
-            entries1.add(new PieEntry((float) x5));
         }
         if(x6!=0){
             entries1.add(new PieEntry((float) x6, "油脂與堅果種子類"));
-        }else {
-            entries1.add(new PieEntry((float) x6));
         }
 
         PieDataSet ds1 = new PieDataSet(entries1, "");
@@ -209,16 +217,15 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
         ds1.setValueTextColor(Color.BLACK);
         ds1.setValueTextSize(10f);
 
-        PieData d = new PieData(ds1);
-        return d;
+        return new PieData(ds1);
     }
 
     @SuppressLint("WrongViewCast")
     private void init(View v) {
         user_list = (ExpandableListView) v.findViewById(R.id.user_list);
         bt_eat = (Button)v.findViewById(R.id.bt_eat);
-
         chart = v.findViewById(R.id.chart1);
+        tv_food =(TextView)v.findViewById(R.id.tv_food);
     }
     //为ExpandableListView自定义适配器
     class MyExpandableListView extends BaseExpandableListAdapter {
@@ -291,21 +298,14 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
             TextView name = (TextView) convertView.findViewById(R.id.name);
             TextView amount = (TextView) convertView.findViewById(R.id.amount);
 
-            if(groupPosition==0&&childPosition==0){
-                name.setText("你應該為生存而食");
-                name.setTextSize(15);
-                name.setTextColor(Color.rgb(27, 204, 27));
-                amount.setText("不應為食而生存。");
-                amount.setTextColor(Color.rgb(27, 204, 27));
-                amount.setTextSize(15);
-            }else{
+
                 name.setText(list.get(groupPosition).get(childPosition));
                 amount.setText(list2.get(groupPosition).get(childPosition));
                 name.setTextColor(Color.rgb(0,0,0));
                 amount.setTextColor(Color.rgb(0,0,0));
                 name.setTextSize(20);
                 amount.setTextSize(20);
-            }
+
             return convertView;
         }
 

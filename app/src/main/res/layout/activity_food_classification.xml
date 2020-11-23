@@ -58,26 +58,39 @@
                 android:paddingEnd="30dp"
                 android:layout_margin="5dp"
                 />
+<LinearLayout
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:layout_toEndOf="@+id/bt_meet">
 
-            <Button
-                android:id="@+id/bt_vegetables"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_toEndOf="@+id/bt_meet"
-                android:background="@drawable/vegetables_button_rounde"
-                android:text="蔬菜類"
-                android:layout_margin="3dp"/>
+    <Button
+        android:layout_weight="1"
+        android:id="@+id/bt_vegetables"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/vegetables_button_rounde"
+        android:text="蔬菜類"
+        android:layout_margin="3dp"/>
 
-            <Button
-                android:id="@+id/bt_fruit"
-                android:text="水果類"
+    <Button
+        android:id="@+id/bt_fruit"
+        android:text="水果類"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/meet_button_rounde"
+        android:layout_margin="3dp" />
+    <Button
+        android:layout_weight="1"
+        android:id="@+id/bt_oil"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/button_circle"
+        android:text="堅果種子類"
+        android:layout_margin="3dp" />
+</LinearLayout>
 
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_toEndOf="@+id/bt_meet"
-                android:layout_below="@+id/bt_vegetables"
-                android:background="@drawable/meet_button_rounde"
-                android:layout_margin="3dp" />
 
             <Button
                 android:id="@+id/bt_meet"
@@ -94,15 +107,7 @@
                 android:paddingTop="10dp"/>
 
 
-            <Button
-                android:id="@+id/bt_oil"
-                android:layout_width="match_parent"
-                android:layout_height="50dp"
-                android:layout_toEndOf="@+id/bt_meet"
-                android:layout_below="@+id/bt_fruit"
-                android:background="@drawable/button_circle"
-                android:text="堅果種子類"
-                android:layout_margin="3dp" />
+
         </RelativeLayout>
 
     </RelativeLayout>
