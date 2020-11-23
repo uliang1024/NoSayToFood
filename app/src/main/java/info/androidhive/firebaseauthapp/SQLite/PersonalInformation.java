@@ -80,7 +80,7 @@ public class PersonalInformation extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1,uid);
-        contentValues.put(COL_5,height);
+        contentValues.put(COL_4,height);
         db.update(TABLE_NAME1, contentValues, "UID = ?",new String[] { uid });
         return true;
     }
@@ -101,10 +101,10 @@ public class PersonalInformation extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1,uid);
-        contentValues.put(COL_5,Height);
-        contentValues.put(COL_6,Weight);
-        contentValues.put(COL_7,Waistline);
-        contentValues.put(COL_8,Body_fat_percentage);
+        contentValues.put(COL_4,Height);
+        contentValues.put(COL_5,Weight);
+        contentValues.put(COL_6,Waistline);
+        contentValues.put(COL_7,Body_fat_percentage);
 
         db.update(TABLE_NAME1, contentValues, "UID = ?",new String[] { uid });
         return true;

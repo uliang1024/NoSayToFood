@@ -81,22 +81,43 @@ public class ProfileFragment extends Fragment {
         mAuth = FirebaseAuth.getInstance();
         currentUserID = mAuth.getCurrentUser().getUid();
         UsersRef = FirebaseDatabase.getInstance().getReference().child("Users");
+
         UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                if(dataSnapshot.exists()){
+
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        UsersRef.child(currentUserID).addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.exists()) {
                     String fullname = dataSnapshot.child("Username").getValue().toString();
                     String image = dataSnapshot.child("profileimage").getValue().toString();
                     welconeText.setText(fullname);
-                    if(!image.equals("")){
+                    if (!image.equals("")) {
+
                         Picasso.get().load(image).placeholder(R.drawable.com_facebook_profile_picture_blank_square).into(userface);
                     }
-        });
-        managers = new ArrayList<>();
+                }
+            }
 
-        check_manager(new DataListener() {
-            public void onReceiveData(boolean dataLoadComplete) {
             @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
+
+        managers = new ArrayList<>();
+        check_manager(new DataListener() {
+            @Override
+            public void onReceiveData(boolean dataLoadComplete) {
                 if (dataLoadComplete){
                     Log.e("complete","size ="+managers.get(0).getUid());
                     for (myUser u:managers){
@@ -108,14 +129,9 @@ public class ProfileFragment extends Fragment {
                     }
                 }
             }
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError databaseError) {
-
-            }
         });
+
+
 
         ll_share.setOnClickListener(new View.OnClickListener() {
             @Override

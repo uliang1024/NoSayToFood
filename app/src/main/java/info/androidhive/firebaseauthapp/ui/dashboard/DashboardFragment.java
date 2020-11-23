@@ -361,7 +361,7 @@ public class DashboardFragment extends Fragment {
                         .show();
             }
         });
-        //選擇身高按鈕
+        //選擇腰圍按鈕
         btn_setHeight.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

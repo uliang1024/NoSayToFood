@@ -103,7 +103,7 @@ dependencies {
     implementation 'com.github.a914-gowtham:Android-video-trimmer:1.4.0'
 
     //Picasso
-    implementation 'com.squareup.picasso:picasso:2.5.2'
+    implementation 'com.squareup.picasso:picasso:2.71828'
 
     //make parcelable easier
     implementation 'org.parceler:parceler-api:1.1.12'
