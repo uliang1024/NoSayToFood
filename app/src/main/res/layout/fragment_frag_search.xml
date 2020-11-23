@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".manager.FragSearch"
+    android:background="@color/white"
+    android:clickable="true">
+
+    <!-- TODO: Update blank fragment layout -->
+    <EditText
+        android:id="@+id/et_search"
+        android:hint="輸入關鍵字"
+        android:padding="7dp"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_search"
+        android:layout_below="@+id/et_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_search"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/tv_noData_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="沒有資料拉( ´•̥̥̥ω•̥̥̥` )"
+        android:textSize="30sp"
+        android:visibility="invisible" />
+
+    <Button
+        android:layout_alignParentEnd="true"
+        android:id="@+id/btn_return_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="back"
+        android:layout_centerHorizontal="true"/>
+
+</RelativeLayout>

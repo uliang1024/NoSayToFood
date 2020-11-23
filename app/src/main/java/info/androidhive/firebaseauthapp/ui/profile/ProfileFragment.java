@@ -7,9 +7,11 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -25,17 +27,29 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
 import info.androidhive.firebaseauthapp.MainActivity;
 import info.androidhive.firebaseauthapp.R;
+
+import info.androidhive.firebaseauthapp.manager.ManagerPage;
+import info.androidhive.firebaseauthapp.manager.myUser;
+import info.androidhive.firebaseauthapp.models.Article;
 
 /**
  * Created by Belal on 1/23/2018.
@@ -49,7 +63,9 @@ public class ProfileFragment extends Fragment {
     private TextView welconeText;
     private ImageView imageView;
     private LinearLayout ll_logout,ll_editor;
-    private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private Button btn_manager;
+    private DatabaseReference myRef = FirebaseDatabase.getInstance().getReference();
+    private ArrayList<myUser> managers;
     @SuppressLint("StaticFieldLeak")
     @Nullable
     @Override
@@ -58,6 +74,23 @@ public class ProfileFragment extends Fragment {
         init(fragment_profile);
 
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        managers = new ArrayList<>();
+
+        check_manager(new DataListener() {
+            @Override
+            public void onReceiveData(boolean dataLoadComplete) {
+                if (dataLoadComplete){
+                    Log.e("complete","size ="+managers.get(0).getUid());
+                    for (myUser u:managers){
+                        if (u.getUid().equals(user.getUid())){
+                            btn_manager.setVisibility(View.VISIBLE);
+                            Log.e("manager","is manager");
+                            break;
+                        }
+                    }
+                }
+            }
+        });
         if (user != null) {
             // Name, email address, and profile photo Url
             String name = user.getDisplayName();
@@ -122,6 +155,18 @@ public class ProfileFragment extends Fragment {
             }
         });
 
+        btn_manager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(getContext(), ManagerPage.class);
+                Bundle bundle = new Bundle();
+                bundle.putString("uid",user.getUid());
+                bundle.putString("name",user.getDisplayName());
+                intent.putExtras(bundle);
+                startActivity(intent);
+            }
+        });
+
         return fragment_profile;
     }
 
@@ -170,8 +215,50 @@ public class ProfileFragment extends Fragment {
         imageView = (ImageView)v.findViewById(R.id.imageView);
         ll_logout = (LinearLayout)v.findViewById(R.id.ll_logout);
         ll_editor = (LinearLayout)v.findViewById(R.id.ll_editor);
+        btn_manager = v.findViewById(R.id.btn_manager);
+    }
+
+    private void check_manager(DataListener listener){
+
+        myRef.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                if (dataSnapshot.hasChild("managers")){
+
+                    HashMap<String,Object> loadedItems = (HashMap<String,Object>) dataSnapshot.child("managers").getValue();
+                    if (loadedItems == null||loadedItems.size() == 0){
+                        return;
+                    }
+                    Log.e("loaded list size",loadedItems.size()+"");
+                    int loadCounter= 0;
+                    managers.clear();
+
+                    for (DataSnapshot managerSnapshot : dataSnapshot.child("managers").getChildren()){
+                        myUser u = managerSnapshot.getValue(myUser.class);
+                        managers.add(u);
+                        loadCounter++;
+                    }
+                    if (loadCounter == loadedItems.size()){
+
+                        listener.onReceiveData(true);
+                    }
+
+                }else{
+                    Log.e("get manager","cant get manager");
+                }
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
+            }
+        });
     }
 
 
+
+    interface DataListener{
+        void onReceiveData(boolean dataLoadComplete);
+    }
 
 }

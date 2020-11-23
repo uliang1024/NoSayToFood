@@ -1,10 +1,12 @@
 package info.androidhive.firebaseauthapp.models;
 
 import android.app.Activity;
+import android.os.Parcel;
+import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public class VideoPost {
+public class VideoPost implements Parcelable {
 
     private String PostID;
     private long postTime;
@@ -17,9 +19,53 @@ public class VideoPost {
     private String user_ID;
     private ArrayList<Comments > comments;
     private ArrayList<Likes >likes;
+    private int toUpdate;
+    private int toDelete;
 
     public VideoPost() {
 
+    }
+
+    protected VideoPost(Parcel in) {
+        PostID = in.readString();
+        postTime = in.readLong();
+        user_avatar = in.readString();
+        user_name = in.readString();
+        thumbnail_img = in.readString();
+        post_type = in.readInt();
+        video_url = in.readString();
+        description = in.readString();
+        user_ID = in.readString();
+        toUpdate = in.readInt();
+        toDelete = in.readInt();
+    }
+
+    public static final Creator<VideoPost> CREATOR = new Creator<VideoPost>() {
+        @Override
+        public VideoPost createFromParcel(Parcel in) {
+            return new VideoPost(in);
+        }
+
+        @Override
+        public VideoPost[] newArray(int size) {
+            return new VideoPost[size];
+        }
+    };
+
+    public int getToUpdate() {
+        return toUpdate;
+    }
+
+    public void setToUpdate(int toUpdate) {
+        this.toUpdate = toUpdate;
+    }
+
+    public int getToDelete() {
+        return toDelete;
+    }
+
+    public void setToDelete(int toDelete) {
+        this.toDelete = toDelete;
     }
 
     public ArrayList<Comments> getComments() {
@@ -123,4 +169,23 @@ public class VideoPost {
     }
 
 
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(PostID);
+        dest.writeLong(postTime);
+        dest.writeString(user_avatar);
+        dest.writeString(user_name);
+        dest.writeString(thumbnail_img);
+        dest.writeInt(post_type);
+        dest.writeString(video_url);
+        dest.writeString(description);
+        dest.writeString(user_ID);
+        dest.writeInt(toUpdate);
+        dest.writeInt(toDelete);
+    }
 }

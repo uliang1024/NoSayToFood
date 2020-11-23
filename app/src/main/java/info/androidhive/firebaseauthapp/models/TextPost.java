@@ -1,8 +1,11 @@
 package info.androidhive.firebaseauthapp.models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import java.util.ArrayList;
 
-public class TextPost {
+public class TextPost implements Parcelable {
 
     private String PostID;
     private long postTime;
@@ -11,9 +14,51 @@ public class TextPost {
     private int post_type;
     private ArrayList<Comments > comments;
     private ArrayList<Likes >likes;
+    private int toUpdate;
+    private int toDelete;
 
     public TextPost() {
 
+    }
+
+    protected TextPost(Parcel in) {
+        PostID = in.readString();
+        postTime = in.readLong();
+        user_avatar = in.readString();
+        user_name = in.readString();
+        description = in.readString();
+        user_ID = in.readString();
+        post_type = in.readInt();
+        toUpdate = in.readInt();
+        toDelete = in.readInt();
+    }
+
+    public static final Creator<TextPost> CREATOR = new Creator<TextPost>() {
+        @Override
+        public TextPost createFromParcel(Parcel in) {
+            return new TextPost(in);
+        }
+
+        @Override
+        public TextPost[] newArray(int size) {
+            return new TextPost[size];
+        }
+    };
+
+    public int getToUpdate() {
+        return toUpdate;
+    }
+
+    public void setToUpdate(int toUpdate) {
+        this.toUpdate = toUpdate;
+    }
+
+    public int getToDelete() {
+        return toDelete;
+    }
+
+    public void setToDelete(int toDelete) {
+        this.toDelete = toDelete;
     }
 
     public ArrayList<Comments> getComments() {
@@ -86,5 +131,23 @@ public class TextPost {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(PostID);
+        dest.writeLong(postTime);
+        dest.writeString(user_avatar);
+        dest.writeString(user_name);
+        dest.writeString(description);
+        dest.writeString(user_ID);
+        dest.writeInt(post_type);
+        dest.writeInt(toUpdate);
+        dest.writeInt(toDelete);
     }
 }

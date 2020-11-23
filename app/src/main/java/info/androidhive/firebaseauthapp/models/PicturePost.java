@@ -5,7 +5,7 @@ import android.os.Parcelable;
 
 import java.util.ArrayList;
 
-public class PicturePost  {
+public class PicturePost implements Parcelable {
 
     private String PostID;
     private long postTime;
@@ -17,9 +17,35 @@ public class PicturePost  {
     private ArrayList<PicturePostGridImage >Images;
     private ArrayList<Comments >comments;
     private ArrayList<Likes >likes;
+    private int toUpdate;
+    private int toDelete;
 
     public PicturePost() {
     }
+
+    protected PicturePost(Parcel in) {
+        PostID = in.readString();
+        postTime = in.readLong();
+        user_avatar = in.readString();
+        user_name = in.readString();
+        user_ID = in.readString();
+        description = in.readString();
+        post_type = in.readInt();
+        toUpdate = in.readInt();
+        toDelete = in.readInt();
+    }
+
+    public static final Creator<PicturePost> CREATOR = new Creator<PicturePost>() {
+        @Override
+        public PicturePost createFromParcel(Parcel in) {
+            return new PicturePost(in);
+        }
+
+        @Override
+        public PicturePost[] newArray(int size) {
+            return new PicturePost[size];
+        }
+    };
 
     public String getPostID() {
         return PostID;
@@ -69,8 +95,21 @@ public class PicturePost  {
         this.post_type = post_type;
     }
 
+    public int getToUpdate() {
+        return toUpdate;
+    }
 
+    public void setToUpdate(int toUpdate) {
+        this.toUpdate = toUpdate;
+    }
 
+    public int getToDelete() {
+        return toDelete;
+    }
+
+    public void setToDelete(int toDelete) {
+        this.toDelete = toDelete;
+    }
 
     public ArrayList<PicturePostGridImage> getImages() {
         return Images;
@@ -104,6 +143,24 @@ public class PicturePost  {
 
     public void setImages(ArrayList<PicturePostGridImage> images) {
         Images = images;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(PostID);
+        dest.writeLong(postTime);
+        dest.writeString(user_avatar);
+        dest.writeString(user_name);
+        dest.writeString(user_ID);
+        dest.writeString(description);
+        dest.writeInt(post_type);
+        dest.writeInt(toUpdate);
+        dest.writeInt(toDelete);
     }
 
 //    @SuppressWarnings({ "rawtypes", "unchecked" })

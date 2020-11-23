@@ -38,6 +38,7 @@ public class HeyYou extends AppCompatActivity {
          String email = user.getEmail();
         mDatabase.child("Users").child(uid).child("Username").setValue(name);
         mDatabase.child("Users").child(uid).child("Email").setValue(email);
+        mDatabase.child("Users").child(uid).child("Uid").setValue(uid);
 
         myDb = new PersonalInformation(this);
         Cursor res = myDb.getAllData();

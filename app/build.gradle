@@ -112,7 +112,8 @@ dependencies {
     implementation 'com.github.devlight:infinitecycleviewpager:1.0.2'
     //view animation
     implementation 'com.daimajia.androidanimations:library:2.4@aar'
-    //congrats effect
+    //recyclerview swipe background
+    implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
 
 }
 apply plugin: 'com.google.gms.google-services'

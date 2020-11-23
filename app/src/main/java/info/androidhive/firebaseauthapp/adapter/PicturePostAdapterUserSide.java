@@ -7,22 +7,18 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.facebook.shimmer.ShimmerFrameLayout;
-import com.google.android.exoplayer2.SimpleExoPlayer;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
@@ -30,7 +26,6 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.ms.square.android.expandabletextview.ExpandableTextView;
 import com.shuyu.gsyvideoplayer.GSYVideoManager;
@@ -48,12 +43,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import butterknife.BindView;
-import butterknife.ButterKnife;
 import info.androidhive.firebaseauthapp.Fragments.CommentFragment;
 import info.androidhive.firebaseauthapp.HomeActivity;
 import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.manager.ManagerPage;
 import info.androidhive.firebaseauthapp.models.Comments;
 import info.androidhive.firebaseauthapp.models.Item;
 import info.androidhive.firebaseauthapp.models.Likes;
@@ -62,14 +54,11 @@ import info.androidhive.firebaseauthapp.models.PicturePostGridImage;
 import info.androidhive.firebaseauthapp.models.TextPost;
 import info.androidhive.firebaseauthapp.models.VideoPost;
 import info.androidhive.firebaseauthapp.util.SampleCoverVideo;
-import info.androidhive.firebaseauthapp.util.SpacesItemDecoration;
 import tv.danmaku.ijk.media.exo2.Exo2PlayerManager;
 import tv.danmaku.ijk.media.exo2.ExoPlayerCacheManager;
 
-import static com.facebook.internal.CallbackManagerImpl.RequestCodeOffset.Like;
-
 //Adapter
-public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+public class PicturePostAdapterUserSide extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public final static String TAG = "RecyclerView2List";
     //recyclerView將要展示的元素
     private List<Item> items;
@@ -104,7 +93,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
 
 
-    public PicturePostAdapter(Context context, List<Item> items ) {
+    public PicturePostAdapterUserSide(Context context, List<Item> items ) {
         this.items = items;
         this.context = context;
 
@@ -322,7 +311,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                     bundle.putString("id", p.getPostID());
                     commentFragment.setArguments(bundle);
-                    commentFragment.show(((ManagerPage) context).getSupportFragmentManager(),commentFragment.getTag());
+                    commentFragment.show(((HomeActivity) context).getSupportFragmentManager(),commentFragment.getTag());
                 }
             });
             lv_pic_like.setOnClickListener(new View.OnClickListener() {
@@ -454,7 +443,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
                     bundle.putString("id", t.getPostID());
                     commentFragment.setArguments(bundle);
-                    commentFragment.show(((ManagerPage) context).getSupportFragmentManager(),commentFragment.getTag());
+                    commentFragment.show(((HomeActivity) context).getSupportFragmentManager(),commentFragment.getTag());
                 }
             });
         }
@@ -635,7 +624,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                     bundle.putString("id", videoPost.getPostID());
 
                     commentFragment.setArguments(bundle);
-                    commentFragment.show(((ManagerPage) context).getSupportFragmentManager(),commentFragment.getTag());
+                    commentFragment.show(((HomeActivity) context).getSupportFragmentManager(),commentFragment.getTag());
                 }
             });
             //gsyVideoPlayer.loadCoverImageBy(v.getThumbnail_img(), v.getThumbnail_img());
@@ -823,7 +812,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
 
     }
     interface LikeChangeListener{
-        void onLikeChanged(int count,boolean hasliked);
+        void onLikeChanged(int count, boolean hasliked);
 
     }
 

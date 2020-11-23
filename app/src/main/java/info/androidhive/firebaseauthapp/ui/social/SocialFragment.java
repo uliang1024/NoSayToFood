@@ -33,17 +33,9 @@ import java.util.List;
 
 import javax.annotation.Nullable;
 
-import info.androidhive.firebaseauthapp.MainActivity;
-import info.androidhive.firebaseauthapp.PostingActivity;
-import info.androidhive.firebaseauthapp.PostingPageActivity;
+
 import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.adapter.PicturePostAdapter;
-import info.androidhive.firebaseauthapp.models.Item;
-import info.androidhive.firebaseauthapp.models.PicturePost;
-import info.androidhive.firebaseauthapp.models.TextPost;
-import info.androidhive.firebaseauthapp.models.VideoPost;
-import info.androidhive.firebaseauthapp.ui.home.SectionsPagerAdapter;
-import info.androidhive.firebaseauthapp.util.ScrollCalculatorHelper;
+
 
 import static com.facebook.FacebookSdk.getApplicationContext;
 

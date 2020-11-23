@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".manager.FragDelete"
+    android:clickable="true"
+    android:background="@color/white">
+
+    <!-- TODO: Update blank fragment layout -->
+
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/swipe_refresh_delete"
+        android:layout_below="@+id/et_search"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/recycler_view_delete"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+
+            />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <TextView
+        android:id="@+id/tv_noData_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:text="咩鋪qq，沒有資料拉( ´•̥̥̥ω•̥̥̥` )"
+        android:textSize="30sp"
+        android:visibility="invisible" />
+    <Button
+        android:id="@+id/btn_return_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="back" />
+
+
+
+</RelativeLayout>

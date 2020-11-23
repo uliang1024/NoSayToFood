@@ -109,7 +109,6 @@ public class PostingActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_posting);
 
-
         img_user = findViewById(R.id.img_user);
         tv_user = findViewById(R.id.tv_user);
         et_content = findViewById(R.id.et_content);
@@ -474,6 +473,8 @@ public class PostingActivity extends AppCompatActivity {
                 t.setPostID(pushId);
                 t.setPostTime(System.currentTimeMillis());
                 t.setUser_ID(firebaseAuth.getCurrentUser().getUid());
+                t.setToUpdate(0);
+                t.setToDelete(0);
 
                 databaseReference.child("posting").child(pushId).setValue(t).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -561,6 +562,8 @@ public class PostingActivity extends AppCompatActivity {
         p.setPostTime(System.currentTimeMillis());
         p.setUser_ID(firebaseAuth.getCurrentUser().getUid());
         p.setPost_type(0);
+        p.setToUpdate(0);
+        p.setToDelete(0);
 
 
         Log.e("upload images","upload complete");
@@ -600,13 +603,15 @@ public class PostingActivity extends AppCompatActivity {
                             VideoPost v = new VideoPost();
                             v.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
                             v.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
+                            v.setUser_ID(firebaseAuth.getCurrentUser().getUid());
                             v.setDescription(et_content.getText().toString());
                             v.setThumbnail_img("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F2.jpg?alt=media&token=254289ea-59ac-4d4c-80dd-f3720864af41");
                             v.setVideo_url(url);
                             v.setPost_type(2);
-                            v.setPostID(firebaseAuth.getCurrentUser().getUid());
                             v.setPostID(pushId);
                             v.setPostTime(System.currentTimeMillis());
+                            v.setToUpdate(0);
+                            v.setToDelete(0);
 
                             databaseReference.child("posting").child(pushId).setValue(v);
                             progressDialog.dismiss();

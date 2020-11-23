@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#E7A460</color>
-    <color name="colorPrimaryDark">#616A6B</color>
-    <color name="colorAccent">#616A6B</color>
+    <color name="colorPrimaryDark">#D4BA6A</color>
+    <color name="colorAccent">#9A6907</color>
     <color name="white">#ffffff</color>
     <color name="button">#E75FDC</color>
     <color name="press">#25fa55</color>
@@ -28,5 +28,9 @@
     <color name="black_overlay">#66000000</color>
 
     <color name="transparentBlack">#A0333639</color>
+
+    <color name="light_green">#9FD13F</color>
+    <color name="update_yellow">#FFEA66</color>
+    <color name="delete_red">#FF6155</color>
 
 </resources>

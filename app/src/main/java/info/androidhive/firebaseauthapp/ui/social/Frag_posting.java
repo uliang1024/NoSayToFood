@@ -46,8 +46,9 @@ import javax.annotation.Nullable;
 
 import info.androidhive.firebaseauthapp.PostingPageActivity;
 import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.adapter.PicturePostAdapter;
 
+
+import info.androidhive.firebaseauthapp.adapter.PicturePostAdapterUserSide;
 import info.androidhive.firebaseauthapp.models.Item;
 import info.androidhive.firebaseauthapp.models.PicturePost;
 import info.androidhive.firebaseauthapp.models.PicturePostGridImage;
@@ -65,7 +66,7 @@ import static info.androidhive.firebaseauthapp.util.Constants.VIDEO_URL;
 
 import info.androidhive.firebaseauthapp.util.Constants;
 
-public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemClickedListener  {
+public class Frag_posting extends Fragment implements PicturePostAdapterUserSide.OnItemClickedListener  {
 
     public static final String POSTING_TYPE="posting_type";
     public static final String POSTING_TITLE="posting_title";
@@ -83,8 +84,8 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
     LinearLayoutManager layoutManager;
     ScrollCalculatorHelper scrollCalculatorHelper;
     Context mContext;
-    PicturePostAdapter adapter;
-    PicturePostAdapter.OnItemClickedListener clickedListener;
+    PicturePostAdapterUserSide adapter;
+    PicturePostAdapterUserSide.OnItemClickedListener clickedListener;
     TextView tv_noData;
 
     @Nullable
@@ -98,9 +99,9 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
         //讀取資料
         addData(new DataListener() {
             @Override
-            public void onReceiveData(boolean dataLoadComplete) {
+            public void onReceiveData(boolean dataLoadComplete, int loadedDataSize) {
                 //如果接收資料成功
-                if (dataLoadComplete){
+                if (dataLoadComplete && loadedDataSize!=0){
                     //先暫停兩秒等待shimmer動畫效果播出
                     new Handler().postDelayed(new Runnable() {
                         @Override
@@ -109,8 +110,14 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                             adapter.notifyDataSetChanged();
                         }
                     },300);
+                    Log.e("dataload","ok");
+                }else{
+                    adapter.isShimmer = false;
+                    adapter.notifyDataSetChanged();
+                    tv_noData.setVisibility(View.VISIBLE);
+                    Toast.makeText(mContext, "這個app太邊緣了，目前沒有任何貼文，真的很抱歉", Toast.LENGTH_LONG).show();
                 }
-                Log.e("dataload","ok");
+
             }
         });
         //下滑刷新
@@ -122,12 +129,18 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                 addData(new DataListener() {
                     //如果接收資料成功
                     @Override
-                    public void onReceiveData(boolean dataLoadComplete) {
-                        if (dataLoadComplete){
+                    public void onReceiveData(boolean dataLoadComplete, int loadedDataSize) {
+                        if (dataLoadComplete&& loadedDataSize!=0){
                             adapter.isShimmer = false;
                             adapter.notifyDataSetChanged();
+                            Log.e("dataload","ok");
+                        }else {
+                            adapter.isShimmer = false;
+                            adapter.notifyDataSetChanged();
+                            tv_noData.setVisibility(View.VISIBLE);
+                            Toast.makeText(mContext, "這個app太邊緣了，目前沒有任何貼文，真的很抱歉", Toast.LENGTH_LONG).show();
                         }
-                        Log.e("dataload","ok");
+
                     }
                 });
 
@@ -146,7 +159,7 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
         layoutManager = new LinearLayoutManager(mContext);
         mRecyclerView.setLayoutManager(layoutManager);
 
-        adapter = new PicturePostAdapter(mContext,items);
+        adapter = new PicturePostAdapterUserSide(mContext,items);
         adapter.setOnItemClickedListener(clickedListener);
         mRecyclerView.setAdapter(adapter);
 
@@ -253,20 +266,34 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
                         if(postSnapShot.hasChild(POST_TYPE)){
                             int type = Integer.parseInt(postSnapShot.child(POST_TYPE).getValue().toString());
                             if(type ==0){
-                                PicturePost p = postSnapShot.getValue(PicturePost.class);
-                                items.add(new Item(0,p));
-                                loadCounter++;
+                                if ((long)postSnapShot.child("toUpdate").getValue() ==0 && (long) postSnapShot.child("toDelete").getValue()==0){
+                                    PicturePost p = postSnapShot.getValue(PicturePost.class);
+                                    items.add(new Item(0,p));
+                                    loadCounter++;
+                                }else{
+                                    loadCounter++;
+                                }
+
                             }
                             if(type==1){
+                                if ((long)postSnapShot.child("toUpdate").getValue() ==0 && (long) postSnapShot.child("toDelete").getValue()==0){
+                                    TextPost t = postSnapShot.getValue(TextPost.class);
+                                    items.add(new Item(1,t));
+                                    loadCounter++;
+                                }else{
+                                    loadCounter++;
+                                }
 
-                                TextPost t = postSnapShot.getValue(TextPost.class);
-                                items.add(new Item(1,t));
-                                loadCounter++;
                             }
                             else if(type==2){
-                                VideoPost v = postSnapShot.getValue(VideoPost.class);
-                                items.add(new Item(2,v));
-                                loadCounter++;
+                                if ((long)postSnapShot.child("toUpdate").getValue() ==0 && (long) postSnapShot.child("toDelete").getValue()==0){
+                                    VideoPost v = postSnapShot.getValue(VideoPost.class);
+                                    items.add(new Item(2,v));
+                                    loadCounter++;
+                                }else{
+                                    loadCounter++;
+                                }
+
                             }
 
 
@@ -280,7 +307,7 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
 
                     if (loadCounter == loadedItems.size()){
                         Collections.reverse(items);
-                        dataListener.onReceiveData(true);
+                        dataListener.onReceiveData(true,items.size());
                     }
                 }else{
                     adapter.isShimmer = false;
@@ -331,6 +358,6 @@ public class Frag_posting extends Fragment implements PicturePostAdapter.OnItemC
         }
     }
     interface DataListener{
-        void onReceiveData(boolean dataLoadComplete);
+        void onReceiveData(boolean dataLoadComplete,int loadedDataSize);
     }
 }
