@@ -437,7 +437,7 @@ public class PostingActivity extends AppCompatActivity {
 
     private void setUpActionBar(Toolbar toolbar_posting) {
         setSupportActionBar(toolbar_posting);
-        getSupportActionBar().setTitle("post something");
+        getSupportActionBar().setTitle("貼文發布");
         toolbar_posting.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
         toolbar_posting.setNavigationOnClickListener(new View.OnClickListener() {
             @Override

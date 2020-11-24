@@ -624,7 +624,7 @@ public class UpdatePostingActivity extends AppCompatActivity {
 
     private void setUpActionBar(Toolbar toolbar_posting) {
         setSupportActionBar(toolbar_posting);
-        getSupportActionBar().setTitle("post something");
+        getSupportActionBar().setTitle("更新貼文");
         toolbar_posting.setNavigationIcon(R.drawable.ic_baseline_arrow_back_24);
         toolbar_posting.setNavigationOnClickListener(new View.OnClickListener() {
             @Override
@@ -643,37 +643,59 @@ public class UpdatePostingActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
-        int img_count = 1;
-        if (id==R.id.btn_post){
+        if (id == R.id.btn_post) {
             //按下發布紐，如果selectedUriList.size = 0,selectedUri = null為 textpost
 
             //檢查更新後的貼文種類是否和先前的貼文種類依樣(問同學)
-//            if (postType == 0){
-//                if ((selectedUriList.size()+images.size())==0){
-//                    LayoutInflater inflater = LayoutInflater.from(UpdatePostingActivity.this);
-//                    final View v = inflater.inflate(R.layout.delete_post_alert, null);
-//                    new AlertDialog.Builder(UpdatePostingActivity.this)
-//                            .setTitle("尚未選擇照片")
-//                            .setView(v)
-//                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-//                                @Override
-//                                public void onClick(DialogInterface dialog, int which) {
-//                                    //不要執行接下來的動作
-//                                }
-//                            })
-//
-//                            .show();
-//                }
-//            }
+            if (postType == 0) {
+                //如果種類是picpost，但是沒有相片
+                if ((selectedUriList.size() + images.size()) == 0) {
+                    LayoutInflater inflater = LayoutInflater.from(UpdatePostingActivity.this);
+                    final View v = inflater.inflate(R.layout.post_alert, null);
+                    TextView tv_alert = v.findViewById(R.id.tv_alert);
+                    tv_alert.setText("您沒有選擇任何照片喔");
+                    new AlertDialog.Builder(UpdatePostingActivity.this)
+                            .setTitle("沒有照片")
+                            .setView(v)
+                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.e("error ", "no pics");
+                                }
+                            })
+
+                            .show();
+                    return super.onOptionsItemSelected(item);
+                }
+            } else if (postType == 2) {
+                if (selectedUri == null && readedUri.equals("")) {
+                    LayoutInflater inflater = LayoutInflater.from(UpdatePostingActivity.this);
+                    final View v = inflater.inflate(R.layout.post_alert, null);
+                    TextView tv_alert = v.findViewById(R.id.tv_alert);
+                    tv_alert.setText("您沒有選擇任何影片喔");
+                    new AlertDialog.Builder(UpdatePostingActivity.this)
+                            .setTitle("沒有影片")
+                            .setView(v)
+                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    Log.e("error ", "no video");
+                                }
+                            })
+
+                            .show();
+                    return super.onOptionsItemSelected(item);
+                }
+            }
 
 //            Toast.makeText(PostingActivity.this, "UR url list is"+selectedUriList+"\n"+"UR video list is"+selectedUri, Toast.LENGTH_SHORT).show();
-            if ((selectedUriList.size()+images.size())==0 && selectedUri==null && readedUri.equals("")){
+            if ((selectedUriList.size() + images.size()) == 0 && selectedUri == null && readedUri.equals("")) {
                 //String uuid = UUID.randomUUID().toString();
 
 
-                HashMap<String,Object> hashMap = new HashMap();
-                hashMap.put("description",et_content.getText().toString());
-                hashMap.put("toUpdate",0);
+                HashMap<String, Object> hashMap = new HashMap();
+                hashMap.put("description", et_content.getText().toString());
+                hashMap.put("toUpdate", 0);
                 databaseReference.child("posting").child(getPostId).updateChildren(hashMap).addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
                     public void onSuccess(Void aVoid) {
@@ -685,62 +707,61 @@ public class UpdatePostingActivity extends AppCompatActivity {
 
             }
             //picturepost
-            else if((selectedUriList.size()+images.size())!=0 && selectedUri==null && readedUri.equals("") )
-            {
+            else if ((selectedUriList.size() + images.size()) != 0 && selectedUri == null && readedUri.equals("")) {
 
                 //如果有新的照片
-                if (selectedUriList.size()>0){
+                if (selectedUriList.size() > 0) {
                     ProgressDialog progressDialog = new ProgressDialog(this);
-                    progressDialog.setMessage("upload 0/"+selectedUriList.size());
+                    progressDialog.setMessage("upload 0/" + selectedUriList.size());
                     progressDialog.setCanceledOnTouchOutside(false);
                     progressDialog.setCancelable(false);
                     progressDialog.show();
 //                StorageReference reference = storageReference.child("users").child(firebaseAuth.getCurrentUser().getUid()).child("posted_images").child(System.currentTimeMillis()+"");
-                    for(Uri uri :selectedUriList){
-                        Log.e("get downUrls ",uri.toString());
-                        StorageReference reference = storageReference.child("users").child(userId).child("posted_images").child(System.currentTimeMillis()+"");
+                    for (Uri uri : selectedUriList) {
+                        Log.e("get downUrls ", uri.toString());
+                        StorageReference reference = storageReference.child("users").child(userId).child("posted_images").child(System.currentTimeMillis() + "");
                         reference.putFile(uri).addOnCompleteListener(new OnCompleteListener<UploadTask.TaskSnapshot>() {
                             @Override
                             public void onComplete(@NonNull Task<UploadTask.TaskSnapshot> task) {
-                                if (task.isSuccessful()){
+                                if (task.isSuccessful()) {
                                     reference.getDownloadUrl().addOnCompleteListener(new OnCompleteListener<Uri>() {
                                         @Override
                                         public void onComplete(@NonNull Task<Uri> task) {
                                             //只要完成了一輪loop，無論task是否成功都要++
                                             counter++;
-                                            progressDialog.setMessage("upload "+counter+"/"+selectedUriList.size());
-                                            if(task.isSuccessful()){
+                                            progressDialog.setMessage("upload " + counter + "/" + selectedUriList.size());
+                                            if (task.isSuccessful()) {
 
                                                 String myurl = task.getResult().toString();
                                                 PicturePostGridImage imageItem = new PicturePostGridImage();
                                                 imageItem.setImagePath(myurl);
-                                                Log.e("get downUrls ",myurl);
+                                                Log.e("get downUrls ", myurl);
                                                 //將我們拿到的url存到廣域的arraylist : savedImageUrls中
                                                 savedImageUrls.add(imageItem);
 
-                                            }else{
+                                            } else {
                                                 //失敗了必須將檔案刪掉
                                                 reference.delete();
-                                                Log.e("get downUrls error","something wrong");
+                                                Log.e("get downUrls error", "something wrong");
                                             }
                                             //如果loop次數達到selectedUriList.size()
-                                            if(counter==selectedUriList.size()){
+                                            if (counter == selectedUriList.size()) {
                                                 //呼叫
                                                 uploadImages(progressDialog);
                                             }
                                         }
                                     });
-                                }else{
+                                } else {
                                     //只要完成了一輪loop，無論task是否成功都要++
                                     counter++;
-                                    Log.e("upload files error","something wrong");
+                                    Log.e("upload files error", "something wrong");
                                 }
                             }
                         });
                     }
                 }
                 //如果沒有新的照片要上傳
-                else{
+                else {
                     uploadImages(null);
                 }
 
@@ -749,12 +770,12 @@ public class UpdatePostingActivity extends AppCompatActivity {
             //videopost
             else {
                 //如果使用者有選取影片，且毒入的url==""
-                if (selectedUri!=null && readedUri.equals("")){
+                if (selectedUri != null && readedUri.equals("")) {
                     UploadVideo();
                 }
                 //如果使用者有沒選取影片，且毒入的url不等於""
-                else if (selectedUri==null && !readedUri.equals("")){
-                    updateVideos(readedUri,null);
+                else if (selectedUri == null && !readedUri.equals("")) {
+                    updateVideos(readedUri, null);
                 }
             }
         }

@@ -115,11 +115,15 @@ public class ProfileFragment extends Fragment {
         });
 
         managers = new ArrayList<>();
+
+
         check_manager(new DataListener() {
             @Override
             public void onReceiveData(boolean dataLoadComplete) {
                 if (dataLoadComplete){
-                    Log.e("complete","size ="+managers.get(0).getUid());
+                    Log.e("get readed manager","size ="+managers.get(0).getUid());
+
+                    Log.e("getUid","size ="+user.getUid());
                     for (myUser u:managers){
                         if (u.getUid().equals(user.getUid())){
                             btn_manager.setVisibility(View.VISIBLE);

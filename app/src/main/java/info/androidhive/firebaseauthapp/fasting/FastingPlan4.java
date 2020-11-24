@@ -171,8 +171,6 @@ public class FastingPlan4 extends AppCompatActivity {
                 }
                 for(int i =0; i<7 ;i++){
 
-                    mDatabase.child("Users").child(uid).child("Fasting").child("第"+(i+1)+"天斷食時段").child("開始時間").setValue(date_start[i]);
-                    mDatabase.child("Users").child(uid).child("Fasting").child("第"+(i+1)+"天斷食時段").child("結束時間").setValue(date_end[i]);
                     boolean isInserted = myDb.insertData(date_start[i],
                             date_end[i], 1,uid,nowtime,(i+1));
                     if(isInserted) {

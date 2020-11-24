@@ -76,8 +76,8 @@ public class RecordThis extends AppCompatActivity {
     private ArrayList<fastRecords> fast_records = new ArrayList<>();
 
     // TODO: 2020/11/20 到休息時間時記得把這改成讀入的時間
-    long startdate = 0;
-    long enddate = 0;
+    long startdate = 1606131000000l;
+    long enddate = 1606188600000l;
     int status;
 
 
@@ -187,7 +187,7 @@ public class RecordThis extends AppCompatActivity {
                     break;
             }
 
-            tv_time_span.setText(df.format(startDate)+" \n到 \n"+df.format(endDate));
+            tv_time_span.setText("從"+df.format(startDate)+"\n"+" 到 \n"+df.format(endDate));
             btn_record.setVisibility(View.GONE);
         }else {
             YoYo.with(Techniques.FlipInX)
@@ -470,7 +470,6 @@ public class RecordThis extends AppCompatActivity {
         record_show_waist = findViewById(R.id.record_show_waist);
         record_show_fat = findViewById(R.id.record_show_fat);
         decoView = findViewById(R.id.fasting_progress_record);
-        go_food_record = findViewById(R.id.go_food_record);
         btn_record = findViewById(R.id.btn_record);
         uid = user.getUid();
         lv_easy = findViewById(R.id.lv_easy);
