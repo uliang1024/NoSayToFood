@@ -789,24 +789,21 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     //負責初次載入時檢查likes list
     //由資料庫變動觸發
     private void listenForComments(String postId,CommentChangeListener commentChangeListener) {
-        databaseReference.child("posting").child(postId).addValueEventListener(new ValueEventListener() {
+        databaseReference.child("posting").child(postId).child("comments").addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-
-                if (dataSnapshot.hasChild("comments")){
-                    ArrayList<Object> loadList = (ArrayList<Object>) dataSnapshot.child("comments").getValue();
-                    ArrayList<Comments> getComments=new ArrayList<>();
-
-                    for (Object o:loadList){
-                        Map<String, Object> map = (Map<String, Object>) o;
-                        Comments c = new Comments((long)map.get("commentTime"),(String) map.get("comment"),(String)map.get("user_avatar"),(String)map.get("user_name"),(String)map.get("user_Id"));
+                ArrayList<Object> loadList = (ArrayList<Object>) dataSnapshot.getValue();
+                ArrayList<Comments> getComments=new ArrayList<>();
+                Log.e("getComment size", getComments.size()+"");
+                for (Object o:loadList){
+                    Map<String, Object> map = (Map<String, Object>) o;
+                    Comments c = new Comments((long)map.get("commentTime"),(String) map.get("comment"),(String)map.get("user_avatar"),(String)map.get("user_name"),(String)map.get("user_Id"));
+                    if (c.getUser_Id()!=null){
                         getComments.add(c);
                     }
 
-                    commentChangeListener.onCommentChanged(getComments.size());
-                }else {
-                    commentChangeListener.onCommentChanged(0);
                 }
+                commentChangeListener.onCommentChanged(getComments.size());
 
 
             }
