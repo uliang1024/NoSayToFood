@@ -142,12 +142,6 @@ public class Frag1 extends Fragment {
             init(fragment_frag1);
             //將開始日期及結束日期傳給HomeActivity
             listener.onTimeChanged(start_time,end_time,off_day);
-//            seriesItem = new SeriesItem.Builder(Color.parseColor("#E5E7E9"))
-//                    .setRange(0, 1, 1)
-//                    .setInitialVisibility(true)
-//                    .setLineWidth(32f)
-//                    .build();
-//            series1Index = decoView.addSeries(seriesItem);
 
             // 創造背景條
             decoView.addSeries(new SeriesItem.Builder(Color.argb(255, 218, 218, 218))
@@ -161,37 +155,6 @@ public class Frag1 extends Fragment {
                     //.setDelay(1000)
                     .setDuration(1000)
                     .build());
-            //添加數值
-            //decoView.addEvent(new DecoEvent.Builder(50).setIndex(series1Index).build());
-//            decoView.addEvent(new DecoEvent.Builder(100).setIndex(series1Index).setDelay(8000).build());
-//            decoView.addEvent(new DecoEvent.Builder(10).setIndex(series1Index).setDelay(12000).build());
-
-//            Date date=new Date();
-//            long now_time =  date.getTime();
-//            for(int i =0; i<7;i++){
-//                if(now_time>=start_time.get(i)&&now_time<end_time.get(i)&& off_day.get(i)==1){
-//                    seriesItem = new SeriesItem.Builder(Color.parseColor("#FFFF8800"))
-//                            .setRange(start_time.get(i), end_time.get(i), now_time)
-//                            .build();
-//                    series1Index = decoView.addSeries(seriesItem);
-//                    status.setText("目前為斷食時間");
-//                    seriesItem.addArcSeriesItemListener(new SeriesItem.SeriesItemListener() {
-//                        @Override
-//                        public void onSeriesItemAnimationProgress(float percentComplete, float currentPosition) {
-//                            float percentFilled = ((currentPosition - seriesItem.getMinValue()) / (seriesItem.getMaxValue() - seriesItem.getMinValue()));
-//                            textPercentage.setText(String.format("%.0f%%", percentFilled * 100f));
-//                        }
-//
-//                        @Override
-//                        public void onSeriesItemDisplayProgress(float percentComplete) {
-//
-//                        }
-//                    });
-//                    break;
-//                }else{
-//                    status.setText("進食時間喔!");
-//                }
-//            }
 
             List<StepBean> sources =new ArrayList<>();
             Date date = new Date();
@@ -843,66 +806,6 @@ public class Frag1 extends Fragment {
             return percent;
         }
     }
-
-
-
-//    private final Runnable updateTimer = new Runnable() {
-//        public void run() {
-//            handler.postDelayed(this, 0);  //**
-//
-//            Date date=new Date();
-//            long now_time =  date.getTime();
-//            //Log.e("time",start_time.get(0)+"");
-//            for(int i =0; i<7;i++){
-//
-//                if(now_time<start_time.get(0)){
-//                    //使用者第一天斷食開始
-//                    status.setText("進食時間喔!");
-//                    SimpleDateFormat sdf= new SimpleDateFormat("HH:mm:ss");
-//                    java.util.Date date1 = new Date(start_time.get(0) - now_time - 8*60*60*1000);
-//                    java.util.Date start_date = new Date(start_time.get(0));
-//                    String str = sdf.format(date1);
-//                    String str2 = sdf.format(start_date);
-//                    textPercentage.setText(str);
-//                    start.setText("在"+str2+"開始斷食");
-//                   // Log.e("case 1","第"+i+"次");
-////                    Log.e("str",str+"");
-////                    Log.e("str2",str2+"");
-//                }else if(now_time<start_time.get(i) && now_time>=end_time.get(i-1)){
-//                    status.setText("進食時間喔!");
-//                    SimpleDateFormat sdf= new SimpleDateFormat("HH:mm:ss");
-//                    java.util.Date date1 = new Date(start_time.get(i) - now_time - 8*60*60*1000);
-//                    java.util.Date start_date = new Date(start_time.get(i));
-//                    String str = sdf.format(date1);
-//                    String str2 = sdf.format(start_date);
-//                    textPercentage.setText(str);
-//                    start.setText("在"+str2+"開始斷食");
-//
-//                }
-//
-//                if(now_time>=start_time.get(i)&&now_time<=(start_time.get(i)+1000)&& off_day.get(i)==1){
-//                    drawing();
-//
-//                }
-//
-//                if(now_time>start_time.get(i)&&now_time<end_time.get(i)&& off_day.get(i)==1){
-//                    decoView.addEvent(new DecoEvent.Builder(now_time)
-//                    .setIndex(series1Index)
-//                    .build());
-//                    String percent = String.format("%.0f%%",(((float)now_time-(float)start_time.get(i))/((float)end_time.get(i)-(float)start_time.get(i)))* 100f);
-//                    textPercentage.setText(percent);
-//
-//                    SimpleDateFormat sdf= new SimpleDateFormat("HH:mm");
-//                    java.util.Date start_date = new Date(end_time.get(i));
-//                    String str2 = sdf.format(start_date);
-//                    start.setText("在"+str2+"斷食結束");
-//
-//                    break;
-//                }
-//
-//            }
-//        }
-//    };
 
 
     @Override

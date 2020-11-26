@@ -59,7 +59,7 @@ public class EmojiFragment extends BottomSheetDialogFragment implements EmojiAda
         View itemView= inflater.inflate(R.layout.fragment_emoji, container, false);
 
         recycler_emoji = itemView.findViewById(R.id.recycler_emoji);
-        recycler_emoji.setHasFixedSize(true);
+        //recycler_emoji.setHasFixedSize(true);
         recycler_emoji.setLayoutManager(new GridLayoutManager(getActivity(),5));
 
         emojiAdapter  = new EmojiAdapter(getContext(), PhotoEditor.getEmojis(getContext()),this );

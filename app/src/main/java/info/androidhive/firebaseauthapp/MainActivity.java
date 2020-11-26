@@ -146,13 +146,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCancel() {
                         Log.d(TAG, "facebook:onCancel");
+                        Toast.makeText(MainActivity.this, "what?", Toast.LENGTH_SHORT).show();
                         // ...
                     }
 
 
                     @Override
                     public void onError(FacebookException error) {
-                        Log.d(TAG, "facebook:onError", error);
+                        //出問題
+                        Log.e(TAG, "facebook:onError", error);
                         // ...
                     }
                 });
@@ -201,7 +203,6 @@ public class MainActivity extends AppCompatActivity {
     }
     private void updateUI() {
         Toast.makeText(MainActivity.this, "You're logged in", Toast.LENGTH_LONG).show();
-
         Intent accountIntent = new Intent(MainActivity.this, HeyYou.class);
         startActivity(accountIntent);
         finish();
@@ -222,7 +223,9 @@ public class MainActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
+                Toast.makeText(this, "oopsi"+e, Toast.LENGTH_LONG).show();
+                title.setText(e.getMessage());
+                //Log.w(TAG, "Google sign in failed", e);
                 // ...
             }
         }
@@ -277,7 +280,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, "Authentication failed."+task.getException(),
                                     Toast.LENGTH_SHORT).show();
                             updateUI();
                         }
@@ -335,7 +338,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, "Authentication failed."+task.getException(),
                                     Toast.LENGTH_SHORT).show();
                             mFacrbookIma.setEnabled(true);
                             updateUI();

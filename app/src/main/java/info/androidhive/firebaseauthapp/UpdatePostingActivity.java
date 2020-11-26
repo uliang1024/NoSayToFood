@@ -858,19 +858,7 @@ public class UpdatePostingActivity extends AppCompatActivity {
     }
 
     private void updateVideos(String videourl,ProgressDialog dialog){
-//        String pushId = databaseReference.push().getKey();
-//        VideoPost v = new VideoPost();
-//        v.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
-//        v.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
-//        v.setDescription(et_content.getText().toString());
-//        v.setThumbnail_img("https://firebasestorage.googleapis.com/v0/b/storagetest-dfeb6.appspot.com/o/eyes%2F2.jpg?alt=media&token=254289ea-59ac-4d4c-80dd-f3720864af41");
-//        v.setVideo_url(videourl);
-//        v.setPost_type(2);
-//        v.setPostID(firebaseAuth.getCurrentUser().getUid());
-//        v.setPostID(pushId);
-//        v.setPostTime(System.currentTimeMillis());
-//        v.setToUpdate(0);
-//        v.setToDelete(0);
+
         Log.e("video_url",videourl);
         HashMap<String,Object> hashMap = new HashMap();
         hashMap.put("description",et_content.getText().toString());

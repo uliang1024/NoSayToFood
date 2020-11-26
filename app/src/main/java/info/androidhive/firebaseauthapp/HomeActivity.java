@@ -2,60 +2,38 @@ package info.androidhive.firebaseauthapp;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.AlarmManager;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
-import android.app.PendingIntent;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.media.AudioManager;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
-import android.view.View;
 import android.widget.Toast;
 
 import com.facebook.stetho.Stetho;
-import com.github.mikephil.charting.data.Entry;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.shuyu.gsyvideoplayer.GSYVideoManager;
 
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
-
-import info.androidhive.firebaseauthapp.Notification.AlarmReciever;
-import info.androidhive.firebaseauthapp.first.HelloUser;
 
 import info.androidhive.firebaseauthapp.ui.dashboard.DashboardFragment;
 import info.androidhive.firebaseauthapp.ui.home.Frag1;
 import info.androidhive.firebaseauthapp.ui.home.HomeFragment;
-import info.androidhive.firebaseauthapp.ui.notifications.NotificationsFragment;
+import info.androidhive.firebaseauthapp.ui.notifications.RecipeFragment;
 import info.androidhive.firebaseauthapp.ui.profile.ProfileFragment;
-import info.androidhive.firebaseauthapp.ui.social.Frag_posting;
 import info.androidhive.firebaseauthapp.ui.social.SocialFragment;
 
 public class HomeActivity extends FragmentActivity implements BottomNavigationView.OnNavigationItemSelectedListener , Frag1.Frag1TimeListener {
@@ -120,7 +98,7 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
             //重設intent夾帶的值
             intent.putExtra("id", 0);
         }if(id == 2){
-            Fragment fragment = new NotificationsFragment();
+            Fragment fragment = new RecipeFragment();
             FragmentManager fragmentManager = getSupportFragmentManager();
             FragmentTransaction transaction=fragmentManager.beginTransaction();
             transaction.replace(R.id.fragment_container,fragment);
@@ -170,7 +148,7 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
                 break;
 
             case R.id.navigation_notifications:
-                fragment = new NotificationsFragment();
+                fragment = new RecipeFragment();
                 break;
             case R.id.navigation_social:
                 fragment = new SocialFragment();

@@ -47,7 +47,7 @@ import info.androidhive.firebaseauthapp.models.Recipe;
  * Created by Belal on 1/23/2018.
  */
 
-public class NotificationsFragment extends Fragment implements RecipeAdapter.RecipeClickedListener {
+public class RecipeFragment extends Fragment implements RecipeAdapter.RecipeClickedListener {
     private LinearLayoutManager layoutManager;
     RecyclerView recyclerView;
     private DatabaseReference myRef;
