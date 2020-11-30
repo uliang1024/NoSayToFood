@@ -831,6 +831,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void doFilterList(ArrayList<Item> filteredList) {
         items = filteredList;
         notifyDataSetChanged();
+        Log.e("filtered!","refreshed");
     }
 
 }

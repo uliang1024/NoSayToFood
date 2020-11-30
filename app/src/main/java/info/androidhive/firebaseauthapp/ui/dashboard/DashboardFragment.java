@@ -493,7 +493,7 @@ public class DashboardFragment extends Fragment {
         Log.e("bmi",""+bmi);
         tv_current_bmi.setText(fdf.format(bmi));
         //取得使用者最新的體重資料作為當前體重
-        tv_current_weight.setText(fdf.format(KGs.get(KGs.size()-1)));
+        tv_current_weight.setText(fdf.format(KGs.get(KGs.size()-1))+" 公斤");
 
         //計算理想體重範圍
         double Upper_limit_weight = ideal_weight+(ideal_weight*0.1);

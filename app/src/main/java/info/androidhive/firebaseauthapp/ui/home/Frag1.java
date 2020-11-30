@@ -2,6 +2,7 @@ package info.androidhive.firebaseauthapp.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -25,6 +26,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
@@ -244,33 +246,45 @@ public class Frag1 extends Fragment {
                 }
             });
 
-            img_notification.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    startActivity(new Intent(getContext(),RecordThis.class));
-                }
-            });
+//            img_notification.setOnClickListener(new View.OnClickListener() {
+//                @Override
+//                public void onClick(View v) {
+//                    startActivity(new Intent(getContext(),RecordThis.class));
+//                }
+//            });
             //結束斷食紐按下
             end_fasting.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
 
-                    //導向到斷食完成的activity (Fasting_Complete)
-                    startActivity(new Intent(Frag1.super.getContext(), Fasting_Complete.class));
+                    LayoutInflater inflater = LayoutInflater.from(getContext());
+                    final View v = inflater.inflate(R.layout.end_fasting_alert, null);
+                    new AlertDialog.Builder(getContext())
+                            .setView(v)
+                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //導向到斷食完成的activity (Fasting_Complete)
+                                    startActivity(new Intent(Frag1.super.getContext(), Fasting_Complete.class));
 
-                    Cursor res = myDb.getAllData();
-                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                    String uid = null;
-                    if (user != null) {
-                        //取得使用者的id
-                        uid = user.getUid();
-                    }
-                    while (res.moveToNext()) {
-                        //刪除該使用者id的資料
-                        if(uid.equals(res.getString(4))){
-                            myDb.deleteData(uid);
-                        }
-                    }
+                                    Cursor res = myDb.getAllData();
+                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+                                    String uid = null;
+                                    if (user != null) {
+                                        //取得使用者的id
+                                        uid = user.getUid();
+                                    }
+                                    while (res.moveToNext()) {
+                                        //刪除該使用者id的資料
+                                        if(uid.equals(res.getString(4))){
+                                            myDb.deleteData(uid);
+                                        }
+                                    }
+                                }
+                            })
+                            .show();
+
+
                 }
             });
         }else{
@@ -578,7 +592,7 @@ public class Frag1 extends Fragment {
         tv_water = (TextView)v.findViewById(R.id.tv_water);
         tv_cc = (TextView)v.findViewById(R.id.tv_cc);
         title_water = (TextView)v.findViewById(R.id.title_water);
-        img_notification = v.findViewById(R.id.iv_bells);
+        //img_notification = v.findViewById(R.id.iv_bells);
     }
     private void init2(View v) {
         plan1 = (LinearLayout)v.findViewById(R.id.plan1);

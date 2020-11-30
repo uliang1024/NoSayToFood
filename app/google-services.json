@@ -8,43 +8,6 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:645233345100:android:f4ef3ab0b631264bddaae9",
-        "android_client_info": {
-          "package_name": "info.androidhive.fighting"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "645233345100-0ultsiavin654q3cpsn9bu72lfs5mnul.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "info.androidhive.fighting",
-            "certificate_hash": "370b114c1ffb38400a24d29abcdaf780b65614c0"
-          }
-        },
-        {
-          "client_id": "645233345100-fpodpdkminajoeq7ue7di31fql20geg5.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA0KKb_yIuPYmAp-13rUCqvqynFXodlvKo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "645233345100-fpodpdkminajoeq7ue7di31fql20geg5.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
         "mobilesdk_app_id": "1:645233345100:android:b70b29a2c9137a06ddaae9",
         "android_client_info": {
           "package_name": "info.androidhive.firebaseauthapp"
@@ -52,7 +15,15 @@
       },
       "oauth_client": [
         {
-          "client_id": "645233345100-m4u065u30mr5mff92m0lsqoj5k3bvg7g.apps.googleusercontent.com",
+          "client_id": "645233345100-ga8cr89qmnp5a8j9tf5kg7ap805dqgpi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "info.androidhive.firebaseauthapp",
+            "certificate_hash": "240f6e5890b712f0aba35bd693612d3319459d9b"
+          }
+        },
+        {
+          "client_id": "645233345100-fhotmg7jnbv8oqua4ecqsad2c4r7gbfs.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "info.androidhive.firebaseauthapp",
@@ -67,35 +38,6 @@
             "certificate_hash": "370b114c1ffb38400a24d29abcdaf780b65614c0"
           }
         },
-        {
-          "client_id": "645233345100-fpodpdkminajoeq7ue7di31fql20geg5.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyA0KKb_yIuPYmAp-13rUCqvqynFXodlvKo"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "645233345100-fpodpdkminajoeq7ue7di31fql20geg5.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:645233345100:android:bc74ce823e7a3999ddaae9",
-        "android_client_info": {
-          "package_name": "sadasdsadsadsad.dsfasfa"
-        }
-      },
-      "oauth_client": [
         {
           "client_id": "645233345100-fpodpdkminajoeq7ue7di31fql20geg5.apps.googleusercontent.com",
           "client_type": 3

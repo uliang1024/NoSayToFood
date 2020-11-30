@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <!-- 按壓時 -->
+    <item android:state_pressed="true">
+        <!--rectangle 長方形 可以畫出直角形，圓角形，弧形等-->
+        <shape  android:shape="rectangle" >
+            <corners
+                android:radius="12dp"
+                />
+            <gradient
+                android:angle="45"
+                android:centerX="100%"
+                android:centerColor="#961400"
+                android:startColor="#8F3939"
+                android:type="linear"
+                />
+        </shape>
+    </item>
+
+
+    <!-- 預設時 -->
+    <item android:color="@android:color/black">
+
+        <shape android:shape="rectangle" >
+            <corners
+                android:radius="12dp"
+                />
+            <gradient
+                android:angle="45"
+                android:centerX="100%"
+                android:centerColor="#BA1900"
+                android:startColor="#FF6666"
+                android:endColor="#7AFAA1"
+                android:type="linear"
+                />
+
+        </shape>
+    </item>
+</selector>

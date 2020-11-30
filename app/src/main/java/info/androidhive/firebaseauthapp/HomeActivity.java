@@ -245,15 +245,15 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
 
         if(counter==2){
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("確定關機??");
+            builder.setMessage("離開app");
             builder.setCancelable(true);
-            builder.setNegativeButton("否", new DialogInterface.OnClickListener() {
+            builder.setNegativeButton("我想再看看", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.cancel();
                 }
             });
-            builder.setPositiveButton("是", new DialogInterface.OnClickListener() {
+            builder.setPositiveButton("(揮淚狠心離去)", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     Intent i = new Intent(Intent.ACTION_MAIN);

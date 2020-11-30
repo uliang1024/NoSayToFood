@@ -40,6 +40,8 @@
         android:id="@+id/btn_return_update"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="back"/>
+        android:text="back"
+        android:background="@drawable/button_rounde"
+        android:layout_margin="15dp"/>
 
 </RelativeLayout>

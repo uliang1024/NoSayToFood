@@ -73,7 +73,9 @@ public class FragSearch extends Fragment implements PicturePostAdapter.OnItemCli
     ArrayList<PicturePostGridImage> Pathitems = new ArrayList<>();
     //綜合的item
     private DatabaseReference myRef;
-    List<Item> items = new ArrayList<>();;
+    List<Item> items = new ArrayList<>();
+    ArrayList<Item> filteredList= new ArrayList<>();
+    boolean isListRefreshed = false;
     SwipeRefreshLayout swipeRefreshLayout;
     RecyclerView mRecyclerView;
     boolean mFull = false;
@@ -266,12 +268,23 @@ public class FragSearch extends Fragment implements PicturePostAdapter.OnItemCli
 
             switch (direction){
                 case ItemTouchHelper.LEFT:
-                    Item updateItem= items.get(position);
+                    Item updateItem=null;
+                    if (isListRefreshed){
+                        updateItem= filteredList.get(position);
+                    }else {
+                        updateItem= items.get(position);
+                    }
+
                     writetoUpdate(updateItem, new AddUpdateListener() {
                         @Override
                         public void onDataAddToUpdate(boolean dataAddToUpdateComplete) {
                             if (dataAddToUpdateComplete){
-                                items.remove(items.get(position));
+                                if (isListRefreshed){
+                                    filteredList.remove(position);
+                                }else {
+                                    items.remove(items.get(position));
+                                }
+
                                 adapter.notifyItemRemoved(position);
                                 Snackbar.make(mRecyclerView,"已將貼文加入更新頁面", BaseTransientBottomBar.LENGTH_LONG)
                                         .show();
@@ -280,20 +293,31 @@ public class FragSearch extends Fragment implements PicturePostAdapter.OnItemCli
                         }
                     });
                     break;
+
                 case ItemTouchHelper.RIGHT:
-                    Item deleteItem= items.get(position);
+
+                    Item deleteItem = null;
+                    //如果已經被過濾過
+                    if (isListRefreshed){
+                         deleteItem= filteredList.get(position);
+                    }else{
+                        deleteItem= items.get(position);
+                    }
+
 
                     writetoDelete(deleteItem, new AddDeleteListener() {
                         @Override
                         public void onDataAddToDelete(boolean dataAddToDeleteComplete) {
-                            items.remove(items.get(position));
+                            if (isListRefreshed){
+                                filteredList.remove(position);
+                            }else {
+                                items.remove(items.get(position));
+                            }
                             adapter.notifyItemRemoved(position);
                             Snackbar.make(mRecyclerView,"已將貼文加入刪除頁面", BaseTransientBottomBar.LENGTH_LONG)
                                     .show();
                         }
                     });
-
-
                     break;
             }
         }
@@ -403,7 +427,9 @@ public class FragSearch extends Fragment implements PicturePostAdapter.OnItemCli
     }
 
     private void filter(String s) {
-        ArrayList<Item> filteredList= new ArrayList<>();
+
+        isListRefreshed = true;
+        filteredList= new ArrayList<>();
         for (Item item: items){
             if (item.getObject() instanceof TextPost){
                 if (((TextPost) item.getObject()).getDescription().toLowerCase().contains(s.toLowerCase())){
@@ -419,7 +445,6 @@ public class FragSearch extends Fragment implements PicturePostAdapter.OnItemCli
                 }
             }
         }
-
         adapter.doFilterList(filteredList);
     }
 
