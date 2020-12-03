@@ -67,10 +67,8 @@ public class TextFragment extends DialogFragment implements ColorAdapter.ColorAd
         recycler_text_color = view.findViewById(R.id.recycler_text_color);
         btn_add_text = view.findViewById(R.id.btn_add_text);
 
-        recycler_text_color.setHasFixedSize(true);
         recycler_text_color.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
 
-        recycler_font.setHasFixedSize(true);
         recycler_font.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
 
         ColorAdapter colorAdapter= new ColorAdapter(getContext(),this);

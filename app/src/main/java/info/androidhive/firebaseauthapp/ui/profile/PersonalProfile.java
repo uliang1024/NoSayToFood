@@ -88,7 +88,7 @@ public class PersonalProfile extends AppCompatActivity {
     private float height_data,fat_data;
     private int exercise_level;
 
-    private CircleImageView userface;
+    private CircleImageView civ_face;
     final static int Gallery_Pick = 1;
     private StorageReference UserProfileImageRef;
     String currentUserID;
@@ -106,8 +106,8 @@ public class PersonalProfile extends AppCompatActivity {
         UserProfileImageRef = FirebaseStorage.getInstance().getReference().child("users").child(currentUserID).child("header");
         loadingBar= new ProgressDialog(this);
 
-        userface = (CircleImageView)findViewById(R.id.userface);
-        userface.setOnClickListener(new View.OnClickListener() {
+        civ_face = (CircleImageView)findViewById(R.id.civ_face);
+        civ_face.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent();
@@ -123,7 +123,7 @@ public class PersonalProfile extends AppCompatActivity {
                 if(dataSnapshot.exists()){
                     String image = dataSnapshot.child("profileimage").getValue().toString();
                     if(!image.equals("")){
-                        Picasso.get().load(image).placeholder(R.drawable.com_facebook_profile_picture_blank_square).into(userface);
+                        Picasso.get().load(image).placeholder(R.drawable.com_facebook_profile_picture_blank_square).into(civ_face);
                     }
                 }
             }

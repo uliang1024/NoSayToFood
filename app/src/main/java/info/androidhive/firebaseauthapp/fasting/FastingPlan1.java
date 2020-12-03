@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.database.Cursor;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
 import android.os.Bundle;
@@ -18,10 +19,14 @@ import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.PopupWindow;
+import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -37,11 +42,11 @@ import info.androidhive.firebaseauthapp.HomeActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.SQLite.FastingPlan;
 
-public class FastingPlan1 extends AppCompatActivity {
+public class FastingPlan1 extends AppCompatActivity implements View.OnClickListener{
 
     private TextView time1, time2, time3, time4, time5,time6,time7;
     private TextView tv_day1, tv_day2, tv_day3, tv_day4, tv_day5, tv_day6, tv_day7;
-    private LinearLayout ll_day1, ll_day2, ll_day3, ll_day4, ll_day5, ll_day6, ll_day7;
+    private LinearLayout ll_day1, ll_day2, ll_day3, ll_day4, ll_day5, ll_day6, ll_day7,set_time,set_day;
     private Integer[] day = {1,1,1,1,1,0,0};
     private String[] time_start = new String[7];
     private String[] time_end = new String[7];
@@ -53,13 +58,18 @@ public class FastingPlan1 extends AppCompatActivity {
     private Button start_fasting;
     TimePicker picker;
     FastingPlan myDb;
+    private ShowcaseView showcaseView;
+    private int counter = 0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_fasting_plan1);
+
         View cv = getWindow().getDecorView();
         init(cv);
+
+
         myDb = new FastingPlan(this);
         //預設時間
         for(int i =0; i<7 ;i++){
@@ -437,6 +447,82 @@ public class FastingPlan1 extends AppCompatActivity {
                 }
             }
         });
+
+
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (counter) {
+            case 0:
+                showcaseView.setContentTitle("斷食時間設定");
+                showcaseView.setContentText("斷食天數中，您可以設定每一天斷食時段。");
+                showcaseView.setShowcase(new ViewTarget(ll_day1), true);
+                break;
+
+            case 1:
+                showcaseView.setTarget(Target.NONE);
+                showcaseView.setContentTitle("設定注意");
+                showcaseView.setContentText("當您點擊斷食時間設定時，就無法修改段時天數。");
+                showcaseView.setButtonText(getString(R.string.close));
+                break;
+
+            case 2:
+                showcaseView.hide();
+
+                tv_day1.setEnabled(true);
+                tv_day2.setEnabled(true);
+                tv_day3.setEnabled(true);
+                tv_day4.setEnabled(true);
+                tv_day5.setEnabled(true);
+                tv_day6.setEnabled(true);
+                tv_day7.setEnabled(true);
+
+                ll_day1.setEnabled(true);
+                ll_day2.setEnabled(true);
+                ll_day3.setEnabled(true);
+                ll_day4.setEnabled(true);
+                ll_day5.setEnabled(true);
+                ll_day6.setEnabled(true);
+                ll_day7.setEnabled(true);
+
+                break;
+        }
+        counter++;
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String tutorialKey = "SOME_KEY";
+        Boolean firstTime = getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
+        if (firstTime) {
+            showcaseView = new ShowcaseView.Builder(this,true)
+                    .withMaterialShowcase()
+                    .setStyle(R.style.CustomShowcaseTheme3)
+                    .setTarget(new ViewTarget(findViewById(R.id.set_day)))
+                    .setContentTitle("斷食天數設定")
+                    .setContentText("7天內，請選擇您要斷食之天數")
+                    .setOnClickListener(this)
+                    .build();
+            showcaseView.setButtonText(getString(R.string.next));
+
+            tv_day1.setEnabled(false);
+            tv_day2.setEnabled(false);
+            tv_day3.setEnabled(false);
+            tv_day4.setEnabled(false);
+            tv_day5.setEnabled(false);
+            tv_day6.setEnabled(false);
+            tv_day7.setEnabled(false);
+
+            ll_day1.setEnabled(false);
+            ll_day2.setEnabled(false);
+            ll_day3.setEnabled(false);
+            ll_day4.setEnabled(false);
+            ll_day5.setEnabled(false);
+            ll_day6.setEnabled(false);
+            ll_day7.setEnabled(false);
+            getPreferences(MODE_PRIVATE).edit().putBoolean(tutorialKey, false).apply();
+        }
     }
     private void initNumberPicker4(final int i) {
         workingAge_view4 = LayoutInflater.from(this).inflate(R.layout.popupwindow4, null);
@@ -619,6 +705,9 @@ public class FastingPlan1 extends AppCompatActivity {
         tv_day7 = (TextView) v.findViewById(R.id.tv_day7);
 
         start_fasting= (Button)findViewById(R.id.start_fasting);
+
+        set_day=(LinearLayout)findViewById(R.id.set_day);
+        set_time=(LinearLayout)findViewById(R.id.set_time);
     }
 
 

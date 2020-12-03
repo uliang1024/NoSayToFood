@@ -19,6 +19,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 
@@ -37,7 +40,7 @@ import info.androidhive.firebaseauthapp.SQLite.PersonalInformation;
 import info.androidhive.firebaseauthapp.first.HelloUser;
 import info.androidhive.firebaseauthapp.ui.home.HomeFragment;
 
-public class foodClassification extends AppCompatActivity {
+public class foodClassification extends AppCompatActivity implements View.OnClickListener {
 
     private ListView listView;
     private Handler handler = new Handler();
@@ -60,6 +63,9 @@ public class foodClassification extends AppCompatActivity {
     private String good_milk,good_fruit,good_vegetables,good_meet,good_grain,good_oil;
     private Button bt_recommend;
     private Button bt_what;
+
+    private ShowcaseView showcaseView;
+    private int counter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -370,6 +376,52 @@ public class foodClassification extends AppCompatActivity {
         });
         AddData();
 
+    }
+    @Override
+    public void onClick(View v) {
+        switch (counter) {
+            case 0:
+                showcaseView.setContentTitle("問題?六大類食物代換份量");
+                showcaseView.setContentText("了解每單位換算之份量");
+                showcaseView.setShowcase(new ViewTarget(bt_what), true);
+                break;
+            case 1:
+                showcaseView.setContentTitle("選擇食物種類");
+                showcaseView.setContentText("輸入食物種類份量");
+                showcaseView.setShowcase(new ViewTarget(bt_milk), true);
+                break;
+
+            case 2:
+                showcaseView.setContentTitle("完成紀錄");
+                showcaseView.setContentText("儲存您今日一餐的紀錄");
+                showcaseView.setShowcase(new ViewTarget(button), true);
+                break;
+
+            case 3:
+                showcaseView.hide();
+
+                break;
+        }
+        counter++;
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String tutorialKey = "SOME_KEY";
+        Boolean firstTime = getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
+        if (firstTime) {
+            showcaseView = new ShowcaseView.Builder(this,true)
+                    .withMaterialShowcase()
+                    .setStyle(R.style.CustomShowcaseTheme3)
+                    .setTarget(new ViewTarget(findViewById(R.id.bt_recommend)))
+                    .setContentTitle("推薦")
+                    .setContentText("依照您的身體數據，推薦您最適合的六大類飲食建議份數")
+                    .setOnClickListener(this)
+                    .build();
+            showcaseView.setButtonText(getString(R.string.next));
+
+            getPreferences(MODE_PRIVATE).edit().putBoolean(tutorialKey, false).apply();
+        }
     }
 
     public  void AddData() {

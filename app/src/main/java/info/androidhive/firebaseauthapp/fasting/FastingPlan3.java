@@ -22,6 +22,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +40,7 @@ import info.androidhive.firebaseauthapp.HomeActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.SQLite.FastingPlan;
 
-public class FastingPlan3 extends AppCompatActivity {
+public class FastingPlan3 extends AppCompatActivity implements View.OnClickListener {
 
     private TextView time1, time2, time3, time4, time5,time6,time7;
     private TextView tv_day1, tv_day2, tv_day3, tv_day4, tv_day5, tv_day6, tv_day7;
@@ -53,7 +56,8 @@ public class FastingPlan3 extends AppCompatActivity {
     private Button start_fasting;
     TimePicker picker;
     FastingPlan myDb;
-
+    private ShowcaseView showcaseView;
+    private int counter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -437,6 +441,79 @@ public class FastingPlan3 extends AppCompatActivity {
                 }
             }
         });
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String tutorialKey = "SOME_KEY";
+        Boolean firstTime = getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
+        if (firstTime) {
+            showcaseView = new ShowcaseView.Builder(this,true)
+                    .withMaterialShowcase()
+                    .setStyle(R.style.CustomShowcaseTheme3)
+                    .setTarget(new ViewTarget(findViewById(R.id.set_day)))
+                    .setContentTitle("斷食天數設定")
+                    .setContentText("7天內，請選擇您要斷食之天數")
+                    .setOnClickListener(this)
+                    .build();
+            showcaseView.setButtonText(getString(R.string.next));
+
+            tv_day1.setEnabled(false);
+            tv_day2.setEnabled(false);
+            tv_day3.setEnabled(false);
+            tv_day4.setEnabled(false);
+            tv_day5.setEnabled(false);
+            tv_day6.setEnabled(false);
+            tv_day7.setEnabled(false);
+
+            ll_day1.setEnabled(false);
+            ll_day2.setEnabled(false);
+            ll_day3.setEnabled(false);
+            ll_day4.setEnabled(false);
+            ll_day5.setEnabled(false);
+            ll_day6.setEnabled(false);
+            ll_day7.setEnabled(false);
+            getPreferences(MODE_PRIVATE).edit().putBoolean(tutorialKey, false).apply();
+        }
+    }
+    @Override
+    public void onClick(View v) {
+        switch (counter) {
+            case 0:
+                showcaseView.setContentTitle("斷食時間設定");
+                showcaseView.setContentText("斷食天數中，您可以設定每一天斷食時段。");
+                showcaseView.setShowcase(new ViewTarget(ll_day1), true);
+                break;
+
+            case 1:
+                showcaseView.setTarget(Target.NONE);
+                showcaseView.setContentTitle("設定注意");
+                showcaseView.setContentText("當您點擊斷食時間設定時，就無法修改段時天數。");
+                showcaseView.setButtonText(getString(R.string.close));
+                break;
+
+            case 2:
+                showcaseView.hide();
+
+                tv_day1.setEnabled(true);
+                tv_day2.setEnabled(true);
+                tv_day3.setEnabled(true);
+                tv_day4.setEnabled(true);
+                tv_day5.setEnabled(true);
+                tv_day6.setEnabled(true);
+                tv_day7.setEnabled(true);
+
+                ll_day1.setEnabled(true);
+                ll_day2.setEnabled(true);
+                ll_day3.setEnabled(true);
+                ll_day4.setEnabled(true);
+                ll_day5.setEnabled(true);
+                ll_day6.setEnabled(true);
+                ll_day7.setEnabled(true);
+
+                break;
+        }
+        counter++;
     }
     private void initNumberPicker4(final int i) {
         workingAge_view4 = LayoutInflater.from(this).inflate(R.layout.popupwindow4, null);

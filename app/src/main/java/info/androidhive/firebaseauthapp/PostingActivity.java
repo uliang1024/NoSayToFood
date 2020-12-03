@@ -58,6 +58,9 @@ import com.shuyu.gsyvideoplayer.GSYVideoManager;
 import com.shuyu.gsyvideoplayer.builder.GSYVideoOptionBuilder;
 import com.shuyu.gsyvideoplayer.listener.GSYSampleCallBack;
 import com.shuyu.gsyvideoplayer.video.StandardGSYVideoPlayer;
+
+import org.w3c.dom.Comment;
+
 import java.util.UUID;
 import java.io.File;
 import java.io.IOException;
@@ -465,6 +468,9 @@ public class PostingActivity extends AppCompatActivity {
                 //String uuid = UUID.randomUUID().toString();
                 String pushId = databaseReference.push().getKey();
                 TextPost t = new TextPost();
+                ArrayList<Comments> comments = new ArrayList<>();
+                Comments c = new Comments();
+                comments.add(c);
 
                 t.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
                 t.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
@@ -475,6 +481,7 @@ public class PostingActivity extends AppCompatActivity {
                 t.setUser_ID(firebaseAuth.getCurrentUser().getUid());
                 t.setToUpdate(0);
                 t.setToDelete(0);
+                t.setComments(comments);
 
                 databaseReference.child("posting").child(pushId).setValue(t).addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
@@ -553,6 +560,9 @@ public class PostingActivity extends AppCompatActivity {
     private void uploadImages(ProgressDialog progressDialog) {
         String pushId = databaseReference.push().getKey();
         PicturePost p = new PicturePost();
+        ArrayList<Comments> comments = new ArrayList<>();
+        Comments c = new Comments();
+        comments.add(c);
 
         p.setImages(savedImageUrls);
         p.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
@@ -564,6 +574,8 @@ public class PostingActivity extends AppCompatActivity {
         p.setPost_type(0);
         p.setToUpdate(0);
         p.setToDelete(0);
+        p.setComments(comments);
+
 
 
         Log.e("upload images","upload complete");
@@ -600,6 +612,9 @@ public class PostingActivity extends AppCompatActivity {
                         public void onSuccess(Uri uri) {
                             String url = uri.toString();
                             String pushId = databaseReference.push().getKey();
+                            ArrayList<Comments> comments = new ArrayList<>();
+                            Comments c = new Comments();
+                            comments.add(c);
                             VideoPost v = new VideoPost();
                             v.setUser_name(firebaseAuth.getCurrentUser().getDisplayName());
                             v.setUser_avatar(firebaseAuth.getCurrentUser().getPhotoUrl().toString());
@@ -612,6 +627,7 @@ public class PostingActivity extends AppCompatActivity {
                             v.setPostTime(System.currentTimeMillis());
                             v.setToUpdate(0);
                             v.setToDelete(0);
+                            v.setComments(comments);
 
                             databaseReference.child("posting").child(pushId).setValue(v);
                             progressDialog.dismiss();

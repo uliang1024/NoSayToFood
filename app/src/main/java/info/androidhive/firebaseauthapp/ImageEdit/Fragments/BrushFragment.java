@@ -64,7 +64,6 @@ public class BrushFragment extends BottomSheetDialogFragment implements ColorAda
         seekBar_opacity_size = itemView.findViewById(R.id.seekbar_brush_opacity);
         btn_brush_state = itemView.findViewById(R.id.brush_state);
         recycler_color = itemView.findViewById(R.id.recycler_color);
-        recycler_color.setHasFixedSize(true);
         recycler_color.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.HORIZONTAL,false));
 
         colorAdapter= new ColorAdapter(getContext(),this);

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">FirebaseAuthApp</string>
+    <string name="app_name">拒食強身</string>
     <string name="facebook_app_id">832631157219595</string>
     <string name="fb_login_protocol_scheme">fb832631157219595</string>
     <string name="red">AuthenticatorApp</string>
@@ -25,6 +25,8 @@
     <string name="actionRemoveDataSet">Remove Data Set</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+    <string name="next">下一步</string>
+    <string name="close">了解</string>
 
 
 </resources>

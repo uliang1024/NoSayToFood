@@ -30,6 +30,9 @@ import androidx.fragment.app.Fragment;
 
 import com.baoyachi.stepview.HorizontalStepView;
 import com.baoyachi.stepview.bean.StepBean;
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hookedonplay.decoviewlib.DecoView;
@@ -60,7 +63,9 @@ import info.androidhive.firebaseauthapp.fasting.FirstFasting;
 import info.androidhive.firebaseauthapp.food.foodClassification;
 import me.itangqi.waveloadingview.WaveLoadingView;
 
-public class Frag1 extends Fragment {
+import static android.content.Context.MODE_PRIVATE;
+
+public class Frag1 extends Fragment implements View.OnClickListener {
 
     private Frag1TimeListener listener;
 
@@ -101,6 +106,28 @@ public class Frag1 extends Fragment {
     public static final String STATUS = "status";
     private SharedPreferences sharedPreferences;
     private Button bt_eat;
+
+    private ShowcaseView showcaseView;
+    private int counter = 0;
+
+    @Override
+    public void onClick(View v) {
+        switch (counter) {
+            case 0:
+                showcaseView.setContentTitle("更改斷食計畫");
+                showcaseView.setContentText("當您選錯時段時，可以修改計畫ㄛ!");
+                showcaseView.setShowcase(new ViewTarget(fastingplan), true);
+                break;
+
+            case 1:
+                showcaseView.hide();
+
+                fastingplan.setEnabled(true);
+
+                break;
+        }
+        counter++;
+    }
 
     public interface Frag1TimeListener{
         void onTimeChanged(ArrayList<Long> start_time,ArrayList<Long> end_time,ArrayList<Integer> off_day);
@@ -344,7 +371,25 @@ public class Frag1 extends Fragment {
 
         return fragment_frag1;
     }
-
+    @Override
+    public void onResume() {
+        super.onResume();
+        String tutorialKey = "SOME_KEY";
+        Boolean firstTime = this.getActivity().getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
+        if (firstTime) {
+            showcaseView = new ShowcaseView.Builder(Frag1.super.getActivity(),true)
+                    .withMaterialShowcase()
+                    .setStyle(R.style.CustomShowcaseTheme3)
+                    .setTarget(new ViewTarget(fragment_frag1.findViewById(R.id.dynamicArcView)))
+                    .setContentTitle("進度條")
+                    .setContentText("清楚了解目前段時狀況")
+                    .setOnClickListener(this)
+                    .build();
+            showcaseView.setButtonText(getString(R.string.next));
+            fastingplan.setEnabled(false);
+            this.getActivity().getPreferences(MODE_PRIVATE).edit().putBoolean(tutorialKey, false).apply();
+        }
+    }
     private void navigateToRecord(int status) {
 
         Date date = new Date();
@@ -585,7 +630,7 @@ public class Frag1 extends Fragment {
     }
 
     private void init(View v) {
-        sharedPreferences = v.getContext().getSharedPreferences(SHARED_PREFS,Context.MODE_PRIVATE);
+        sharedPreferences = v.getContext().getSharedPreferences(SHARED_PREFS, MODE_PRIVATE);
         bt_eat = v.findViewById(R.id.bt_eat);
         btn_check_fasting = v.findViewById(R.id.btn_check_fasting);
         progress = v.findViewById(R.id.tv_progress);

@@ -22,6 +22,9 @@ import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.Toast;
 
+import com.github.amlcurran.showcaseview.ShowcaseView;
+import com.github.amlcurran.showcaseview.targets.Target;
+import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DatabaseReference;
@@ -37,7 +40,7 @@ import info.androidhive.firebaseauthapp.HomeActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.SQLite.FastingPlan;
 
-public class FastingPlan4 extends AppCompatActivity {
+public class FastingPlan4 extends AppCompatActivity implements View.OnClickListener {
 
     private TextView time1, time2, time3, time4, time5,time6,time7;
     private LinearLayout ll_day1, ll_day2, ll_day3, ll_day4, ll_day5, ll_day6, ll_day7;
@@ -51,7 +54,8 @@ public class FastingPlan4 extends AppCompatActivity {
     private Button start_fasting;
     TimePicker picker;
     FastingPlan myDb;
-
+    private ShowcaseView showcaseView;
+    private int counter = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -305,6 +309,57 @@ public class FastingPlan4 extends AppCompatActivity {
             }
 
         });
+    }
+    @Override
+    public void onClick(View v) {
+        switch (counter) {
+            case 0:
+                showcaseView.setTarget(Target.NONE);
+                showcaseView.setContentTitle("設定注意");
+                showcaseView.setContentText("當您點擊斷食時間設定時，就無法修改段時天數。");
+                showcaseView.setButtonText(getString(R.string.close));
+                break;
+
+            case 1:
+                showcaseView.hide();
+
+                ll_day1.setEnabled(true);
+                ll_day2.setEnabled(true);
+                ll_day3.setEnabled(true);
+                ll_day4.setEnabled(true);
+                ll_day5.setEnabled(true);
+                ll_day6.setEnabled(true);
+                ll_day7.setEnabled(true);
+
+                break;
+        }
+        counter++;
+    }
+    @Override
+    protected void onResume() {
+        super.onResume();
+        String tutorialKey = "SOME_KEY";
+        Boolean firstTime = getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
+        if (firstTime) {
+            showcaseView = new ShowcaseView.Builder(this,true)
+                    .withMaterialShowcase()
+                    .setStyle(R.style.CustomShowcaseTheme3)
+                    .setTarget(new ViewTarget(findViewById(R.id.ll_day1)))
+                    .setContentTitle("斷食時間設定")
+                    .setContentText("斷食天數中，您可以設定每一天斷食時段。")
+                    .setOnClickListener(this)
+                    .build();
+            showcaseView.setButtonText(getString(R.string.next));
+
+            ll_day1.setEnabled(false);
+            ll_day2.setEnabled(false);
+            ll_day3.setEnabled(false);
+            ll_day4.setEnabled(false);
+            ll_day5.setEnabled(false);
+            ll_day6.setEnabled(false);
+            ll_day7.setEnabled(false);
+            getPreferences(MODE_PRIVATE).edit().putBoolean(tutorialKey, false).apply();
+        }
     }
     private void showpopupWindow(View view) {
         // 强制隐藏键盘

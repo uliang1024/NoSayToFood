@@ -76,8 +76,8 @@ public class RecordThis extends AppCompatActivity {
     private ArrayList<fastRecords> fast_records = new ArrayList<>();
 
     // TODO: 2020/11/20 到休息時間時記得把這改成讀入的時間
-    long startdate = 1606131000000l;
-    long enddate = 1606188600000l;
+    long startdate = 0;
+    long enddate = 0;
     int status;
 
 
@@ -376,6 +376,9 @@ public class RecordThis extends AppCompatActivity {
                     }
 
                     addFastingData();
+
+                    Intent i = new Intent(RecordThis.this,HomeActivity.class);
+                    startActivity(i);
                 }
             });
         }

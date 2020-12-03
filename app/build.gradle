@@ -30,6 +30,20 @@ android {
         cleanedAnnotations
         compile.exclude group: 'org.jetbrains' , module:'annotations'
     }
+
+    lintOptions {
+        checkReleaseBuilds false
+        // Or, if you prefer, you can continue to check for errors in release builds,
+        // but continue the build even when errors are found:
+        abortOnError false
+    }
+    buildFeatures {
+
+        dataBinding true
+
+        // for view binding:
+        // viewBinding true
+    }
 }
 
 repositories {
@@ -118,5 +132,9 @@ dependencies {
     //recyclerview swipe background
     implementation 'it.xabaras.android:recyclerview-swipedecorator:1.2.3'
 
+    implementation 'com.github.amlcurran.showcaseview:library:5.4.3'
+
+    //輪播圖
+    implementation 'com.youth.banner:banner:1.4.10'
 }
 apply plugin: 'com.google.gms.google-services'
