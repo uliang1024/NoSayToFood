@@ -795,15 +795,21 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
                 ArrayList<Object> loadList = (ArrayList<Object>) dataSnapshot.getValue();
                 ArrayList<Comments> getComments=new ArrayList<>();
                 Log.e("getComment size", getComments.size()+"");
-                for (Object o:loadList){
-                    Map<String, Object> map = (Map<String, Object>) o;
-                    Comments c = new Comments((long)map.get("commentTime"),(String) map.get("comment"),(String)map.get("user_avatar"),(String)map.get("user_name"),(String)map.get("user_Id"));
-                    if (c.getUser_Id()!=null){
-                        getComments.add(c);
+
+                if (loadList!= null){
+                    for (Object o:loadList){
+                        Map<String, Object> map = (Map<String, Object>) o;
+                        Comments c = new Comments((long)map.get("commentTime"),(String) map.get("comment"),(String)map.get("user_avatar"),(String)map.get("user_name"),(String)map.get("user_Id"));
+                        if (c.getUser_Id()!=null){
+                            getComments.add(c);
+                        }
+
                     }
+                    commentChangeListener.onCommentChanged(getComments.size());
 
                 }
                 commentChangeListener.onCommentChanged(getComments.size());
+
 
 
             }
@@ -831,6 +837,7 @@ public class PicturePostAdapter extends RecyclerView.Adapter<RecyclerView.ViewHo
     public void doFilterList(ArrayList<Item> filteredList) {
         items = filteredList;
         notifyDataSetChanged();
+        Log.e("filtered!","refreshed");
     }
 
 }

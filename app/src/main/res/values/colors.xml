@@ -33,4 +33,6 @@
     <color name="update_yellow">#FFEA66</color>
     <color name="delete_red">#FF6155</color>
 
+    <color name="ripple_background_pink">#FBDFFF</color>
+    <color name="ripple_background_blue">#D7DBFF</color>
 </resources>

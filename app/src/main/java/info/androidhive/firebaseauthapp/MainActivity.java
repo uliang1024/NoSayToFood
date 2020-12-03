@@ -26,6 +26,7 @@ import com.facebook.login.LoginResult;
 import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
     private static final int RC_SIGN_IN = 1;
     private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth.AuthStateListener mAuthListener;
+    private GoogleSignInClient mGoogleSignInClient;
     private RelativeLayout rl_bg;
     private TextView title;
     private Handler handler = new Handler();
@@ -131,15 +133,17 @@ public class MainActivity extends AppCompatActivity {
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
-        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-                    @Override
-                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-                        Toast.makeText(MainActivity.this, "You Got an Error", Toast.LENGTH_LONG).show();
-                    }
-                })
-                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-                .build();
+        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
+//                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
+//                    @Override
+//                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+//                        Toast.makeText(MainActivity.this, "You Got an Error", Toast.LENGTH_LONG).show();
+//                    }
+//                })
+//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
+//                .build();
+
         mGoogleIma.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -167,13 +171,15 @@ public class MainActivity extends AppCompatActivity {
                     @Override
                     public void onCancel() {
                         Log.d(TAG, "facebook:onCancel");
+                        Toast.makeText(MainActivity.this, "what?", Toast.LENGTH_SHORT).show();
                         // ...
                     }
 
 
                     @Override
                     public void onError(FacebookException error) {
-                        Log.d(TAG, "facebook:onError", error);
+                        //出問題
+                        Log.e(TAG, "facebook:onError", error);
                         // ...
                     }
                 });
@@ -193,8 +199,8 @@ public class MainActivity extends AppCompatActivity {
         public void run() {
             handler.postDelayed(this, 0);
             getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION    //全螢幕顯示
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);     //隱藏手機虛擬按鍵HOME/BACK/LIST按鍵
+                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION   //全螢幕顯示
+                            | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);   //隱藏手機虛擬按鍵HOME/BACK/LIST按鍵
         }
     };
 
@@ -211,12 +217,12 @@ public class MainActivity extends AppCompatActivity {
         mAuth.addAuthStateListener(mAuthListener);
     }
     private void signIn() {
-        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+//        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
+        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
     private void updateUI() {
         Toast.makeText(MainActivity.this, "You're logged in", Toast.LENGTH_LONG).show();
-
         Intent accountIntent = new Intent(MainActivity.this, HeyYou.class);
         startActivity(accountIntent);
         finish();
@@ -237,7 +243,9 @@ public class MainActivity extends AppCompatActivity {
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
                 // Google Sign In failed, update UI appropriately
-                Log.w(TAG, "Google sign in failed", e);
+                Toast.makeText(this, "oopsi"+e, Toast.LENGTH_LONG).show();
+                title.setText(e.toString());
+                //Log.w(TAG, "Google sign in failed", e);
                 // ...
             }
         }
@@ -292,7 +300,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, "Authentication failed."+task.getException(),
                                     Toast.LENGTH_SHORT).show();
                             updateUI();
                         }
@@ -350,7 +358,7 @@ public class MainActivity extends AppCompatActivity {
                         } else {
                             // If sign in fails, display a message to the user.
                             Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed.",
+                            Toast.makeText(MainActivity.this, "Authentication failed."+task.getException(),
                                     Toast.LENGTH_SHORT).show();
                             mFacrbookIma.setEnabled(true);
                             updateUI();

@@ -115,7 +115,7 @@ public class FastRecordsActivity extends AppCompatActivity implements FastRecord
         Toast.makeText(this, "u clicked"+position, Toast.LENGTH_SHORT).show();
 
         long startDate = fast_records.get(position).getStartTime();
-        long endDate = fast_records.get(position).getStartTime();
+        long endDate = fast_records.get(position).getEndTime();
         int status = 3;
         int emoji = fast_records.get(position).getEmoji();
         Intent intent = new Intent(this,RecordThis.class);

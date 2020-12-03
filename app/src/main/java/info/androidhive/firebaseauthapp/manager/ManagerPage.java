@@ -16,7 +16,8 @@ import android.widget.Toast;
 import info.androidhive.firebaseauthapp.PostingActivity;
 import info.androidhive.firebaseauthapp.R;
 
-public class ManagerPage extends AppCompatActivity implements FragDelete.OnDeleteFragmentListener, FragUpdate.OnUpdateFragmentListener,FragSearch.OnSearchFragmentListener {
+public class ManagerPage extends AppCompatActivity implements FragDelete.OnDeleteFragmentListener,
+        FragUpdate.OnUpdateFragmentListener,FragSearch.OnSearchFragmentListener {
 
     private TextView tv_username;
     private ImageView img_search,img_update,img_delete,img_post;
@@ -74,7 +75,8 @@ public class ManagerPage extends AppCompatActivity implements FragDelete.OnDelet
     private void startTransition(Fragment fragment,String tag){
         FragmentManager manager = getSupportFragmentManager();
         FragmentTransaction transaction = manager.beginTransaction();
-        transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right,R.anim.exit_to_right);
+        transaction.setCustomAnimations(R.anim.enter_from_right,R.anim.exit_to_right,R.anim.enter_from_right
+                ,R.anim.exit_to_right);
         transaction.addToBackStack(null);
         transaction.add(R.id.fragment_container_manager,fragment,tag).commit();
     }

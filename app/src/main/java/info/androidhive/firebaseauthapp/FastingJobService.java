@@ -45,7 +45,7 @@ public class FastingJobService extends JobService {
 //            }
 //        }).start();
         Calendar cal = Calendar.getInstance(); //取得時間
-        cal.add(Calendar.HOUR_OF_DAY,9);
+        cal.set(Calendar.HOUR_OF_DAY,9);
         cal.set(Calendar.MINUTE,35);
         add_alarm(this, cal);
     }

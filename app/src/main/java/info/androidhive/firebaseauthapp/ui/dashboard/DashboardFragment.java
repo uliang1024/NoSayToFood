@@ -165,6 +165,8 @@ public class DashboardFragment extends Fragment {
                 }
             }
         }
+        Log.e("get kgs length",KGs.size()+"");
+        Log.e("get waists length",Waists.size()+"");
         height = Heights.get(Heights.size()-1);
         waist= Waists.get(Waists.size()-1);
         setUiData();
@@ -173,7 +175,8 @@ public class DashboardFragment extends Fragment {
         ArrayList<ChartItem> list = new ArrayList<>();
         list.add(new LineChartItem(generateDataLine(1), getContext()));
         list.add(new LineChartItem2(generateDataLine2(2), getContext()));
-
+        list.add(new LineChartItem(generateDataLine3(1),getContext()));
+        list.add(new LineChartItem(generateDataLine4(1),getContext()));
         ChartDataAdapter cda = new ChartDataAdapter(getContext(), list);
         lv.setAdapter(cda);
 //        try {
@@ -191,15 +194,15 @@ public class DashboardFragment extends Fragment {
         if (user != null) {
             uid = user.getUid();
         }
-        myDb2 = new BodyRecord(getContext());
-        Cursor res = myDb2.getAllData();
-        while (res.moveToNext()) {
-            if(uid.equals(res.getString(1))){
-                IDs.add(res.getInt(0));
-                KGs.add(res.getFloat(2));
-                Dates.add(res.getString(6));
-            }
-        }
+//        myDb2 = new BodyRecord(getContext());
+//        Cursor res = myDb2.getAllData();
+//        while (res.moveToNext()) {
+//            if(uid.equals(res.getString(1))){
+//                IDs.add(res.getInt(0));
+//                KGs.add(res.getFloat(2));
+//                Dates.add(res.getString(6));
+//            }
+//        }
 
         ArrayList<Entry> values1 = new ArrayList<>();
 
@@ -211,7 +214,7 @@ public class DashboardFragment extends Fragment {
             String dateStr = sdf.format(calendar.getTime());
             for(int j = 0;j<Dates.size();j++){
                 if(dateStr.equals(Dates.get(j))){
-                    Log.e("get i","i = "+i);
+                    //Log.e("get i","i = "+i);
                     values1.add(new Entry(i, KGs.get(j)));
                 }
             }
@@ -219,7 +222,7 @@ public class DashboardFragment extends Fragment {
 
         LineDataSet d1 = new LineDataSet(values1, "體重變化");
         d1.setLineWidth(0f);
-        d1.setCircleRadius(0);
+        //d1.setCircleRadius(0);
         d1.setDrawValues(true);
         d1.setDrawFilled(true);
         d1.setCircleColor(Color.rgb(125, 245, 237));//圓點顏色
@@ -249,9 +252,92 @@ public class DashboardFragment extends Fragment {
 
         return new LineData(sets);
     }
+    private LineData generateDataLine3(int cnt) {
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_pink);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = null;
+        if (user != null) {
+            uid = user.getUid();
+        }
+        ArrayList<Entry> values1 = new ArrayList<>();
+        Log.e("line data KGS" ,KGs.size()+"");
+        Log.e("line data waist" ,Waists.size()+"");
+
+        for (int i = 0; i < 33; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH,i-30);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String dateStr = sdf.format(calendar.getTime());
+            for(int j = 0;j<Dates.size();j++){
+                if(dateStr.equals(Dates.get(j))){
+                    //Log.e("get i","i = "+i);
+                    values1.add(new Entry(i, Waists.get(j)));
+                }
+            }
+        }
+
+        LineDataSet d1 = new LineDataSet(values1, "腰圍變化");
+        d1.setLineWidth(0f);
+        //d1.setCircleRadius(0);
+        d1.setDrawValues(true);
+        d1.setDrawFilled(true);
+        d1.setCircleColor(Color.rgb(125, 245, 237));//圓點顏色
+        //d1.setCircleRadius(15);//圓點大小
+        d1.setDrawCircleHole(false);//圓點為實心(預設空心)
+        d1.setFillDrawable(drawable);
+
+        ArrayList<ILineDataSet> sets = new ArrayList<>();
+
+        sets.add(d1);
+
+
+        return new LineData(sets);
+    }
+    private LineData generateDataLine4(int cnt) {
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_purple);
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+        String uid = null;
+        if (user != null) {
+            uid = user.getUid();
+        }
+        ArrayList<Entry> values1 = new ArrayList<>();
+        Log.e("line data KGS" ,KGs.size()+"");
+        Log.e("line data waist" ,Waists.size()+"");
+
+        for (int i = 0; i < 33; i++) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.add(Calendar.DAY_OF_MONTH,i-30);
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
+            String dateStr = sdf.format(calendar.getTime());
+            for(int j = 0;j<Dates.size();j++){
+                if(dateStr.equals(Dates.get(j))){
+                    //Log.e("get i","i = "+i);
+                    values1.add(new Entry(i, Body_fats.get(j)));
+                }
+            }
+        }
+
+        LineDataSet d1 = new LineDataSet(values1, "體脂肪變化");
+        d1.setLineWidth(0f);
+        //d1.setCircleRadius(0);
+        d1.setDrawValues(true);
+        d1.setDrawFilled(true);
+        d1.setCircleColor(Color.rgb(125, 245, 237));//圓點顏色
+        //d1.setCircleRadius(15);//圓點大小
+        d1.setDrawCircleHole(false);//圓點為實心(預設空心)
+        d1.setFillDrawable(drawable);
+
+        ArrayList<ILineDataSet> sets = new ArrayList<>();
+
+        sets.add(d1);
+
+
+        return new LineData(sets);
+    }
+
     //產生bmi的摺線圖
     private LineData generateDataLine2(int cnt) {
-        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_blue);
+        Drawable drawable = ContextCompat.getDrawable(getContext(), R.drawable.fade_deep_blue);
         ArrayList<Entry> values1 = new ArrayList<>();
 
         for (int i = 0; i < 33; i++) {
@@ -261,10 +347,8 @@ public class DashboardFragment extends Fragment {
             String dateStr = sdf.format(calendar.getTime());
             for(int j = 0;j<Dates.size();j++){
                 if(dateStr.equals(Dates.get(j))){
-
                     float bmi =  KGs.get(j)/((height/100)*(height/100));
-
-                    Log.e("得到bmi",""+bmi);
+                    //Log.e("得到bmi",""+bmi);
                     values1.add(new Entry(i,bmi));
                 }
             }
@@ -493,7 +577,7 @@ public class DashboardFragment extends Fragment {
         Log.e("bmi",""+bmi);
         tv_current_bmi.setText(fdf.format(bmi));
         //取得使用者最新的體重資料作為當前體重
-        tv_current_weight.setText(fdf.format(KGs.get(KGs.size()-1)));
+        tv_current_weight.setText(fdf.format(KGs.get(KGs.size()-1))+" 公斤");
 
         //計算理想體重範圍
         double Upper_limit_weight = ideal_weight+(ideal_weight*0.1);
@@ -637,6 +721,8 @@ public class DashboardFragment extends Fragment {
         ArrayList<ChartItem> list = new ArrayList<>();
         list.add(new LineChartItem(generateDataLine(1), getContext()));
         list.add(new LineChartItem2(generateDataLine2(2), getContext()));
+        list.add(new LineChartItem(generateDataLine3(1),getContext()));
+        list.add(new LineChartItem(generateDataLine4(1),getContext()));
 
         ChartDataAdapter cda = new ChartDataAdapter(getContext(), list);
         lv.setAdapter(cda);

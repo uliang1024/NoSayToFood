@@ -33,8 +33,8 @@ public class AlarmReciever extends BroadcastReceiver {
             PendingIntent pendingIntent = PendingIntent.getActivity(context, 1, repeatintent, PendingIntent.FLAG_ONE_SHOT);
             NotificationCompat.Builder builder = new NotificationCompat.Builder(context,"channe2")
                     .setSmallIcon(R.drawable.ic_baseline_check_24)
-                    .setContentTitle("ahoy")
-                    .setContentText("Im horny")
+                    .setContentTitle("哈囉")
+                    .setContentText("持之以恆，方能成功")
                     .setContentIntent(pendingIntent)
                     .setPriority(NotificationCompat.PRIORITY_HIGH);
 

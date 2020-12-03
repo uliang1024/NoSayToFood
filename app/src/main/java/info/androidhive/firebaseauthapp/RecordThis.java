@@ -185,8 +185,11 @@ public class RecordThis extends AppCompatActivity {
                     lv_soso.setBackground(null);
                     lv_hard.setBackground(drawable_dark);
                     break;
-            }
-
+            }Log.e("getFasting record","end date "+enddate+" ,start date"+startdate+" diff:"+(enddate-startdate));
+            long time = (enddate-startdate)/1000;
+            long hour = time/(60*60);
+            long min = (time%(60*60))/(60);
+            fasting_time.setText(hour+" 小時 "+ min+" 分");
             tv_time_span.setText("從"+df.format(startDate)+"\n"+" 到 \n"+df.format(endDate));
             btn_record.setVisibility(View.GONE);
         }else {
