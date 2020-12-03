@@ -483,7 +483,9 @@ public class FragDelete extends Fragment implements PicturePostAdapter.OnItemCli
             @Override
             public void onComplete(@NonNull Task<Void> task) {
                 if(task.isSuccessful()){
+                    Log.e("error occurs here 1" ,"oops");
                     listener.onPostRemoved(true,position);
+
                 }else{
                     Toast.makeText(getContext(),"something wrong",Toast.LENGTH_SHORT).show();
                 }

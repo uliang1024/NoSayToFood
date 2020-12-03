@@ -148,42 +148,46 @@ public class CommentFragment extends BottomSheetDialogFragment {
 
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                ClearAll();
-                commentList = (ArrayList<Object>)dataSnapshot.getValue();
-                Log.e("comment size is",""+dataSnapshot.getValue().toString());
 
-                ArrayList<Comments> adapterlist = new ArrayList<>();
+                if (dataSnapshot.getValue()!=null){
+                    ClearAll();
+                    commentList = (ArrayList<Object>)dataSnapshot.getValue();
+                    Log.e("comment size is",""+dataSnapshot.getValue().toString());
 
-                for (Object o:commentList){
-                    Map<String, Object> map = (Map<String, Object>) o;
-                    Comments c = new Comments((long)map.get("commentTime"),(String) map.get("comment"),(String)map.get("user_avatar"),(String)map.get("user_name"),(String)map.get("user_Id"));
-                    if (c.getUser_Id()!=null){
-                        adapterlist.add(c);
+                    ArrayList<Comments> adapterlist = new ArrayList<>();
+
+                    for (Object o:commentList){
+                        Map<String, Object> map = (Map<String, Object>) o;
+                        Comments c = new Comments((long)map.get("commentTime"),(String) map.get("comment"),(String)map.get("user_avatar"),(String)map.get("user_name"),(String)map.get("user_Id"));
+                        if (c.getUser_Id()!=null){
+                            adapterlist.add(c);
+                        }
+
                     }
+                    //分成新舊兩隔 list只要將新list與舊list相比有差異的地方加進去adapter即可
+                    Log.e("new list",adapterlist.size()+"");
+                    Log.e("old list befire assigned",oldcommentList.size()+"");
 
+                    if(oldcommentList.size()!= 0){
+                        //第二次以後當有心資料讀入時，此時只要將new list加入就好
+                        Log.e("inserted list",adapterlist.size()+"");
+                        Log.e("inserted list",adapterlist.get(adapterlist.size()-1).getComment()+"");
+                        oldcommentList.add(oldcommentList.size(),adapterlist.get(adapterlist.size()-1));
+                        adapter.notifyItemInserted(oldcommentList.size());
+                    }else{
+
+                        //第一次載入時，old list的長度為0，故心就沒有差別之分
+                        oldcommentList.addAll(adapterlist);
+                        Log.e("old list after assigned",oldcommentList.size()+"");
+                        //adapter設定為舊list
+                        //adapter.notifyDataSetChanged()不起作用? 解決:https://blog.csdn.net/like_program/article/details/52517119
+
+                        adapter.isShimmer = false;
+                        adapter.notifyDataSetChanged();
+                        recycler_comment.scrollToPosition(adapter.getItemCount()-1);
+                    }
                 }
-                //分成新舊兩隔 list只要將新list與舊list相比有差異的地方加進去adapter即可
-                Log.e("new list",adapterlist.size()+"");
-                Log.e("old list befire assigned",oldcommentList.size()+"");
 
-                if(oldcommentList.size()!= 0){
-                    //第二次以後當有心資料讀入時，此時只要將new list加入就好
-                    Log.e("inserted list",adapterlist.size()+"");
-                    Log.e("inserted list",adapterlist.get(adapterlist.size()-1).getComment()+"");
-                    oldcommentList.add(oldcommentList.size(),adapterlist.get(adapterlist.size()-1));
-                    adapter.notifyItemInserted(oldcommentList.size());
-                }else{
-
-                    //第一次載入時，old list的長度為0，故心就沒有差別之分
-                    oldcommentList.addAll(adapterlist);
-                    Log.e("old list after assigned",oldcommentList.size()+"");
-                    //adapter設定為舊list
-                    //adapter.notifyDataSetChanged()不起作用? 解決:https://blog.csdn.net/like_program/article/details/52517119
-
-                    adapter.isShimmer = false;
-                    adapter.notifyDataSetChanged();
-                    recycler_comment.scrollToPosition(adapter.getItemCount()-1);
-                }
 //                if(dataSnapshot.hasChild("comments")){
 //
 //                }else{
