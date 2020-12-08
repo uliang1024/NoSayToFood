@@ -25,7 +25,6 @@ import java.util.Set;
 
 import info.androidhive.firebaseauthapp.SQLite.DatabaseHelper;
 import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.food.foodClassification;
 
 public class Food_Record extends AppCompatActivity {
     DatabaseHelper myDb;
@@ -46,10 +45,6 @@ public class Food_Record extends AppCompatActivity {
 
         Cursor res = myDb.getAllData();
 
-        if(res.getCount() == 0) {
-            // show message
-            //textView.setText("Error Nothing found");
-        }
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = null;
         if (user != null) {
@@ -97,7 +92,19 @@ public class Food_Record extends AppCompatActivity {
         calendarView.setOnDateChangeListener(new CalendarView.OnDateChangeListener() {
             @Override
             public void onSelectedDayChange(@NonNull CalendarView view, int year, int month, int dayOfMonth) {
-                String dateee =year+"年"+(month+1)+"月"+dayOfMonth+"日";
+                String st_year,st_month,st_dayOfMonth;
+                st_year = String.valueOf(year);
+                if((month+1)<10){
+                    st_month = "0"+ (month + 1);
+                }else{
+                    st_month = String.valueOf(month+1);
+                }
+                if((dayOfMonth)<10){
+                    st_dayOfMonth = "0"+ (dayOfMonth);
+                }else{
+                    st_dayOfMonth = String.valueOf(dayOfMonth);
+                }
+                String dateee =st_year+"年"+st_month+"月"+st_dayOfMonth+"日";
                for (int i=0;i<date.size();i++){
                    if(dateee.equals(date.get(i))){
                        exist=true;

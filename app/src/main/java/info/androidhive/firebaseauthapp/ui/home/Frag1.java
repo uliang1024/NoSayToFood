@@ -67,7 +67,7 @@ import me.itangqi.waveloadingview.WaveLoadingView;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class Frag1 extends Fragment implements View.OnClickListener {
+public class Frag1 extends Fragment {
 
     private Frag1TimeListener listener;
 
@@ -89,9 +89,6 @@ public class Frag1 extends Fragment implements View.OnClickListener {
     //日期的index
     int index ;
 
-    private ImageView img_notification;
-
-
     private HorizontalStepView horizontalStepView;
 
     private LinearLayout plan1,plan2,plan3,plan4;
@@ -109,26 +106,15 @@ public class Frag1 extends Fragment implements View.OnClickListener {
     private SharedPreferences sharedPreferences;
     private Button bt_eat;
 
-    private ShowcaseView showcaseView;
-    private int counter = 0;
-
     @Override
-    public void onClick(View v) {
-        switch (counter) {
-            case 0:
-                showcaseView.setContentTitle("更改斷食計畫");
-                showcaseView.setContentText("當您選錯時段時，可以修改計畫ㄛ!");
-                showcaseView.setShowcase(new ViewTarget(fastingplan), true);
-                break;
-
-            case 1:
-                showcaseView.hide();
-
-                fastingplan.setEnabled(true);
-
-                break;
+    public void onResume() {
+        super.onResume();
+        String tutorialKey = "SOME_KEY";
+        Boolean firstTime = this.getActivity().getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
+        if (firstTime) {
+            startActivity(new Intent(Frag1.super.getContext(), Fasting_Teaching.class));
+            this.getActivity().getPreferences(MODE_PRIVATE).edit().putBoolean(tutorialKey, false).apply();
         }
-        counter++;
     }
 
     public interface Frag1TimeListener{
@@ -348,25 +334,7 @@ public class Frag1 extends Fragment implements View.OnClickListener {
 
         return fragment_frag1;
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        String tutorialKey = "SOME_KEY";
-        Boolean firstTime = this.getActivity().getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
-        if (firstTime) {
-            showcaseView = new ShowcaseView.Builder(Frag1.super.getActivity(),true)
-                    .withMaterialShowcase()
-                    .setStyle(R.style.CustomShowcaseTheme3)
-                    .setTarget(new ViewTarget(fragment_frag1.findViewById(R.id.dynamicArcView)))
-                    .setContentTitle("進度條")
-                    .setContentText("清楚了解目前段時狀況")
-                    .setOnClickListener(this)
-                    .build();
-            showcaseView.setButtonText(getString(R.string.next));
-            fastingplan.setEnabled(false);
-            this.getActivity().getPreferences(MODE_PRIVATE).edit().putBoolean(tutorialKey, false).apply();
-        }
-    }
+
     private void navigateToRecord(int status) {
 
         Date date = new Date();

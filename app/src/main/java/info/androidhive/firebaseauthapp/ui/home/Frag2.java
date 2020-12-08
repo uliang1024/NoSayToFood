@@ -49,7 +49,7 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
     private ArrayList<Float> list22 = new ArrayList<Float>();
     private Button bt_eat;
     private TextView tv_food;
-
+    private Integer amount=0;
     private PieChart chart;
     private float x1,x2,x3,x4,x5,x6;
     private int[] food_color = {rgb("#FFE0B00C"), rgb("#FFDA1FAF"), rgb("#FF5DADE2"), rgb("#FF229954"), rgb("#FFD35400"), rgb("#FF9C6A1B")};
@@ -62,10 +62,8 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
         myDb = new DatabaseHelper(Frag2.super.getContext());
         Cursor res = myDb.getAllData();
 
-        if(res.getCount() == 0) {
-            // show message
-            //textView.setText("Error Nothing found");
-        }
+        res.getCount();// show message
+        //textView.setText("Error Nothing found");
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         String uid = null;
         if (user != null) {
@@ -84,6 +82,7 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
         while (res.moveToNext()) {
             if(uid.equals(res.getString(4))){
                 if(res.getString(1).substring(0, 11).equals(str)){
+                    amount+=1;
                     if(res.getInt(5)==(meal1+1)){
                         list.get(meal1).add(res.getString(2));
                         list2.get(meal1).add(res.getString(3));
@@ -100,13 +99,13 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
             }
         }
 
-        if(!(list.get(meal1).size() ==1)){
+        if(amount>0){
             user_list.setVisibility(View.VISIBLE); //顯示
             chart.setVisibility(View.VISIBLE); //顯示
             tv_food.setVisibility(View.GONE); // 隱藏
 
-            list.get(meal1).remove(0);
-            list2.get(meal1).remove(0);
+            list.get(0).remove(0);
+            list2.get(0).remove(0);
 
             user_list.setAdapter(new Frag2.MyExpandableListView());
 
@@ -119,7 +118,6 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
                     return false;
                 }
             });
-
 
             chart.getDescription().setEnabled(false);
 
