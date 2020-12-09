@@ -16,14 +16,16 @@
         android:textStyle="bold"
         android:gravity="center"
         android:layout_marginTop="30dp"
-        android:textColor="#000"/>
+        android:textColor="#000"
+        tools:ignore="HardcodedText" />
 
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="讓我們更加了解你，以加快您的成果。"
         android:gravity="center"
-        android:layout_marginTop="5dp"/>
+        android:layout_marginTop="5dp"
+        tools:ignore="HardcodedText" />
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="80dp"
@@ -39,7 +41,8 @@
             android:layout_height="50dp"
             android:layout_gravity="center"
             android:layout_margin="10dp"
-            app:srcCompat="@drawable/gender"/>
+            app:srcCompat="@drawable/gender"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -47,7 +50,7 @@
             android:gravity="center_vertical"
             android:layout_marginStart="70dp"
             android:text="性別"
-            android:id="@+id/show_gender" />
+            tools:ignore="HardcodedText" />
 
         <TextView
             android:id="@+id/tv_gender"
@@ -55,7 +58,8 @@
             android:layout_height="match_parent"
             android:gravity="right|center_vertical"
             android:paddingEnd="20dp"
-            android:text="" />
+            android:text=""
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
 
     </LinearLayout>
 
@@ -75,27 +79,27 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             app:srcCompat="@drawable/age"
-            />
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/tv_age_show"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="70dp"
             android:gravity="center_vertical"
-            android:text="年齡" />
+            android:text="年齡"
+            tools:ignore="HardcodedText" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="right|center_vertical"
             android:paddingEnd="20dp"
             android:text=""
-            android:id="@+id/tv_age" />
+            android:id="@+id/tv_age"
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/rl_height"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:onClick="height"
@@ -110,31 +114,30 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:src="@drawable/height"
-            />
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/show_height"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="70dp"
             android:gravity="center_vertical"
-            android:text="身高" />
+            android:text="身高"
+            tools:ignore="HardcodedText" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="right|center_vertical"
             android:paddingEnd="20dp"
             android:text=""
-            android:id="@+id/tv_height" />
+            android:id="@+id/tv_height"
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/rl_width"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_alignParentTop="true"
         android:onClick="width"
         android:background="@drawable/fasting_square"
         android:layout_marginStart="10dp"
@@ -147,31 +150,30 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:src="@drawable/weight"
-            />
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/show_tv_width"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="70dp"
             android:gravity="center_vertical"
-            android:text="體重" />
+            android:text="體重"
+            tools:ignore="HardcodedText" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="right|center_vertical"
             android:paddingEnd="20dp"
             android:text=""
-            android:id="@+id/tv_width" />
+            android:id="@+id/tv_width"
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
 
 
     </LinearLayout>
 
     <LinearLayout
-        android:id="@+id/rl_waistline"
         android:layout_width="match_parent"
         android:layout_height="80dp"
-        android:layout_alignParentTop="true"
         android:onClick="waistline"
         android:background="@drawable/fasting_square"
         android:layout_marginStart="10dp"
@@ -184,27 +186,27 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:src="@drawable/ruler"
-            />
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/show_waistline"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="70dp"
             android:gravity="center_vertical"
-            android:text="腰圍" />
+            android:text="腰圍"
+            tools:ignore="HardcodedText" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="right|center_vertical"
             android:paddingEnd="20dp"
             android:text=""
-            android:id="@+id/tv_waistline" />
+            android:id="@+id/tv_waistline"
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
 
 
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/rl_fat"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentTop="true"
@@ -212,7 +214,8 @@
         android:background="@drawable/fasting_square"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="ObsoleteLayoutParam">
 
         <ImageView
             android:layout_width="50dp"
@@ -220,27 +223,27 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:src="@drawable/fat"
-            />
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/show_fat"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="70dp"
             android:gravity="center_vertical"
-            android:text="體脂率" />
+            android:text="體脂率"
+            tools:ignore="HardcodedText" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="right|center_vertical"
             android:paddingEnd="20dp"
             android:text=""
-            android:id="@+id/tv_fat" />
+            android:id="@+id/tv_fat"
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
 
 
     </LinearLayout>
     <LinearLayout
-        android:id="@+id/rl_exercise"
         android:layout_width="match_parent"
         android:layout_height="80dp"
         android:layout_alignParentTop="true"
@@ -248,7 +251,8 @@
         android:background="@drawable/fasting_square"
         android:layout_marginStart="10dp"
         android:layout_marginEnd="10dp"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="ObsoleteLayoutParam">
 
         <ImageView
             android:layout_width="50dp"
@@ -256,22 +260,23 @@
             android:layout_gravity="center"
             android:layout_margin="10dp"
             android:src="@drawable/gym"
-             />
+            tools:ignore="ContentDescription" />
 
         <TextView
-            android:id="@+id/show_exercis"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginStart="70dp"
             android:gravity="center_vertical"
-            android:text="每日活動量" />
+            android:text="每日活動量"
+            tools:ignore="HardcodedText" />
         <TextView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:gravity="right|center_vertical"
             android:paddingEnd="20dp"
             android:text=""
-            android:id="@+id/tv_exercise" />
+            android:id="@+id/tv_exercise"
+            tools:ignore="RtlHardcoded,RtlSymmetry" />
 
 
     </LinearLayout>
@@ -288,7 +293,8 @@
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
         android:paddingBottom="10dp"
-        android:paddingEnd="10dp" />
+        android:paddingEnd="10dp"
+        tools:ignore="HardcodedText,RtlSymmetry" />
     </RelativeLayout>
 
 </LinearLayout>

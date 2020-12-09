@@ -14,7 +14,6 @@
         android:layout_height="wrap_content">
 
         <RelativeLayout
-            android:id="@+id/gridviewdata"
             android:layout_width="190dp"
             android:layout_height="180dp"
             android:background="#fff">

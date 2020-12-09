@@ -1,13 +1,8 @@
 package info.androidhive.firebaseauthapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Context;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -16,6 +11,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
+
 import com.bumptech.glide.Glide;
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -23,18 +21,13 @@ import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
-import com.google.android.gms.auth.api.Auth;
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
 import com.google.android.gms.auth.api.signin.GoogleSignInClient;
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
-import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,21 +37,15 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.squareup.picasso.Picasso;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
-import com.youth.banner.listener.OnBannerListener;
 import com.youth.banner.loader.ImageLoader;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.TimeZone;
-
-import info.androidhive.firebaseauthapp.SQLite.PersonalInformation;
+import java.util.Objects;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -67,16 +54,11 @@ public class MainActivity extends AppCompatActivity {
     private FirebaseAuth mAuth;
     private ImageView mFacrbookIma;
     private static final int RC_SIGN_IN = 1;
-    private GoogleApiClient mGoogleApiClient;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleSignInClient mGoogleSignInClient;
-    private RelativeLayout rl_bg;
     private TextView title;
-    private Handler handler = new Handler();
-    private TextView button2;
     private Banner banner;
     private ArrayList<Integer> images;
-    private TextView textView,textView2;
     private Button button;
 
     @Override
@@ -84,24 +66,20 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        getWindow().getDecorView().setSystemUiVisibility(
+                View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION   //全螢幕顯示
+                        | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);   //隱藏手機虛擬按鍵HOME/BACK/LIST按鍵
 
-        handler.removeCallbacks(updateTimer);//設定定時要執行的方法
-        handler.postDelayed(updateTimer, 0);//設定Delay的時間
-
-        banner = (Banner) findViewById(R.id.banner);
-        textView = (TextView) findViewById(R.id.textView);
-        textView2 = (TextView) findViewById(R.id.textView2);
-        button = (Button) findViewById(R.id.button);
+        RelativeLayout rl_bg = findViewById(R.id.rl_bg);
+        title = findViewById(R.id.title);
+        TextView button2 = findViewById(R.id.button2);
+        mFacrbookIma = findViewById(R.id.facebookIma);
+        ImageView mGoogleIma = findViewById(R.id.googleIma);
+        banner = findViewById(R.id.banner);
+        button = findViewById(R.id.button);
 
         banner.setVisibility(View.GONE);
-        textView.setVisibility(View.GONE);
-        textView2.setVisibility(View.GONE);
         button.setVisibility(View.GONE);
-
-
-        rl_bg = (RelativeLayout)findViewById(R.id.rl_bg);
-        title = (TextView)findViewById(R.id.title);
-        button2 = (TextView)findViewById(R.id.button2);
 
         Calendar calendar= Calendar.getInstance();
         int hour = calendar.get(Calendar.HOUR_OF_DAY);
@@ -115,99 +93,62 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mAuth = FirebaseAuth.getInstance();
-        mAuthListener = new FirebaseAuth.AuthStateListener() {
-            @Override
-            public void onAuthStateChanged(@NonNull FirebaseAuth firebaseAuth) {
-                if(firebaseAuth.getCurrentUser() != null){
-                    startActivity(new Intent(MainActivity.this, HeyYou.class));
-                }
+        mAuthListener = firebaseAuth -> {
+            if(firebaseAuth.getCurrentUser() != null){
+                startActivity(new Intent(MainActivity.this, HeyYou.class));
             }
         };
 
 
-        mFacrbookIma = findViewById(R.id.facebookIma);
-        ImageView mGoogleIma = findViewById(R.id.googleIma);
 
-        // Configure Google Sign In
+
+        // 配置Google登錄
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
                 .requestEmail()
                 .build();
         mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//        mGoogleApiClient = new GoogleApiClient.Builder(getApplicationContext())
-//                .enableAutoManage(this, new GoogleApiClient.OnConnectionFailedListener() {
-//                    @Override
-//                    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
-//                        Toast.makeText(MainActivity.this, "You Got an Error", Toast.LENGTH_LONG).show();
-//                    }
-//                })
-//                .addApi(Auth.GOOGLE_SIGN_IN_API, gso)
-//                .build();
 
-        mGoogleIma.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                signIn();
-            }
-        });
+        mGoogleIma.setOnClickListener(v -> signIn());
 
-        // Initialize Facebook Login button
+        // 初始化Facebook登錄按鈕
         mCallbackManager = CallbackManager.Factory.create();
 
-        mFacrbookIma.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
+        mFacrbookIma.setOnClickListener(v -> {
 
-                mFacrbookIma.setEnabled(false);
+            mFacrbookIma.setEnabled(false);
 
-                LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email", "public_profile"));
-                LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
-                    @Override
-                    public void onSuccess(LoginResult loginResult) {
-                        Log.d(TAG, "facebook:onSuccess:" + loginResult);
-                        handleFacebookAccessToken(loginResult.getAccessToken());
-                    }
+            LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email", "public_profile"));
+            LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+                @Override
+                public void onSuccess(LoginResult loginResult) {
+                    Log.d(TAG, "facebook：成功" + loginResult);
+                    handleFacebookAccessToken(loginResult.getAccessToken());
+                }
 
-                    @Override
-                    public void onCancel() {
-                        Log.d(TAG, "facebook:onCancel");
-                        Toast.makeText(MainActivity.this, "what?", Toast.LENGTH_SHORT).show();
-                        // ...
-                    }
+                @Override
+                public void onCancel() {
+                    Log.d(TAG, "facebook:取消");
+                    Toast.makeText(MainActivity.this, "取消?", Toast.LENGTH_SHORT).show();
+                }
 
 
-                    @Override
-                    public void onError(FacebookException error) {
-                        //出問題
-                        Log.e(TAG, "facebook:onError", error);
-                        // ...
-                    }
-                });
-            }
+                @Override
+                public void onError(FacebookException error) {
+                    //出問題
+                    Log.e(TAG, "facebook:錯誤", error);
+                    // ...
+                }
+            });
         });
 
-        button2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainActivity.this, EmailLogin.class));
-            }
-        });
+        button2.setOnClickListener(v -> startActivity(new Intent(MainActivity.this, EmailLogin.class)));
     }
-
-
-    private Runnable updateTimer = new Runnable() {
-        public void run() {
-            handler.postDelayed(this, 0);
-            getWindow().getDecorView().setSystemUiVisibility(
-                    View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_HIDE_NAVIGATION   //全螢幕顯示
-                            | View.SYSTEM_UI_FLAG_FULLSCREEN | View.SYSTEM_UI_FLAG_IMMERSIVE_STICKY);   //隱藏手機虛擬按鍵HOME/BACK/LIST按鍵
-        }
-    };
 
     @Override
     public void onStart() {
         super.onStart();
-        // Check if user is signed in (non-null) and update UI accordingly.
+        // 檢查用戶是否已登錄（非null）並相應地更新UI。
 
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if(currentUser != null){
@@ -216,13 +157,14 @@ public class MainActivity extends AppCompatActivity {
 
         mAuth.addAuthStateListener(mAuthListener);
     }
+
     private void signIn() {
-//        Intent signInIntent = Auth.GoogleSignInApi.getSignInIntent(mGoogleApiClient);
         Intent signInIntent = mGoogleSignInClient.getSignInIntent();
         startActivityForResult(signInIntent, RC_SIGN_IN);
     }
+
     private void updateUI() {
-        Toast.makeText(MainActivity.this, "You're logged in", Toast.LENGTH_LONG).show();
+        Toast.makeText(MainActivity.this, "您已登錄", Toast.LENGTH_LONG).show();
         Intent accountIntent = new Intent(MainActivity.this, HeyYou.class);
         startActivity(accountIntent);
         finish();
@@ -232,21 +174,21 @@ public class MainActivity extends AppCompatActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        // Pass the activity result back to the Facebook SDK
+        // 將活動結果傳遞回Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
-        // Result returned from launching the Intent from GoogleSignInApi.getSignInIntent(...);
+        // 從GoogleSignInApi.getSignInIntent（...）啟動Intent返回的結果；
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
             try {
-                // Google Sign In was successful, authenticate with Firebase
+                // Google登錄成功，已通過Firebase進行身份驗證
                 GoogleSignInAccount account = task.getResult(ApiException.class);
+                assert account != null;
                 firebaseAuthWithGoogle(account);
             } catch (ApiException e) {
-                // Google Sign In failed, update UI appropriately
+                // Google登錄失敗，請適當更新用戶界面
                 Toast.makeText(this, "oopsi"+e, Toast.LENGTH_LONG).show();
                 title.setText(e.toString());
-                //Log.w(TAG, "Google sign in failed", e);
-                // ...
+                //Log.w(TAG, "Google登錄失敗", e);
             }
         }
     }
@@ -256,55 +198,52 @@ public class MainActivity extends AppCompatActivity {
 
         AuthCredential credential = GoogleAuthProvider.getCredential(account.getIdToken(), null);
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // 登錄成功，使用登錄用戶的信息更新用戶界面
+                        Log.d(TAG, "signInWithCredential:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
 
-                            String email = user.getEmail();
-                            String uid = user.getUid();
-                            String username = user.getDisplayName();
-                            String image = user.getPhotoUrl().toString();
+                        assert user != null;
+                        String email = user.getEmail();
+                        String uid = user.getUid();
+                        String username = user.getDisplayName();
+                        String image = Objects.requireNonNull(user.getPhotoUrl()).toString();
 
-                            DatabaseReference UsersRef;
-                            UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
-                            UsersRef.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if(dataSnapshot.exists()){
-                                        if(!dataSnapshot.hasChild("profileimage")){
-                                            Log.e("show" , ""+dataSnapshot.hasChild("profileimage"));
-                                            HashMap<Object,String> hashMap = new HashMap<>();
-                                            hashMap.put("Email",email);
-                                            hashMap.put("Uid",uid);
-                                            hashMap.put("Username",username);
-                                            hashMap.put("profileimage",image);
+                        DatabaseReference UsersRef;
+                        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+                        UsersRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.exists()){
+                                    if(!dataSnapshot.hasChild("profileimage")){
+                                        Log.e("show" , ""+dataSnapshot.hasChild("profileimage"));
+                                        HashMap<Object,String> hashMap = new HashMap<>();
+                                        hashMap.put("Email",email);
+                                        hashMap.put("Uid",uid);
+                                        hashMap.put("Username",username);
+                                        hashMap.put("profileimage",image);
 
-                                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                            DatabaseReference reference = database.getReference("Users");
-                                            reference.child(uid).setValue(hashMap);
-                                        }
+                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                        DatabaseReference reference = database.getReference("Users");
+                                        reference.child(uid).setValue(hashMap);
                                     }
                                 }
+                            }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                }
-                            });
+                            }
+                        });
 
-                            updateUI();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed."+task.getException(),
-                                    Toast.LENGTH_SHORT).show();
-                            updateUI();
-                        }
+                    } else {
+                        // 如果登錄失敗，則向用戶顯示一條消息。
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        Toast.makeText(MainActivity.this, "驗證失敗"+task.getException(),
+                                Toast.LENGTH_SHORT).show();
                     }
+                    updateUI();
                 });
     }
 
@@ -313,117 +252,108 @@ public class MainActivity extends AppCompatActivity {
 
         AuthCredential credential = FacebookAuthProvider.getCredential(token.getToken());
         mAuth.signInWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d(TAG, "signInWithCredential:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
+                .addOnCompleteListener(this, task -> {
+                    if (task.isSuccessful()) {
+                        // Sign in success, update UI with the signed-in user's information
+                        Log.d(TAG, "signInWithCredential:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
 
-                            String email = user.getEmail();
-                            String uid = user.getUid();
-                            String username = user.getDisplayName();
-                            String image = user.getPhotoUrl().toString();
+                        assert user != null;
+                        String email = user.getEmail();
+                        String uid = user.getUid();
+                        String username = user.getDisplayName();
+                        String image = Objects.requireNonNull(user.getPhotoUrl()).toString();
 
-                            DatabaseReference UsersRef;
-                            UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
-                            UsersRef.addValueEventListener(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                                    if(dataSnapshot.exists()){
-                                        if(!dataSnapshot.hasChild("profileimage")){
-                                            Log.e("show" , ""+dataSnapshot.hasChild("profileimage"));
-                                            HashMap<Object,String> hashMap = new HashMap<>();
-                                            hashMap.put("Email",email);
-                                            hashMap.put("Uid",uid);
-                                            hashMap.put("Username",username);
-                                            hashMap.put("profileimage",image);
+                        DatabaseReference UsersRef;
+                        UsersRef = FirebaseDatabase.getInstance().getReference().child("Users").child(uid);
+                        UsersRef.addValueEventListener(new ValueEventListener() {
+                            @Override
+                            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                                if(dataSnapshot.exists()){
+                                    if(!dataSnapshot.hasChild("profileimage")){
+                                        Log.e("show" , ""+dataSnapshot.hasChild("profileimage"));
+                                        HashMap<Object,String> hashMap = new HashMap<>();
+                                        hashMap.put("Email",email);
+                                        hashMap.put("Uid",uid);
+                                        hashMap.put("Username",username);
+                                        hashMap.put("profileimage",image);
 
-                                            FirebaseDatabase database = FirebaseDatabase.getInstance();
-                                            DatabaseReference reference = database.getReference("Users");
-                                            reference.child(uid).setValue(hashMap);
-                                        }
+                                        FirebaseDatabase database = FirebaseDatabase.getInstance();
+                                        DatabaseReference reference = database.getReference("Users");
+                                        reference.child(uid).setValue(hashMap);
                                     }
                                 }
+                            }
 
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError databaseError) {
+                            @Override
+                            public void onCancelled(@NonNull DatabaseError databaseError) {
 
-                                }
-                            });
+                            }
+                        });
 
-                            mFacrbookIma.setEnabled(true);
-                            updateUI();
-                        } else {
-                            // If sign in fails, display a message to the user.
-                            Log.w(TAG, "signInWithCredential:failure", task.getException());
-                            Toast.makeText(MainActivity.this, "Authentication failed."+task.getException(),
-                                    Toast.LENGTH_SHORT).show();
-                            mFacrbookIma.setEnabled(true);
-                            updateUI();
-                        }
+                    } else {
+                        // 如果登錄失敗，則向用戶顯示一條消息。
+                        Log.w(TAG, "signInWithCredential:failure", task.getException());
+                        Toast.makeText(MainActivity.this, "驗證失敗Authentication failed."+task.getException(),
+                                Toast.LENGTH_SHORT).show();
                     }
+                    mFacrbookIma.setEnabled(true);
+                    updateUI();
                 });
     }
+
     private void initView() {
-        //设置样式,默认为:banner.NOT_INDICATOR(不显示指示器和标题)
-        //可选样式如下:
-        //1. banner.CIRCLE_INDICATOR    显示圆形指示器
-        //2. banner.NUM_INDICATOR   显示数字指示器
-        //3. banner.NUM_INDICATOR_TITLE 显示数字指示器和标题
-        //4. banner.CIRCLE_INDICATOR_TITLE  显示圆形指示器和标题
-        //设置banner样式
+        //設置樣式,默認為:banner.NOT_INDICATOR(不顯示指示器和標題)
+        //可選樣式如下:
+        //1. banner.CIRCLE_INDICATOR 顯示圓形指示器
+        //2. banner.NUM_INDICATOR 顯示數字指示器
+        //3. banner.NUM_INDICATOR_TITLE 顯示數字指示器和標題
+        //4. banner.CIRCLE_INDICATOR_TITLE 顯示圓形指示器和標題
+        //設置banner樣式
         banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR);
-        //设置图片加载器
+        //設置圖片加載器
         banner.setImageLoader(new GlideImageLoader());
-        //设置轮播样式（没有标题默认为右边,有标题时默认左边）
-        //可选样式:
-        //banner.LEFT   指示器居左
+        //設置輪播樣式（沒有標題默認為右邊,有標題時默認左邊）
+        //可選樣式:
+        //banner.LEFT 指示器居左
         //banner.CENTER 指示器居中
-        //banner.RIGHT  指示器居右
+        //banner.RIGHT 指示器居右
         banner.setIndicatorGravity(BannerConfig.CENTER);
-        //设置是否允许手动滑动轮播图
+        //設置是否允許手動滑動輪播圖
         banner.setViewPagerIsScroll(true);
-        //设置是否自动轮播（不设置则默认自动）
+        //設置是否自動輪播（不設置則默認自動）
         banner.isAutoPlay(false);
-        //设置轮播图片间隔时间（不设置默认为2000）
+        //設置輪播圖片間隔時間（不設置默認為2000）
         //banner.setDelayTime(1500);
-        //设置图片资源:可选图片网址/资源文件，默认用Glide加载,也可自定义图片的加载框架
-        //所有设置参数方法都放在此方法之前执行
+        //設置圖片資源:可選圖片網址/資源文件，默認用Glide加載,也可自定義圖片的加載框架
+        //所有設置參數方法都放在此方法之前執行
         banner.setIndicatorGravity(BannerConfig.CENTER);
         banner.setImages(images)
-                .setOnBannerListener(new OnBannerListener() {
-                    @Override
-                    public void OnBannerClick(int position) {
-                        //Toast.makeText(MainActivity.this, "你点了第" + (position + 1) + "张轮播图", Toast.LENGTH_SHORT).show();
-                    }
+                .setOnBannerListener(position -> {
+                    //Toast.makeText(MainActivity.this, "點擊" + (position + 1) + "張輪播圖", Toast.LENGTH_SHORT).show();
                 })
                 .start();
 
-        button.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                banner.setVisibility(View.GONE);
-                textView.setVisibility(View.GONE);
-                textView2.setVisibility(View.GONE);
-                button.setVisibility(View.GONE);
-            }
+        button.setOnClickListener(v -> {
+            banner.setVisibility(View.GONE);
+            button.setVisibility(View.GONE);
         });
     }
 
     private void initData() {
-        //设置图片资源:url或本地资源
+        //設置圖片資源:url或本地資源
         images = new ArrayList<>();
         images.add(R.drawable.hello1);
         images.add(R.drawable.hello2);
         images.add(R.drawable.hello3);
+        images.add(R.drawable.hello4);
     }
+
     /**
-     * 网络加载图片
-     * 使用了Glide图片加载框架
+     * 網絡加載圖片
+     * 使用了Glide圖片加載框架
      */
-    public class GlideImageLoader extends ImageLoader {
+    public static class GlideImageLoader extends ImageLoader {
         @Override
         public void displayImage(Context context, Object path, ImageView imageView) {
             Glide.with(context)
@@ -432,15 +362,14 @@ public class MainActivity extends AppCompatActivity {
         }
 
     }
+
     @Override
     protected void onResume() {
         super.onResume();
         String tutorialKey = "SOME_KEY";
-        Boolean firstTime = getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
+        boolean firstTime = getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
         if (firstTime) {
             banner.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.VISIBLE);
-            textView2.setVisibility(View.VISIBLE);
             button.setVisibility(View.VISIBLE);
             initData();
             initView();

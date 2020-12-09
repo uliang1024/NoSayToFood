@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:background="@drawable/settime_baground">
     <LinearLayout
@@ -20,7 +20,8 @@
             android:drawableTop="@drawable/top_img_sun"
             android:layout_marginEnd="30dp"
             android:gravity="center"
-            android:text="略過早餐" />
+            android:text="略過早餐"
+            tools:ignore="HardcodedText" />
         <TextView
             android:id="@+id/dinner"
             android:layout_width="80dp"
@@ -28,7 +29,8 @@
             android:layout_marginStart="30dp"
             android:drawableTop="@drawable/top_img_moon"
             android:gravity="center"
-            android:text="略過晚餐" />
+            android:text="略過晚餐"
+            tools:ignore="HardcodedText" />
 
     </LinearLayout>
     <LinearLayout
@@ -44,7 +46,8 @@
             android:layout_height="wrap_content"
             android:text="開始斷食時間"
             android:textSize="20sp"
-            android:gravity="center" />
+            android:gravity="center"
+            tools:ignore="HardcodedText" />
 
         <View
             android:layout_width="match_parent"
@@ -68,5 +71,6 @@
         android:background="#28B463"
         android:text="完成"
         android:textSize="30sp"
-        android:textColor="#424949"/>
+        android:textColor="#424949"
+        tools:ignore="HardcodedText" />
 </LinearLayout>

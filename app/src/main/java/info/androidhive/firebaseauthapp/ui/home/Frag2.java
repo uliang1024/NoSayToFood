@@ -1,58 +1,56 @@
     package info.androidhive.firebaseauthapp.ui.home;
 
-import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.database.Cursor;
-import android.graphics.Color;
-import android.os.Bundle;
+    import android.annotation.SuppressLint;
+    import android.content.Intent;
+    import android.database.Cursor;
+    import android.graphics.Color;
+    import android.os.Bundle;
+    import android.text.SpannableString;
+    import android.text.style.ForegroundColorSpan;
+    import android.text.style.RelativeSizeSpan;
+    import android.util.Log;
+    import android.view.LayoutInflater;
+    import android.view.View;
+    import android.view.ViewGroup;
+    import android.widget.BaseExpandableListAdapter;
+    import android.widget.Button;
+    import android.widget.ExpandableListView;
+    import android.widget.TextView;
 
-import androidx.fragment.app.Fragment;
+    import androidx.fragment.app.Fragment;
 
-import android.text.SpannableString;
-import android.text.style.ForegroundColorSpan;
-import android.text.style.RelativeSizeSpan;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.BaseExpandableListAdapter;
-import android.widget.Button;
-import android.widget.ExpandableListView;
-import android.widget.TextView;
+    import com.github.mikephil.charting.charts.PieChart;
+    import com.github.mikephil.charting.components.Legend;
+    import com.github.mikephil.charting.data.PieData;
+    import com.github.mikephil.charting.data.PieDataSet;
+    import com.github.mikephil.charting.data.PieEntry;
+    import com.google.firebase.auth.FirebaseAuth;
+    import com.google.firebase.auth.FirebaseUser;
 
-import com.github.mikephil.charting.charts.PieChart;
-import com.github.mikephil.charting.components.Legend;
-import com.github.mikephil.charting.data.PieData;
-import com.github.mikephil.charting.data.PieDataSet;
-import com.github.mikephil.charting.data.PieEntry;
-import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
+    import java.text.SimpleDateFormat;
+    import java.util.ArrayList;
+    import java.util.Date;
 
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
+    import info.androidhive.firebaseauthapp.R;
+    import info.androidhive.firebaseauthapp.SQLite.DatabaseHelper;
+    import info.androidhive.firebaseauthapp.food.foodClassification;
 
-import info.androidhive.firebaseauthapp.SQLite.DatabaseHelper;
-import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.food.foodClassification;
-
-import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
+    import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
 
     public class Frag2 extends Fragment {
     DatabaseHelper myDb;
     private ExpandableListView user_list ;
-    private ArrayList<ArrayList<String>> list = new ArrayList<ArrayList<String>>();
-    private ArrayList<ArrayList<String>> list2 = new ArrayList<ArrayList<String>>();
-    private ArrayList<String> list11 = new ArrayList<String>();
-    private ArrayList<Float> list22 = new ArrayList<Float>();
+    private final ArrayList<ArrayList<String>> list = new ArrayList<>();
+    private final ArrayList<ArrayList<String>> list2 = new ArrayList<>();
+    private final ArrayList<String> list11 = new ArrayList<>();
+    private final ArrayList<Float> list22 = new ArrayList<>();
     private Button bt_eat;
     private TextView tv_food;
     private Integer amount=0;
     private PieChart chart;
     private float x1,x2,x3,x4,x5,x6;
-    private int[] food_color = {rgb("#FFE0B00C"), rgb("#FFDA1FAF"), rgb("#FF5DADE2"), rgb("#FF229954"), rgb("#FFD35400"), rgb("#FF9C6A1B")};
+    private final int[] food_color = {rgb("#FFE0B00C"), rgb("#FFDA1FAF"), rgb("#FF5DADE2"), rgb("#FF229954"), rgb("#FFD35400"), rgb("#FF9C6A1B")};
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
@@ -75,11 +73,12 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
         String str = formatter.format(curDate);
 
         int meal1 = 0;
-        list.add(new ArrayList<String>());
+        list.add(new ArrayList<>());
         list.get(meal1).add(String.valueOf(new ArrayList<String>()));
-        list2.add(new ArrayList<String>());
+        list2.add(new ArrayList<>());
         list2.get(meal1).add(String.valueOf(new ArrayList<String>()));
         while (res.moveToNext()) {
+            assert uid != null;
             if(uid.equals(res.getString(4))){
                 if(res.getString(1).substring(0, 11).equals(str)){
                     amount+=1;
@@ -88,9 +87,9 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
                         list2.get(meal1).add(res.getString(3));
                     }else {
                         meal1+=1;
-                        list.add(new ArrayList<String>());
+                        list.add(new ArrayList<>());
                         list.get(meal1).add(res.getString(2));
-                        list2.add(new ArrayList<String>());
+                        list2.add(new ArrayList<>());
                         list2.get(meal1).add(res.getString(3));
                     }
                     list11.add(res.getString(2));
@@ -110,14 +109,7 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
             user_list.setAdapter(new Frag2.MyExpandableListView());
 
             // Listview on child click listener
-            user_list.setOnChildClickListener(new ExpandableListView.
-                    OnChildClickListener() {
-                @Override
-                public boolean onChildClick(ExpandableListView parent, View v,
-                                            int groupPosition, int childPosition, long id) {
-                    return false;
-                }
-            });
+            user_list.setOnChildClickListener((parent, v, groupPosition, childPosition, id) -> false);
 
             chart.getDescription().setEnabled(false);
 
@@ -143,12 +135,7 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
 
 
-        bt_eat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                startActivity(new Intent(Frag2.super.getContext(), foodClassification.class));
-            }
-        });
+        bt_eat.setOnClickListener(view -> startActivity(new Intent(Frag2.super.getContext(), foodClassification.class)));
 
 
 
@@ -191,22 +178,22 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
         ArrayList<PieEntry> entries1 = new ArrayList<>();
 
         if(x1!=0){
-            entries1.add(new PieEntry((float) x1, "全榖雜糧類"));
+            entries1.add(new PieEntry(x1, "全榖雜糧類"));
         }
         if(x2!=0){
-            entries1.add(new PieEntry((float) x2, "豆魚蛋肉類"));
+            entries1.add(new PieEntry(x2, "豆魚蛋肉類"));
         }
         if(x3!=0){
-            entries1.add(new PieEntry((float) x3, "乳品類"));
+            entries1.add(new PieEntry(x3, "乳品類"));
         }
         if(x4!=0){
-            entries1.add(new PieEntry((float) x4, "蔬菜類"));
+            entries1.add(new PieEntry(x4, "蔬菜類"));
         }
         if(x5!=0){
-            entries1.add(new PieEntry((float) x5, "水果類"));
+            entries1.add(new PieEntry(x5, "水果類"));
         }
         if(x6!=0){
-            entries1.add(new PieEntry((float) x6, "油脂與堅果種子類"));
+            entries1.add(new PieEntry(x6, "油脂與堅果種子類"));
         }
 
         PieDataSet ds1 = new PieDataSet(entries1, "");
@@ -220,10 +207,10 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
 
     @SuppressLint("WrongViewCast")
     private void init(View v) {
-        user_list = (ExpandableListView) v.findViewById(R.id.user_list);
-        bt_eat = (Button)v.findViewById(R.id.bt_eat);
+        user_list = v.findViewById(R.id.user_list);
+        bt_eat = v.findViewById(R.id.bt_eat);
         chart = v.findViewById(R.id.chart1);
-        tv_food =(TextView)v.findViewById(R.id.tv_food);
+        tv_food = v.findViewById(R.id.tv_food);
     }
     //为ExpandableListView自定义适配器
     class MyExpandableListView extends BaseExpandableListAdapter {
@@ -270,14 +257,14 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
         }
 
         //【重要】填充一级列表
-        @SuppressLint("SetTextI18n")
+        @SuppressLint({"SetTextI18n", "InflateParams"})
         @Override
         public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
 
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.today_food_listview,null);
             }
-            TextView meal = (TextView) convertView.findViewById(R.id.meal);
+            TextView meal = convertView.findViewById(R.id.meal);
 
             meal.setText("第"+ (groupPosition + 1) +"餐");
 
@@ -287,14 +274,15 @@ import static com.github.mikephil.charting.utils.ColorTemplate.rgb;
         }
 
         //【重要】填充二级列表
+        @SuppressLint("InflateParams")
         @Override
         public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
 
             if (convertView == null) {
                 convertView = getLayoutInflater().inflate(R.layout.today_food, null);
             }
-            TextView name = (TextView) convertView.findViewById(R.id.name);
-            TextView amount = (TextView) convertView.findViewById(R.id.amount);
+            TextView name = convertView.findViewById(R.id.name);
+            TextView amount = convertView.findViewById(R.id.amount);
 
 
                 name.setText(list.get(groupPosition).get(childPosition));

@@ -1,14 +1,11 @@
 package info.androidhive.firebaseauthapp.ui.profile;
 
-import androidx.appcompat.app.AppCompatActivity;
-
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 
+import androidx.appcompat.app.AppCompatActivity;
+
 import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.ui.dashboard.Food_Record;
-import info.androidhive.firebaseauthapp.ui.dashboard.OneFoodRecord;
 
 public class About extends AppCompatActivity {
 

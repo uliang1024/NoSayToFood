@@ -1,7 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_height="wrap_content"
     android:layout_width="fill_parent"
@@ -12,11 +10,10 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="64dp"
-        android:text="選擇斷食計畫"
-        android:textSize="50dp"
+        android:text="@string/Choose_fasting"
+        android:textSize="50sp"
         android:gravity="center"
         tools:layout_editor_absoluteY="29dp" />
 
@@ -29,7 +26,7 @@
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="每日限時進食"
+        android:text="@string/tv_choose"
         android:padding="10dp"
         android:textSize="15sp" />
     <LinearLayout
@@ -55,18 +52,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="14/10斷食法"
+                android:text="@string/fasting1410"
                 android:textSize="20sp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="每週挑五天在10小時內進食"
+                android:text="@string/fasting1410explain"
                 android:paddingTop="5dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="(難度) ★"
+                android:text="@string/difficulty1"
                 android:paddingTop="10dp" />
         </LinearLayout>
 
@@ -94,18 +91,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="16/8斷食法"
+                android:text="@string/fasting168"
                 android:textSize="20sp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="每週挑五天在8小時內進食"
+                android:text="@string/fasting168explain"
                 android:paddingTop="5dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="(難度) ★★"
+                android:text="@string/difficulty2"
                 android:paddingTop="10dp" />
         </LinearLayout>
 
@@ -133,18 +130,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="18/6斷食法(五天)"
+                android:text="@string/fasting186_5day"
                 android:textSize="20sp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="每週挑五天在6小時內進食"
+                android:text="@string/fasting186_5dayExplain"
                 android:paddingTop="5dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="(難度) ★★★"
+                android:text="@string/difficulty3"
                 android:paddingTop="10dp" />
         </LinearLayout>
 
@@ -172,18 +169,18 @@
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="18/6斷食法(七天)"
+                android:text="@string/fasting186_7day"
                 android:textSize="20sp" />
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="每週挑七天在6小時內進食"
+                android:text="@string/fasting186_7dayExplain"
                 android:paddingTop="5dp" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="(難度) ★★★★"
+                android:text="@string/difficulty4"
                 android:paddingTop="10dp" />
         </LinearLayout>
 

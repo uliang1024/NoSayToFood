@@ -1,0 +1,19 @@
+參考
+
+輪播圖 https://github.com/youth5201314/banner
+
+第一次登入 https://stackoverflow.com/questions/35538873/tutorial-first-time-you-enter-into-an-app
+
+動畫圓輪圖 https://github.com/bmarrdev/android-DecoView-charting
+
+步驟視圖 https://www.youtube.com/watch?v=0PcntbdriFM
+
+水瓶 https://github.com/tangqi92/WaveLoadingView
+
+清單 https://medium.com/chikuwa-tech-study/android-%E9%9B%99%E5%B1%A4%E6%B8%85%E5%96%AEexpandablelistview-987f03869296
+
+圖表 https://github.com/PhilJay/MPAndroidChart
+
+ViewPager https://www.youtube.com/watch?v=R_AIUy7tFVA
+
+使用者 https://www.youtube.com/playlist?list=PLs1bCj3TvmWmM-qN3FsCuPTTX-29I8Gh7

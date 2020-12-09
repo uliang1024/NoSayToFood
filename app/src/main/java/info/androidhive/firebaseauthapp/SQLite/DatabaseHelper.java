@@ -45,31 +45,27 @@ public class DatabaseHelper extends SQLiteOpenHelper {
         contentValues.put(COL_5,uid);
         contentValues.put(COL_6,meal);
         long result = db.insert(TABLE_NAME,null ,contentValues);
-        if(result == -1)
-            return false;
-        else
-            return true;
+        return result != -1;
     }
 
     public Cursor getAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
-        return res;
+        return db.rawQuery("select * from "+TABLE_NAME,null);
     }
 
-    public boolean updateData(String id,String name,String surname,String marks) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        ContentValues contentValues = new ContentValues();
-        contentValues.put(COL_1,id);
-        contentValues.put(COL_2,name);
-        contentValues.put(COL_3,surname);
-        contentValues.put(COL_4,marks);
-        db.update(TABLE_NAME, contentValues, "ID = ?",new String[] { id });
-        return true;
-    }
-
-    public Integer deleteData (String id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "ID = ?",new String[] {id});
-    }
+//    public boolean updateData(String id,String name,String surname,String marks) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        ContentValues contentValues = new ContentValues();
+//        contentValues.put(COL_1,id);
+//        contentValues.put(COL_2,name);
+//        contentValues.put(COL_3,surname);
+//        contentValues.put(COL_4,marks);
+//        db.update(TABLE_NAME, contentValues, "ID = ?",new String[] { id });
+//        return true;
+//    }
+//
+//    public Integer deleteData (String id) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        return db.delete(TABLE_NAME, "ID = ?",new String[] {id});
+//    }
 }

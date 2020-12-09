@@ -21,7 +21,6 @@
             android:textSize="20dp"
             />
         <TextView
-            android:id="@+id/tv_fast_status"
             android:layout_toLeftOf="@id/img_emoji"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

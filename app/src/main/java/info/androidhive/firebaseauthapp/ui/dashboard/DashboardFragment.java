@@ -24,7 +24,6 @@ import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AlertDialog;
@@ -32,11 +31,9 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.LineChart;
-import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
-import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.firebase.auth.FirebaseAuth;
@@ -57,8 +54,6 @@ import info.androidhive.firebaseauthapp.BodyInformation.LineChartItem;
 import info.androidhive.firebaseauthapp.BodyInformation.LineChartItem2;
 import info.androidhive.firebaseauthapp.FastRecordsActivity;
 import info.androidhive.firebaseauthapp.R;
-import info.androidhive.firebaseauthapp.BodyInformation.Weight_scale;
-import info.androidhive.firebaseauthapp.RecordThis;
 import info.androidhive.firebaseauthapp.SQLite.BodyRecord;
 import info.androidhive.firebaseauthapp.SQLite.PersonalInformation;
 
@@ -681,7 +676,7 @@ public class DashboardFragment extends Fragment {
             //如果使用者沒輸入waist就用讀下來的最新一筆資料當waist
             if (waist==0){
                 Log.e("found data ","data updated:" +Dates.get(Dates.indexOf(date)));
-                boolean isupdated = false;
+                boolean isupdated;
                 isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(date)), weight_data,Waists.get(Waists.size()-1),timestamp);
                 boolean updatePersonal = myDb.updateBodyData(uid,Heights.get(Heights.size()-1),weight_data,Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1));
                 Log.e("insert: 4 ",""+isupdated);
@@ -691,7 +686,7 @@ public class DashboardFragment extends Fragment {
             //如果使用者有輸入waist就用使用者輸入的
             //exed
             else {
-                boolean isupdated = false;
+                boolean isupdated;
                 isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(date)), weight_data,waist,timestamp);
                 boolean updatePersonal = myDb.updateBodyData(uid,height,weight_data,waist,Body_fats.get(Body_fats.size()-1));
                 Log.e("insert: 5 ",""+isupdated);
@@ -754,7 +749,7 @@ public class DashboardFragment extends Fragment {
         myDb = new PersonalInformation(v.getContext());
         myDb2 = new BodyRecord(v.getContext());
     }
-    private class ChartDataAdapter extends ArrayAdapter<ChartItem> {
+    private static class ChartDataAdapter extends ArrayAdapter<ChartItem> {
 
         ChartDataAdapter(Context context, List<ChartItem> objects) {
             super(context, 0, objects);
@@ -763,20 +758,20 @@ public class DashboardFragment extends Fragment {
         @NonNull
         @Override
         public View getView(int position, View convertView, @NonNull ViewGroup parent) {
-            //noinspection ConstantConditions
+            //無檢查ConstantConditions
             return getItem(position).getView(position, convertView, getContext());
         }
 
         @Override
         public int getItemViewType(int position) {
-            // return the views type
+            // 返回視圖類型
             ChartItem ci = getItem(position);
             return ci != null ? ci.getItemType() : 0;
         }
 
         @Override
         public int getViewTypeCount() {
-            return 3; // we have 3 different item-types
+            return 3; // 我們有3種不同的項目類型
         }
     }
 }

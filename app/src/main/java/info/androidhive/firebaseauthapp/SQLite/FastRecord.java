@@ -47,10 +47,7 @@ public class FastRecord extends SQLiteOpenHelper {
         Log.e("body data inserted :","ID:"+uid+"startDate:"+startdate+"endDate:"+enddate+"ts:"+timeStamp);
 
         long result = db.insert(TABLE_NAME,null ,contentValues);
-        if(result == -1)
-            return false;
-        else
-            return true;
+        return result != -1;
     }
     public boolean updateFastData(Integer id,Long startdate,Long enddate,int emoji) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -64,13 +61,12 @@ public class FastRecord extends SQLiteOpenHelper {
     }
     public Cursor getAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from "+TABLE_NAME+" order by TS asc ",null);
-        return res;
+        return db.rawQuery("select * from "+TABLE_NAME+" order by TS asc ",null);
     }
 
 
-    public Integer deleteData (String uid) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "Uid = ?",new String[] {uid});
-    }
+//    public Integer deleteData (String uid) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        return db.delete(TABLE_NAME, "Uid = ?",new String[] {uid});
+//    }
 }

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -14,17 +13,18 @@
         android:layout_width="match_parent"
         android:layout_height="280dp"
         android:background="@drawable/team"
-        android:layout_margin="10dp" />
+        android:layout_margin="10dp"
+        android:contentDescription="@string/team" />
 
     <TextView
         android:id="@+id/tv_team"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="109503 專題 "
+        android:text="@string/team109503"
         android:layout_below="@+id/iv_team"
         android:layout_centerHorizontal="true"
         android:textColor="#ffffff"
-        android:textSize="30dp"
+        android:textSize="30sp"
         android:textStyle="italic"
         android:layout_margin="10dp"
         />
@@ -43,9 +43,9 @@
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:layout_below="@+id/tv_team"
-        android:layout_toRightOf="@+id/iv_team1"
+        android:layout_toEndOf="@+id/iv_team1"
         android:textColor="#fff"
-        android:text="了解組員；對組員實行有效管理；實現員工之間的良好溝通；用激勵來帶動組員們的工作積極性；實現班組內部的和諧發展，提高組員素質；對組員進行心理咨詢等。"/>
+        android:text="@string/TAO"/>
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_team2"
         android:layout_width="100dp"
@@ -63,7 +63,7 @@
         android:layout_toStartOf="@+id/iv_team2"
         android:textColor="#fff"
         android:textSize="17sp"
-        android:text="主動積極。就是無論什麼時候，做事情一定要主動想辦法、主動參與策劃、主動提供建議，為方案和產品積極貢獻自己的一份微力。"/>
+        android:text="@string/GUO"/>
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_team3"
         android:layout_width="100dp"
@@ -78,9 +78,9 @@
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:layout_below="@+id/tv_team2"
-        android:layout_toRightOf="@+id/iv_team3"
+        android:layout_toEndOf="@+id/iv_team3"
         android:textColor="#fff"
-        android:text="快速行動。有好的想法，也有快速執行領導意志的行動力，總覺得只說不做，僅是紙上談兵，光講是沒有用處的，一定要落到實處才能見到效果的觀點。"/>
+        android:text="@string/Chen"/>
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_team4"
         android:layout_width="100dp"
@@ -98,7 +98,7 @@
         android:layout_toStartOf="@+id/iv_team4"
         android:textColor="#fff"
         android:textSize="17sp"
-        android:text="任何一件事，只要是自己份內的工作，都會投入全部精力做好該做的事，承擔起該承擔的責任，所謂專注精神正是此人最大特質" />
+        android:text="@string/SHEN" />
     <de.hdodenhof.circleimageview.CircleImageView
         android:id="@+id/iv_team5"
         android:layout_width="100dp"
@@ -108,14 +108,13 @@
         android:layout_margin="10dp" />
 
     <TextView
-        android:id="@+id/tv_team5"
         android:textSize="17sp"
         android:layout_width="wrap_content"
         android:layout_height="150dp"
         android:layout_below="@+id/tv_team4"
-        android:layout_toRightOf="@+id/iv_team5"
+        android:layout_toEndOf="@+id/iv_team5"
         android:textColor="#fff"
-        android:text="是一位給予者，本性善良，助人為快樂之本，組員的需要努力付出自己所有，在組員快站不穩時就已經默默的扶持對方了，這該怎麼跌倒呢?"/>
+        android:text="@string/YU"/>
 
 
 </RelativeLayout>

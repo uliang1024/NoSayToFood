@@ -1,12 +1,12 @@
 package info.androidhive.firebaseauthapp.food;
 
-import androidx.appcompat.app.AppCompatActivity;
+import android.os.Bundle;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
 import androidx.viewpager2.widget.ViewPager2;
-
-import android.os.Bundle;
 
 import info.androidhive.firebaseauthapp.R;
 
@@ -22,11 +22,6 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
      */
     private ViewPager2 viewPager;
 
-    /**
-     * The pager adapter, which provides the pages to the view pager widget.
-     */
-    private FragmentStateAdapter pagerAdapter;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -35,7 +30,7 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
         // Instantiate a ViewPager2 and a PagerAdapter.
         viewPager = findViewById(R.id.pager);
         viewPager.setPageTransformer(new ZoomOutPageTransformer());
-        pagerAdapter = new ScreenSlidePagerAdapter(this);
+        FragmentStateAdapter pagerAdapter = new ScreenSlidePagerAdapter(this);
         viewPager.setAdapter(pagerAdapter);
     }
 
@@ -55,11 +50,12 @@ public class ScreenSlidePagerActivity extends FragmentActivity {
      * A simple pager adapter that represents 5 ScreenSlidePageFragment objects, in
      * sequence.
      */
-    private class ScreenSlidePagerAdapter extends FragmentStateAdapter {
+    private static class ScreenSlidePagerAdapter extends FragmentStateAdapter {
         public ScreenSlidePagerAdapter(FragmentActivity fa) {
             super(fa);
         }
 
+        @NonNull
         @Override
         public Fragment createFragment(int position) {
             switch (position) {
