@@ -1,24 +1,15 @@
-package info.androidhive.firebaseauthapp.ui.notifications;
+package info.androidhive.firebaseauthapp.ui.recipe;
 
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.os.Parcelable;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
-import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -33,14 +24,9 @@ import java.util.HashMap;
 
 import javax.annotation.Nullable;
 
-import info.androidhive.firebaseauthapp.ArticleActivity;
-import info.androidhive.firebaseauthapp.FitnessClassActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.RecipeActivity;
-import info.androidhive.firebaseauthapp.adapter.ClassAdapter;
 import info.androidhive.firebaseauthapp.adapter.RecipeAdapter;
-import info.androidhive.firebaseauthapp.classModels.FitClass;
-import info.androidhive.firebaseauthapp.models.Article;
 import info.androidhive.firebaseauthapp.models.Recipe;
 
 /**

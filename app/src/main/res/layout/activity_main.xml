@@ -166,28 +166,10 @@
             android:layout_gravity="end"
             android:text="X"
             android:textStyle="bold"
-            android:textSize="25sp"/>
+            android:textSize="25sp"/><![CDATA[
 >>>>>>> Stashed changes
 
-        <TextView
-            android:id="@+id/textView"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|end"
-            android:layout_margin="20dp"
-            tools:ignore="RtlHardcoded"
-            android:text="向右滑"
-            android:textSize="30sp"
-            android:textStyle="bold"/>
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="bottom|start"
-            android:layout_margin="20dp"
-            tools:ignore="RtlHardcoded"
-            android:text="向左滑"
-            android:textSize="30sp"
-            android:textStyle="bold"/>
+
+    ]]>
     </com.youth.banner.Banner>
 </RelativeLayout>

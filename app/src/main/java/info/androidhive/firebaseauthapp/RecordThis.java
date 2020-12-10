@@ -55,6 +55,8 @@ public class RecordThis extends AppCompatActivity {
     private LinearLayout lv_easy ,lv_soso,lv_hard;
     private TextView tv_easy,tv_soso,tv_hard;
     private ImageView img_easy,img_soso,img_hard;
+    private LinearLayout lv_record_body;
+    private TextView tv_feels;
 
 
     private int emoji = 0;
@@ -148,6 +150,8 @@ public class RecordThis extends AppCompatActivity {
             Date endDate = new Date();
             endDate.setTime(enddate);
             Log.e("emoji", ""+emoji);
+            lv_record_body.setVisibility(View.GONE);
+            tv_feels.setText("我感覺...");
             switch(emoji){
                 case 0:
                     YoYo.with(Techniques.Pulse)
@@ -487,6 +491,9 @@ public class RecordThis extends AppCompatActivity {
         img_easy = findViewById(R.id.img_easy);
         img_soso = findViewById(R.id.img_soso);
         img_hard = findViewById(R.id.img_hard);
+
+        lv_record_body = findViewById(R.id.lv_record_body);
+        tv_feels = findViewById(R.id.tv_feels);
 
         myDb = new PersonalInformation(this);
         myDb2 = new BodyRecord(this);

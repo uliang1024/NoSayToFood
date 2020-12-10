@@ -32,7 +32,7 @@ import java.util.Calendar;
 import info.androidhive.firebaseauthapp.ui.dashboard.DashboardFragment;
 import info.androidhive.firebaseauthapp.ui.home.Frag1;
 import info.androidhive.firebaseauthapp.ui.home.HomeFragment;
-import info.androidhive.firebaseauthapp.ui.notifications.RecipeFragment;
+import info.androidhive.firebaseauthapp.ui.recipe.RecipeFragment;
 import info.androidhive.firebaseauthapp.ui.profile.ProfileFragment;
 import info.androidhive.firebaseauthapp.ui.social.SocialFragment;
 

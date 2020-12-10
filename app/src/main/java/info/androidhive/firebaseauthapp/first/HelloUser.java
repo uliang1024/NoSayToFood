@@ -338,7 +338,13 @@ public class HelloUser extends AppCompatActivity {
                         EditText editText = (EditText) (v.findViewById(R.id.editText1));
                         if(editText.getText().toString().matches("")) {
                             tv_height.setText("");
-                        }else{
+                        }
+                        //身高必須>50 或 <400
+                        else if (Float.parseFloat(editText.getText().toString().trim())<50 || Float.parseFloat(editText.getText().toString().trim())>400){
+                            Toast.makeText(HelloUser.this, "輸入值為無效的數字", Toast.LENGTH_SHORT).show();
+                            tv_waistline.setText("");
+                        }
+                        else{
                             tv_height.setText(editText.getText().toString());
                         }
                     }
@@ -356,8 +362,15 @@ public class HelloUser extends AppCompatActivity {
                     public void onClick(DialogInterface dialog, int which) {
                         EditText editText = (EditText) (v.findViewById(R.id.editText1));
                         if(editText.getText().toString().matches("")) {
+                            Toast.makeText(HelloUser.this, "輸入不得為0", Toast.LENGTH_SHORT).show();
                             tv_waistline.setText("");
-                        }else{
+                        }
+                        //腰圍必須>20 或 <500
+                        else if (Float.parseFloat(editText.getText().toString().trim())<20 || Float.parseFloat(editText.getText().toString().trim())>500){
+                            Toast.makeText(HelloUser.this, "輸入值為無效的數字", Toast.LENGTH_SHORT).show();
+                            tv_waistline.setText("");
+                        }
+                        else{
                             tv_waistline.setText(editText.getText().toString());
                         }
                     }
@@ -376,7 +389,13 @@ public class HelloUser extends AppCompatActivity {
                         EditText editText = (EditText) (v.findViewById(R.id.editText1));
                         if(editText.getText().toString().matches("")) {
                             tv_fat.setText("");
-                        }else{
+                        }
+                        //體脂必須>2 或 <100
+                        else if (Float.parseFloat(editText.getText().toString().trim())<2 || Float.parseFloat(editText.getText().toString().trim())>100){
+                            Toast.makeText(HelloUser.this, "輸入值為無效的數字", Toast.LENGTH_SHORT).show();
+                            tv_waistline.setText("");
+                        }
+                        else{
                             tv_fat.setText(editText.getText().toString());
                         }
                     }
@@ -445,7 +464,13 @@ public class HelloUser extends AppCompatActivity {
                         EditText editText = (EditText) (v.findViewById(R.id.editText1));
                         if(editText.getText().toString().matches("")) {
                             tv_width.setText("");
-                        }else{
+                        }
+                        //體重必須>20 或 <500
+                        else if (Float.parseFloat(editText.getText().toString().trim())<20 || Float.parseFloat(editText.getText().toString().trim())>500){
+                            Toast.makeText(HelloUser.this, "輸入值為無效的數字", Toast.LENGTH_SHORT).show();
+                            tv_waistline.setText("");
+                        }
+                        else{
                             tv_width.setText(editText.getText().toString());
                         }
                     }

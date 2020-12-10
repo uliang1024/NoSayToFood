@@ -76,7 +76,6 @@ public class MainActivity extends AppCompatActivity {
     private TextView button2;
     private Banner banner;
     private ArrayList<Integer> images;
-    private TextView textView,textView2;
     private Button button;
 
     @Override
@@ -89,13 +88,10 @@ public class MainActivity extends AppCompatActivity {
         handler.postDelayed(updateTimer, 0);//設定Delay的時間
 
         banner = (Banner) findViewById(R.id.banner);
-        textView = (TextView) findViewById(R.id.textView);
-        textView2 = (TextView) findViewById(R.id.textView2);
         button = (Button) findViewById(R.id.button);
 
         banner.setVisibility(View.GONE);
-        textView.setVisibility(View.GONE);
-        textView2.setVisibility(View.GONE);
+
         button.setVisibility(View.GONE);
 
 
@@ -405,8 +401,6 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 banner.setVisibility(View.GONE);
-                textView.setVisibility(View.GONE);
-                textView2.setVisibility(View.GONE);
                 button.setVisibility(View.GONE);
             }
         });
@@ -439,8 +433,6 @@ public class MainActivity extends AppCompatActivity {
         Boolean firstTime = getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
         if (firstTime) {
             banner.setVisibility(View.VISIBLE);
-            textView.setVisibility(View.VISIBLE);
-            textView2.setVisibility(View.VISIBLE);
             button.setVisibility(View.VISIBLE);
             initData();
             initView();

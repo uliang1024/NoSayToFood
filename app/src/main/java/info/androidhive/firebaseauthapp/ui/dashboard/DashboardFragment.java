@@ -21,6 +21,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.TextView;
@@ -71,7 +72,7 @@ public class DashboardFragment extends Fragment {
 
     private LineChart weight_chart,bmi_chart;
     private TextView tv_current_weight,tv_current_bmi ,tv_init_weight,tv_ideal_weight;
-    private ImageView btn_fast_record,btn_food_record,btn_weight_add;
+    private ImageView btn_fast_record,btn_food_record,btn_weight_add,btn_waist_add,btn_fat_add;
     private TextView tv_target_weight,tv_weight_diff,tv_health_weight_range;
     private TextView tv_bmr,tv_tdee;
     private ImageView tdee_info,bmr_info;
@@ -107,6 +108,7 @@ public class DashboardFragment extends Fragment {
     private float weight_data;
     private float height = 0;
     private float waist =0;
+    private float fat = 0;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -123,7 +125,19 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View v) {
 //                startActivity(new Intent(fragment_dashboard.getContext(),Weight_scale.class));
-                startDialog();
+                startDialog(0);
+            }
+        });
+        btn_waist_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDialog(1);
+            }
+        });
+        btn_fat_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                startDialog(2);
             }
         });
         btn_food_record.setOnClickListener(new View.OnClickListener() {
@@ -169,6 +183,7 @@ public class DashboardFragment extends Fragment {
         Log.e("get waists length",Waists.size()+"");
         height = Heights.get(Heights.size()-1);
         waist= Waists.get(Waists.size()-1);
+        fat = Body_fats.get(Body_fats.size()-1);
         setUiData();
 
 
@@ -194,15 +209,6 @@ public class DashboardFragment extends Fragment {
         if (user != null) {
             uid = user.getUid();
         }
-//        myDb2 = new BodyRecord(getContext());
-//        Cursor res = myDb2.getAllData();
-//        while (res.moveToNext()) {
-//            if(uid.equals(res.getString(1))){
-//                IDs.add(res.getInt(0));
-//                KGs.add(res.getFloat(2));
-//                Dates.add(res.getString(6));
-//            }
-//        }
 
         ArrayList<Entry> values1 = new ArrayList<>();
 
@@ -369,8 +375,8 @@ public class DashboardFragment extends Fragment {
 
         return new LineData(sets);
     }
-    private void startDialog() {
-        initNumberPicker3();
+    private void startDialog(int type) {
+        initNumberPicker3(type);
         // 强制隐藏键盘
         InputMethodManager imm = (InputMethodManager) getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(getView().getWindowToken(), 0);
@@ -405,19 +411,43 @@ public class DashboardFragment extends Fragment {
         });
     }
     //開啟替重身高選擇器
-    private void initNumberPicker3() {
+    private void initNumberPicker3(int type) {
         workingAge_view = LayoutInflater.from(getContext()).inflate(R.layout.show_yourkg2, null);
 
         final TextView date_picker = workingAge_view.findViewById(R.id.date_picker);
         Button kg_ok = workingAge_view.findViewById(R.id.kg_ok);
         Button btn_setHeight = workingAge_view.findViewById(R.id.btn_setHeight);
+        Button btn_setFat= workingAge_view.findViewById(R.id.btn_setFat);
         final TextView editTextWeight = workingAge_view.findViewById(R.id.tv_edit_kg);
+
+        LinearLayout lv_weight_input = workingAge_view.findViewById(R.id.lv_weight_input);
+        LinearLayout lv_waist_input = workingAge_view.findViewById(R.id.lv_waist_input);
+        LinearLayout lv_fat_input = workingAge_view.findViewById(R.id.lv_fat_input);
         Date date = new Date();
         //DecimalFormat df = new DecimalFormat("##0.0");
         SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         date_picker.setText(df.format(date));
 
         btn_setHeight.setText(""+Waists.get(Waists.size()-1));
+        btn_setFat.setText(""+Body_fats.get(Body_fats.size()-1));
+        Log.e("get type",type+"");
+        switch (type){
+            case 0:
+                lv_weight_input.setVisibility(View.VISIBLE);
+                lv_waist_input.setVisibility(View.GONE);
+                lv_fat_input.setVisibility(View.GONE);
+                break;
+            case 1:
+                lv_weight_input.setVisibility(View.GONE);
+                lv_waist_input.setVisibility(View.VISIBLE);
+                lv_fat_input.setVisibility(View.GONE);
+                break;
+            case 2:
+                lv_weight_input.setVisibility(View.GONE);
+                lv_waist_input.setVisibility(View.GONE);
+                lv_fat_input.setVisibility(View.VISIBLE);
+                break;
+        }
 
         editTextWeight.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -434,7 +464,19 @@ public class DashboardFragment extends Fragment {
                                 EditText editText = (EditText) (view.findViewById(R.id.editText1));
                                 DecimalFormat fdf = new DecimalFormat("###0.##");
 
-                                if(editText.getText().toString().equals("")) {
+                                if(editText.getText().toString().equals("")|| editText.getText().toString().trim().equals("0")) {
+                                    LayoutInflater inflater = LayoutInflater.from(getContext());
+                                    final View v = inflater.inflate(R.layout.empty_value_alert, null);
+                                    new AlertDialog.Builder(getContext())
+                                            .setTitle("你tm體重0是不是!")
+                                            .setView(v)
+                                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            })
+                                            .show();
                                     editTextWeight.setText("");
                                 }else{
                                     float data = Float.parseFloat(editText.getText().toString());
@@ -462,12 +504,12 @@ public class DashboardFragment extends Fragment {
                                     LayoutInflater inflater = LayoutInflater.from(getContext());
                                     final View v = inflater.inflate(R.layout.empty_value_alert, null);
                                     new AlertDialog.Builder(getContext())
-                                            .setTitle("無輸入值!")
+                                            .setTitle("你腰圍0是不是!")
                                             .setView(v)
                                             .setPositiveButton("確定", new DialogInterface.OnClickListener() {
                                                 @Override
                                                 public void onClick(DialogInterface dialog, int which) {
-                                                    waist = Waists.get(Waists.size()-1);
+
                                                 }
                                             })
                                             .show();
@@ -481,6 +523,43 @@ public class DashboardFragment extends Fragment {
                         })
                         .show();
 
+            }
+        });
+
+        btn_setFat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LayoutInflater inflater = LayoutInflater.from(getContext());
+                final View view = inflater.inflate(R.layout.height_input_dialog, null);
+                new AlertDialog.Builder(getContext())
+                        .setTitle("請輸入你的體脂")
+                        .setView(view)
+                        .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                EditText editText = (EditText) (view.findViewById(R.id.edit_height));
+                                if(editText.getText().toString().equals("")|| editText.getText().toString().trim().equals("0")) {
+                                    LayoutInflater inflater = LayoutInflater.from(getContext());
+                                    final View v = inflater.inflate(R.layout.empty_value_alert, null);
+                                    new AlertDialog.Builder(getContext())
+                                            .setTitle("你體脂0是不是!")
+                                            .setView(v)
+                                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialog, int which) {
+
+                                                }
+                                            })
+                                            .show();
+                                    fat = Body_fats.get(Body_fats.size()-1);
+                                    Log.e("fat 空值",fat+"");
+                                }else{
+                                    btn_setFat.setText(editText.getText().toString());
+                                    fat = Float.parseFloat(editText.getText().toString());
+                                }
+                            }
+                        })
+                        .show();
             }
         });
 
@@ -518,32 +597,17 @@ public class DashboardFragment extends Fragment {
             @Override
             public void onClick(View view) {
 
-                if(editTextWeight.getText().toString().matches("")) {
 
-                }else{
                     SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
                     Date curDate = new Date(System.currentTimeMillis()) ; // 獲取當前時間
                     String str = df.format(curDate);
                     if(date_picker.getText().toString().equals(str)){
-                        //tv_KG.setText(editText.getText().toString());
                         Log.e("get weight",""+editTextWeight.getText().toString());
                     }
 
-                    if (Float.parseFloat(editTextWeight.getText().toString().trim())!= 0){
+                    if (!editTextWeight.getText().toString().trim().equals("")){
                         weight_data = Float.parseFloat(editTextWeight.getText().toString());
                     }else{
-                        LayoutInflater inflater = LayoutInflater.from(getContext());
-                        final View v = inflater.inflate(R.layout.empty_value_alert, null);
-                        new AlertDialog.Builder(getContext())
-                                .setTitle("無輸入值!")
-                                .setView(v)
-                                .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        weight_data = KGs.get(KGs.size()-1);
-                                    }
-                                })
-                                .show();
                         weight_data = KGs.get(KGs.size()-1);
                     }
 
@@ -553,9 +617,6 @@ public class DashboardFragment extends Fragment {
                     } catch (ParseException e) {
                         e.printStackTrace();
                     }
-
-
-                }
                 popupWindow.dismiss();
             }
         });
@@ -646,58 +707,18 @@ public class DashboardFragment extends Fragment {
         long timestamp = getDate.getTime();
         //如果該日期沒有資料，建立一筆日期為今天的新資料
         if(Dates.indexOf(date) ==-1){
-            //如果使用者沒輸入資料
-            if (waist ==0 ){
-                if (Dates.size()>=2){
-                    boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(Heights.size()-1),Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1),date,timestamp);
-                    boolean updatePersonal = myDb.updateBodyData(uid,Heights.get(Heights.size()-1),weight_data,Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1));
-                    Log.e("insert: 0 ",""+isInserted2);
-                    Log.e("update user body info: 0 ",""+updatePersonal);
-                }else{
-                    boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(0),Waists.get(0),Body_fats.get(0),date,timestamp);
-                    boolean updatePersonal = myDb.updateBodyData(uid,Heights.get(0),weight_data,Waists.get(0),Body_fats.get(0));
-                    Log.e("insert: 1 ",""+isInserted2);
-                    Log.e("update user body info: 1 ",""+updatePersonal);
-                }
-            }
-            //如果使用者有輸入資料
-            else{
-                if (Dates.size()>=2){
-                    boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(Heights.size()-1),Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1),date,timestamp);
-                    boolean updatePersonal = myDb.updateBodyData(uid,height,weight_data,waist,Body_fats.get(Body_fats.size()-1));
-                    Log.e("insert: 2 ",""+isInserted2);
-                    Log.e("update user body info: 2 ",""+updatePersonal);
-                }else{
-                    boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(0),Waists.get(0),Body_fats.get(0),date,timestamp);
-                    boolean updatePersonal = myDb.updateBodyData(uid,height,weight_data,waist,Body_fats.get(0));
-                    Log.e("insert: 3 ",""+isInserted2);
-                    Log.e("update user body info: 3 ",""+updatePersonal);
-                }
-            }
-
+            //使用者有輸入資料
+            boolean isInserted2 = myDb2.insertData(uid,weight_data,Heights.get(Heights.size()-1),waist,fat,date,timestamp);
+            boolean updatePersonal = myDb.updateBodyData(uid,Heights.get(Heights.size()-1),weight_data,waist,fat);
+            Log.e("insert: 3 ",""+isInserted2);
+            Log.e("update user body info: 3 ",""+updatePersonal);
         }
         //如果資料存在，就更新
         else{
-            //如果使用者沒輸入waist就用讀下來的最新一筆資料當waist
-            if (waist==0){
-                Log.e("found data ","data updated:" +Dates.get(Dates.indexOf(date)));
-                boolean isupdated = false;
-                isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(date)), weight_data,Waists.get(Waists.size()-1),timestamp);
-                boolean updatePersonal = myDb.updateBodyData(uid,Heights.get(Heights.size()-1),weight_data,Waists.get(Waists.size()-1),Body_fats.get(Body_fats.size()-1));
-                Log.e("insert: 4 ",""+isupdated);
-                Log.e("update user body info: 4 ",""+updatePersonal);
-
-            }
-            //如果使用者有輸入waist就用使用者輸入的
-            //exed
-            else {
-                boolean isupdated = false;
-                isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(date)), weight_data,waist,timestamp);
-                boolean updatePersonal = myDb.updateBodyData(uid,height,weight_data,waist,Body_fats.get(Body_fats.size()-1));
-                Log.e("insert: 5 ",""+isupdated);
-                Log.e("update user body info: 5 ",""+updatePersonal);
-            }
-
+            boolean isupdated = myDb2.updateWeightData(IDs.get(Dates.indexOf(date)), weight_data,waist,fat,timestamp);
+            boolean updatePersonal = myDb.updateBodyData(uid,Heights.get(Heights.size()-1),weight_data,waist,fat);
+            Log.e("insert: 5 ",""+isupdated);
+            Log.e("update user body info: 5 ",""+updatePersonal);
         }
         KGs = new ArrayList<>();
         Heights = new ArrayList<>();
@@ -747,6 +768,8 @@ public class DashboardFragment extends Fragment {
 
         tv_daily_activity = v.findViewById(R.id.tv_daily_activity);
         btn_weight_add = v.findViewById(R.id.btn_weight_add);
+        btn_waist_add = v.findViewById(R.id.btn_waist_add);
+        btn_fat_add = v.findViewById(R.id.btn_fat_add);
 
         lv=v.findViewById(R.id.list_body_charts);
 
