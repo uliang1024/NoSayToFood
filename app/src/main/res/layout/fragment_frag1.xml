@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 <LinearLayout
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:background="#ECF0F1">
 
@@ -23,7 +23,8 @@
             android:layout_height="70dp"
             android:layout_centerHorizontal="true"
             android:layout_margin="5dp"
-            app:srcCompat="@drawable/moon" />
+            app:srcCompat="@drawable/moon"
+            android:contentDescription="@string/iv_time" />
 
         <TextView
             android:id="@+id/fastingplan"
@@ -34,7 +35,8 @@
             android:background="@drawable/fasting_rounde"
             android:gravity="center"
             android:paddingStart="20sp"
-            android:text="更改斷食計畫" />
+            android:text="@string/changeFasting"
+            tools:ignore="RtlSymmetry" />
 
         <com.hookedonplay.decoviewlib.DecoView xmlns:custom="http://schemas.android.com/apk/res-auto"
             android:id="@+id/dynamicArcView"
@@ -52,7 +54,8 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
-            android:textSize="30sp" />
+            android:textSize="30sp"
+            tools:ignore="RelativeOverlap" />
 
         <TextView
             android:id="@+id/status"
@@ -92,7 +95,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
             android:background="@drawable/button_record_food"
-            android:text="今天吃了甚麼?" />
+            android:text="@string/foodWhat" />
         <Button
             android:layout_weight="1"
 
@@ -105,7 +108,7 @@
             android:layout_height="wrap_content"
             android:background="@drawable/button_record_fasting"
             android:layout_gravity="center_horizontal"
-            android:text="記錄此次斷食" />
+            android:text="@string/RecordFasting" />
     </LinearLayout>
 
 
@@ -126,7 +129,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:text="已完成" />
+            android:text="@string/completed" />
 
         <TextView
             android:layout_width="30sp"
@@ -138,7 +141,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:text="未完成" />
+            android:text="@string/undone" />
 
         <TextView
             android:layout_width="30sp"
@@ -150,7 +153,7 @@
             android:layout_height="match_parent"
             android:gravity="center_vertical"
             android:padding="5dp"
-            android:text="進行中" />
+            android:text="@string/processing" />
     </LinearLayout>
 
     <RelativeLayout
@@ -158,13 +161,13 @@
         android:layout_height="wrap_content">
 
         <ImageView
-            android:id="@+id/imageView6"
             android:layout_width="match_parent"
             android:layout_height="100dp"
             android:layout_marginStart="10dp"
             android:layout_marginEnd="10dp"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/fasting_square" />
+            app:srcCompat="@drawable/fasting_square"
+            android:contentDescription="@string/fastingProgress" />
 
         <com.baoyachi.stepview.HorizontalStepView
             android:id="@+id/horizontalStepView"
@@ -179,7 +182,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:text="今日喝多少水"
+        android:text="@string/water"
         android:textSize="20sp"
         android:textStyle="bold"
         android:layout_margin="20sp"/>
@@ -476,7 +479,7 @@
             android:layout_marginTop="5dp"
             android:background="#E5E7E9"
             android:gravity="center"
-            android:text="0" />
+            android:text="@string/unit" />
 
         <TextView
             android:id="@+id/tv_drop"
@@ -505,7 +508,7 @@
             android:layout_marginTop="10dp"
             android:background="#E5E7E9"
             android:gravity="center"
-            android:text="0cc" />
+            android:text="@string/cc" />
 
         <Button
             android:id="@+id/end_fasting"
@@ -516,7 +519,7 @@
             android:layout_centerHorizontal="true"
             android:layout_marginTop="20sp"
             android:background="@drawable/button_fasting_end"
-            android:text="提前結束"
+            android:text="@string/earlyTermination"
             android:textColor="#ffffff"
             android:textSize="20sp"
             android:padding="20dp"
@@ -524,5 +527,6 @@
 
 
     </RelativeLayout>
+
 
 </LinearLayout></ScrollView>

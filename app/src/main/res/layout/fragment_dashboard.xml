@@ -23,7 +23,6 @@
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/image_scale"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginStart="5dp"
@@ -102,7 +101,6 @@
                 android:layout_height="wrap_content">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:id="@+id/image_bmi"
                     android:layout_width="150dp"
                     android:layout_height="150dp"
                     android:layout_marginStart="5dp"
@@ -163,7 +161,6 @@
                     app:srcCompat="@drawable/food_record" />
 
                 <View
-                    android:id="@+id/seperator02"
                     android:layout_width="1dp"
                     android:layout_height="match_parent"
                     android:layout_below="@id/lv_show_weight"

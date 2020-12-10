@@ -30,13 +30,10 @@ import info.androidhive.firebaseauthapp.SQLite.PersonalInformation;
 public class OneFoodRecord extends AppCompatActivity {
 
     DatabaseHelper myDb;
-    private ArrayList<String> date = new ArrayList<>();
-    private ArrayList<String> name = new ArrayList<>();
-    private ArrayList<Float> amount = new ArrayList<>();
-    private float x1,x2,x3,x4,x5,x6;
-    private TextView today_date,tv_milk,tv_fruit,tv_vegetables,tv_meet,tv_grain,tv_oil;
+    private final ArrayList<String> name = new ArrayList<>();
+    private final ArrayList<Float> amount = new ArrayList<>();
+    private float y1,y2,y3,y4,y5,y6;
 
-    private BarChart chart;
     float barWidth=0.3f;
     float barSpace=0f;
     float groupSpace=0.4f;
@@ -71,36 +68,43 @@ public class OneFoodRecord extends AppCompatActivity {
             }
         }
         for(int i=0;i<name.size();i++){
-            if(name.get(i).equals("全榖雜糧類")){
-                x1=x1+amount.get(i);
-            }else if(name.get(i).equals("豆魚蛋肉類")){
-                x2=x2+amount.get(i);
-            }else if(name.get(i).equals("乳品類")){
-                x3=x3+amount.get(i);
-            }else if(name.get(i).equals("蔬菜類")){
-                x4=x4+amount.get(i);
-            }else if(name.get(i).equals("水果類")){
-                x5=x5+amount.get(i);
-            }else{
-                x6=x6+amount.get(i);
+            switch (name.get(i)) {
+                case "全榖雜糧類":
+                    y1 = y1 + amount.get(i);
+                    break;
+                case "豆魚蛋肉類":
+                    y2 = y2 + amount.get(i);
+                    break;
+                case "乳品類":
+                    y3 = y3 + amount.get(i);
+                    break;
+                case "蔬菜類":
+                    y4 = y4 + amount.get(i);
+                    break;
+                case "水果類":
+                    y5 = y5 + amount.get(i);
+                    break;
+                default:
+                    y6 = y6 + amount.get(i);
+                    break;
             }
         }
 
-        tv_grain = (TextView)findViewById(R.id.tv_grain);
-        tv_meet = (TextView)findViewById(R.id.tv_meet);
-        tv_milk = (TextView)findViewById(R.id.tv_milk);
-        tv_vegetables = (TextView)findViewById(R.id.tv_vegetables);
-        tv_fruit = (TextView)findViewById(R.id.tv_fruit);
-        tv_oil = (TextView)findViewById(R.id.tv_oil);
-        today_date = (TextView)findViewById(R.id.today_date);
+        TextView tv_grain = findViewById(R.id.tv_grain);
+        TextView tv_meet = findViewById(R.id.tv_meet);
+        TextView tv_milk = findViewById(R.id.tv_milk);
+        TextView tv_vegetables = findViewById(R.id.tv_vegetables);
+        TextView tv_fruit = findViewById(R.id.tv_fruit);
+        TextView tv_oil = findViewById(R.id.tv_oil);
+        TextView today_date = findViewById(R.id.today_date);
         today_date.setText(datee);
 
-        tv_grain.setText(String.valueOf(x1));
-        tv_meet.setText(String.valueOf(x2));
-        tv_milk.setText(String.valueOf(x3));
-        tv_vegetables.setText(String.valueOf(x4));
-        tv_fruit.setText(String.valueOf(x5));
-        tv_oil.setText(String.valueOf(x6));
+        tv_grain.setText(String.valueOf(y1));
+        tv_meet.setText(String.valueOf(y2));
+        tv_milk.setText(String.valueOf(y3));
+        tv_vegetables.setText(String.valueOf(y4));
+        tv_fruit.setText(String.valueOf(y5));
+        tv_oil.setText(String.valueOf(y6));
 
         myDb2 = new PersonalInformation(this);
         Cursor res2 = myDb2.getAllData();
@@ -184,7 +188,7 @@ public class OneFoodRecord extends AppCompatActivity {
             good_oil=3;
         }
 
-        chart = (BarChart)findViewById(R.id.barChart);
+        BarChart chart = findViewById(R.id.barChart);
         chart.setDescription(null);
         chart.setPinchZoom(false);
         chart.setScaleEnabled(false);
@@ -193,7 +197,7 @@ public class OneFoodRecord extends AppCompatActivity {
 
         int groupCount = 6;
 
-        ArrayList xVals = new ArrayList();
+        ArrayList<String> xVals = new ArrayList<>();
 
         xVals.add("全榖雜糧");
         xVals.add("豆魚蛋肉");
@@ -202,20 +206,20 @@ public class OneFoodRecord extends AppCompatActivity {
         xVals.add("水果");
         xVals.add("油脂堅果種子");
 
-        ArrayList yVals1 = new ArrayList();
-        ArrayList yVals2 = new ArrayList();
+        ArrayList<BarEntry> yVals1 = new ArrayList<>();
+        ArrayList<BarEntry> yVals2 = new ArrayList<>();
 
-        yVals1.add(new BarEntry(1, (float) x1));
+        yVals1.add(new BarEntry(1, y1));
         yVals2.add(new BarEntry(1, (float) good_grain));
-        yVals1.add(new BarEntry(2, (float) x2));
+        yVals1.add(new BarEntry(2, y2));
         yVals2.add(new BarEntry(2, (float) good_meet));
-        yVals1.add(new BarEntry(3, (float) x3));
+        yVals1.add(new BarEntry(3, y3));
         yVals2.add(new BarEntry(3, (float) good_milk));
-        yVals1.add(new BarEntry(4, (float) x4));
+        yVals1.add(new BarEntry(4, y4));
         yVals2.add(new BarEntry(4, (float) good_vegetables));
-        yVals1.add(new BarEntry(5, (float) x5));
+        yVals1.add(new BarEntry(5, y5));
         yVals2.add(new BarEntry(5, (float) good_fruit));
-        yVals1.add(new BarEntry(6, (float) x6));
+        yVals1.add(new BarEntry(6, y6));
         yVals2.add(new BarEntry(6, (float) good_oil));
 
         BarDataSet set1, set2;

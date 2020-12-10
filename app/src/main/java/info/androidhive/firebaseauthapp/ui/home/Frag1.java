@@ -2,25 +2,18 @@ package info.androidhive.firebaseauthapp.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.graphics.Color;
-import android.graphics.PointF;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.animation.AccelerateDecelerateInterpolator;
-import android.view.animation.AccelerateInterpolator;
-import android.view.animation.AnticipateOvershootInterpolator;
 import android.view.animation.BounceInterpolator;
-import android.view.animation.OvershootInterpolator;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,27 +25,20 @@ import androidx.fragment.app.Fragment;
 
 import com.baoyachi.stepview.HorizontalStepView;
 import com.baoyachi.stepview.bean.StepBean;
-import com.github.amlcurran.showcaseview.ShowcaseView;
-import com.github.amlcurran.showcaseview.targets.Target;
-import com.github.amlcurran.showcaseview.targets.ViewTarget;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hookedonplay.decoviewlib.DecoView;
 import com.hookedonplay.decoviewlib.charts.EdgeDetail;
 import com.hookedonplay.decoviewlib.charts.SeriesItem;
-import com.hookedonplay.decoviewlib.charts.SeriesLabel;
 import com.hookedonplay.decoviewlib.events.DecoEvent;
 
-import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Objects;
 
-import info.androidhive.firebaseauthapp.FastRecordsActivity;
-import info.androidhive.firebaseauthapp.FitnessActivity;
 import info.androidhive.firebaseauthapp.R;
 import info.androidhive.firebaseauthapp.RecordThis;
 import info.androidhive.firebaseauthapp.SQLite.FastingPlan;
@@ -67,21 +53,18 @@ import me.itangqi.waveloadingview.WaveLoadingView;
 
 import static android.content.Context.MODE_PRIVATE;
 
-public class Frag1 extends Fragment implements View.OnClickListener {
+public class Frag1 extends Fragment {
 
     private Frag1TimeListener listener;
 
     FastingPlan myDb;
-    private Handler handler = new Handler();
-    private int series1Index;
+    private final Handler handler = new Handler();
     private DecoView decoView;
-    private SeriesItem seriesItem;
     private TextView textPercentage,status,start;
-    private FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
 
-    private ArrayList<Long> start_time = new ArrayList<>();
-    private ArrayList<Long> end_time = new ArrayList<>();
-    private ArrayList<Integer> off_day = new ArrayList<>();
+    private final ArrayList<Long> start_time = new ArrayList<>();
+    private final ArrayList<Long> end_time = new ArrayList<>();
+    private final ArrayList<Integer> off_day = new ArrayList<>();
     private Button btn_check_fasting;
     //儲存Date
     ArrayList<Date> start_date = new ArrayList<>();
@@ -89,17 +72,12 @@ public class Frag1 extends Fragment implements View.OnClickListener {
     //日期的index
     int index ;
 
-    private ImageView img_notification;
-
-
     private HorizontalStepView horizontalStepView;
 
     private LinearLayout plan1,plan2,plan3,plan4;
 
     private TextView fastingplan;
     private Button end_fasting;
-
-    private View fragment_frag1;
 
     private WaveLoadingView waveLoadingView1,waveLoadingView2,waveLoadingView3,waveLoadingView4,waveLoadingView5,waveLoadingView6,waveLoadingView7,waveLoadingView8,waveLoadingView9,waveLoadingView10;
     private Integer water=0,cc=0;
@@ -109,26 +87,15 @@ public class Frag1 extends Fragment implements View.OnClickListener {
     private SharedPreferences sharedPreferences;
     private Button bt_eat;
 
-    private ShowcaseView showcaseView;
-    private int counter = 0;
-
     @Override
-    public void onClick(View v) {
-        switch (counter) {
-            case 0:
-                showcaseView.setContentTitle("更改斷食計畫");
-                showcaseView.setContentText("當您選錯時段時，可以修改計畫ㄛ!");
-                showcaseView.setShowcase(new ViewTarget(fastingplan), true);
-                break;
-
-            case 1:
-                showcaseView.hide();
-
-                fastingplan.setEnabled(true);
-
-                break;
+    public void onResume() {
+        super.onResume();
+        String tutorialKey = "SOME_KEY";
+        boolean firstTime = Objects.requireNonNull(this.getActivity()).getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
+        if (firstTime) {
+            startActivity(new Intent(Frag1.super.getContext(), Fasting_Teaching.class));
+            this.getActivity().getPreferences(MODE_PRIVATE).edit().putBoolean(tutorialKey, false).apply();
         }
-        counter++;
     }
 
     public interface Frag1TimeListener{
@@ -136,7 +103,7 @@ public class Frag1 extends Fragment implements View.OnClickListener {
     }
 
     @Override
-    public View onCreateView(final LayoutInflater inflater, final ViewGroup container,
+    public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container,
                              Bundle savedInstanceState) {
 
 
@@ -150,6 +117,7 @@ public class Frag1 extends Fragment implements View.OnClickListener {
         //cursor在FastingPlan中撈資料
         Cursor res = myDb.getAllData();
         while (res.moveToNext()) {
+            assert uid != null;
             if(uid.equals(res.getString(4))){
                 //取得開始時間並且加入start_time
                 start_time.add(res.getLong(1));
@@ -163,6 +131,7 @@ public class Frag1 extends Fragment implements View.OnClickListener {
 
         //加入日期
         addTime();
+        View fragment_frag1;
         if(start_time.size()!=0){
             //如果start_time有值
             //填充斷食進行中的介面
@@ -230,7 +199,7 @@ public class Frag1 extends Fragment implements View.OnClickListener {
                     .setStepViewComplectedTextColor(Color.parseColor("#000000"))
                     .setStepViewUnComplectedTextColor(Color.parseColor("#424949"))
                     .setStepsViewIndicatorUnCompletedLineColor(Color.parseColor("#424949"))
-                    .setStepsViewIndicatorCompleteIcon(ContextCompat.getDrawable(Frag1.super.getContext(),R.drawable.fasting_completed))
+                    .setStepsViewIndicatorCompleteIcon(ContextCompat.getDrawable(Objects.requireNonNull(Frag1.super.getContext()),R.drawable.fasting_completed))
                     .setStepsViewIndicatorAttentionIcon(ContextCompat.getDrawable(Frag1.super.getContext(),R.drawable.fasting_break))
                     .setStepsViewIndicatorDefaultIcon(ContextCompat.getDrawable(Frag1.super.getContext(),R.drawable.fasting_not_completed));
 
@@ -239,39 +208,26 @@ public class Frag1 extends Fragment implements View.OnClickListener {
             handler.removeCallbacks(updateRunner);
             handler.postDelayed(updateRunner, 0);
 
-            fastingplan.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(Frag1.super.getContext(), FirstFasting.class));
-                }
-            });
+            fastingplan.setOnClickListener(view -> startActivity(new Intent(Frag1.super.getContext(), FirstFasting.class)));
 
             Log.e("是否記錄此次斷食",""+isFastingRecord());
             //記錄此次斷食
             //只有在"段時與斷食之間的休息間格，及"前面一天是段時日"的休息日才會顯現button
-            btn_check_fasting.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
+            btn_check_fasting.setOnClickListener(v -> {
 
-                    //如果以記錄斷食
-                    if (isFastingRecord()){
-                        Toast.makeText(getContext(), "您已記錄本次斷食了噢", Toast.LENGTH_SHORT).show();
-                        navigateToRecord(1);
-                    }else{
-                        //導至斷食完成的頁面，讓使ˇ用者記錄此次心得感想體重之類
-                        saveFastingData(true);
-                        navigateToRecord(0);
-                    }
-
+                //如果以記錄斷食
+                if (isFastingRecord()){
+                    Toast.makeText(getContext(), "您已記錄本次斷食了噢", Toast.LENGTH_SHORT).show();
+                    navigateToRecord(1);
+                }else{
+                    //導至斷食完成的頁面，讓使ˇ用者記錄此次心得感想體重之類
+                    saveFastingData(true);
+                    navigateToRecord(0);
                 }
+
             });
 
-            bt_eat.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(Frag1.super.getContext(), foodClassification.class));
-                }
-            });
+            bt_eat.setOnClickListener(view -> startActivity(new Intent(Frag1.super.getContext(), foodClassification.class)));
 
 //            img_notification.setOnClickListener(new View.OnClickListener() {
 //                @Override
@@ -280,39 +236,34 @@ public class Frag1 extends Fragment implements View.OnClickListener {
 //                }
 //            });
             //結束斷食紐按下
-            end_fasting.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
+            end_fasting.setOnClickListener(view -> {
 
-                    LayoutInflater inflater = LayoutInflater.from(getContext());
-                    final View v = inflater.inflate(R.layout.end_fasting_alert, null);
-                    new AlertDialog.Builder(getContext())
-                            .setView(v)
-                            .setPositiveButton("確定", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    //導向到斷食完成的activity (Fasting_Complete)
-                                    startActivity(new Intent(Frag1.super.getContext(), Fasting_Complete.class));
+                LayoutInflater inflater1 = LayoutInflater.from(getContext());
+                final View v = inflater1.inflate(R.layout.end_fasting_alert, null);
+                new AlertDialog.Builder(getContext())
+                        .setView(v)
+                        .setPositiveButton("確定", (dialog, which) -> {
+                            //導向到斷食完成的activity (Fasting_Complete)
+                            startActivity(new Intent(Frag1.super.getContext(), Fasting_Complete.class));
 
-                                    Cursor res = myDb.getAllData();
-                                    FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
-                                    String uid = null;
-                                    if (user != null) {
-                                        //取得使用者的id
-                                        uid = user.getUid();
-                                    }
-                                    while (res.moveToNext()) {
-                                        //刪除該使用者id的資料
-                                        if(uid.equals(res.getString(4))){
-                                            myDb.deleteData(uid);
-                                        }
-                                    }
+                            Cursor res1 = myDb.getAllData();
+                            FirebaseUser user1 = FirebaseAuth.getInstance().getCurrentUser();
+                            String uid1 = null;
+                            if (user1 != null) {
+                                //取得使用者的id
+                                uid1 = user1.getUid();
+                            }
+                            while (res1.moveToNext()) {
+                                //刪除該使用者id的資料
+                                assert uid1 != null;
+                                if(uid1.equals(res1.getString(4))){
+                                    myDb.deleteData(uid1);
                                 }
-                            })
-                            .show();
+                            }
+                        })
+                        .show();
 
 
-                }
             });
         }else{
             //如果start_time無值
@@ -320,57 +271,19 @@ public class Frag1 extends Fragment implements View.OnClickListener {
             fragment_frag1 = inflater.inflate(R.layout.fragment_frag1_fasting_plan, container, false);
             init2(fragment_frag1);
 
-            plan1.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(Frag1.super.getContext(), FastingPlan1.class));
-                }
-            });
-            plan2.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(Frag1.super.getContext(), FastingPlan2.class));
-                }
-            });
-            plan3.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(Frag1.super.getContext(), FastingPlan3.class));
-                }
-            });
-            plan4.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    startActivity(new Intent(Frag1.super.getContext(), FastingPlan4.class));
-                }
-            });
+            plan1.setOnClickListener(view -> startActivity(new Intent(Frag1.super.getContext(), FastingPlan1.class)));
+            plan2.setOnClickListener(view -> startActivity(new Intent(Frag1.super.getContext(), FastingPlan2.class)));
+            plan3.setOnClickListener(view -> startActivity(new Intent(Frag1.super.getContext(), FastingPlan3.class)));
+            plan4.setOnClickListener(view -> startActivity(new Intent(Frag1.super.getContext(), FastingPlan4.class)));
         }
 
         return fragment_frag1;
     }
-    @Override
-    public void onResume() {
-        super.onResume();
-        String tutorialKey = "SOME_KEY";
-        Boolean firstTime = this.getActivity().getPreferences(MODE_PRIVATE).getBoolean(tutorialKey, true);
-        if (firstTime) {
-            showcaseView = new ShowcaseView.Builder(Frag1.super.getActivity(),true)
-                    .withMaterialShowcase()
-                    .setStyle(R.style.CustomShowcaseTheme3)
-                    .setTarget(new ViewTarget(fragment_frag1.findViewById(R.id.dynamicArcView)))
-                    .setContentTitle("進度條")
-                    .setContentText("清楚了解目前段時狀況")
-                    .setOnClickListener(this)
-                    .build();
-            showcaseView.setButtonText(getString(R.string.next));
-            fastingplan.setEnabled(false);
-            this.getActivity().getPreferences(MODE_PRIVATE).edit().putBoolean(tutorialKey, false).apply();
-        }
-    }
+
     private void navigateToRecord(int status) {
 
         Date date = new Date();
-        SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
+        @SuppressLint("SimpleDateFormat") SimpleDateFormat df = new SimpleDateFormat("yyyy/MM/dd");
         int target_day = 0;
         //如果現在的時間在結束時間之後
         if (date.after(end_date.get(end_date.size()-1))){
@@ -420,6 +333,7 @@ public class Frag1 extends Fragment implements View.OnClickListener {
         return isRecorded;
     }
 
+    @SuppressLint("SetTextI18n")
     private void water() {
         waveLoadingView1.setProgressValue(0);
         waveLoadingView2.setProgressValue(0);
@@ -432,35 +346,26 @@ public class Frag1 extends Fragment implements View.OnClickListener {
         waveLoadingView9.setProgressValue(0);
         waveLoadingView10.setProgressValue(0);
 
-        tv_add.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                water+=1;
-                cc+=200;
-                ccc();
-                tv_water.setText(String.valueOf(water));
-                tv_cc.setText(cc+" cc");
-            }
+        tv_add.setOnClickListener(view -> {
+            water+=1;
+            cc+=200;
+            ccc();
+            tv_water.setText(String.valueOf(water));
+            tv_cc.setText(cc+" cc");
         });
-        tv_drop.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(water==0){
-                    water = 0;
-                    cc = 0;
-                    ccc();
-                    tv_water.setText(String.valueOf(water));
-                    tv_cc.setText(cc+" cc");
+        tv_drop.setOnClickListener(view -> {
+            if(water==0){
+                water = 0;
+                cc = 0;
 
-                }else{
-                    water-=1;
-                    cc-=200;
-                    ccc();
-                    tv_water.setText(String.valueOf(water));
-                    tv_cc.setText(cc+" cc");
+            }else{
+                water-=1;
+                cc-=200;
 
-                }
             }
+            ccc();
+            tv_water.setText(String.valueOf(water));
+            tv_cc.setText(cc+" cc");
         });
 
     }
@@ -611,45 +516,46 @@ public class Frag1 extends Fragment implements View.OnClickListener {
         bt_eat = v.findViewById(R.id.bt_eat);
         btn_check_fasting = v.findViewById(R.id.btn_check_fasting);
         progress = v.findViewById(R.id.tv_progress);
-        textPercentage = (TextView) v.findViewById(R.id.textPercentage);
-        decoView = (DecoView) v.findViewById(R.id.dynamicArcView);
-        status = (TextView) v.findViewById(R.id.status);
-        start = (TextView) v.findViewById(R.id.start);
-        horizontalStepView = (HorizontalStepView)v.findViewById(R.id.horizontalStepView);
-        plan1 = (LinearLayout)v.findViewById(R.id.plan1);
-        plan2 = (LinearLayout)v.findViewById(R.id.plan2);
-        plan3 = (LinearLayout)v.findViewById(R.id.plan3);
-        plan4 = (LinearLayout)v.findViewById(R.id.plan4);
-        end_fasting = (Button)v.findViewById(R.id.end_fasting);
-        fastingplan = (TextView)v.findViewById(R.id.fastingplan);
-        waveLoadingView1 = (WaveLoadingView)v.findViewById(R.id.waveLoadingView1);
-        waveLoadingView2 = (WaveLoadingView)v.findViewById(R.id.waveLoadingView2);
-        waveLoadingView3 = (WaveLoadingView)v.findViewById(R.id.waveLoadingView3);
-        waveLoadingView4 = (WaveLoadingView)v.findViewById(R.id.waveLoadingView4);
-        waveLoadingView5 = (WaveLoadingView)v.findViewById(R.id.waveLoadingView5);
-        waveLoadingView6 = (WaveLoadingView)v.findViewById(R.id.waveLoadingView6);
-        waveLoadingView7 = (WaveLoadingView)v.findViewById(R.id.waveLoadingView7);
-        waveLoadingView8 = (WaveLoadingView)v.findViewById(R.id.waveLoadingView8);
-        waveLoadingView9 = (WaveLoadingView)v.findViewById(R.id.waveLoadingView9);
-        waveLoadingView10 = (WaveLoadingView)v.findViewById(R.id.waveLoadingView10);
-        tv_add = (TextView)v.findViewById(R.id.tv_add);
-        tv_drop = (TextView)v.findViewById(R.id.tv_drop);
-        tv_water = (TextView)v.findViewById(R.id.tv_water);
-        tv_cc = (TextView)v.findViewById(R.id.tv_cc);
-        title_water = (TextView)v.findViewById(R.id.title_water);
+        textPercentage = v.findViewById(R.id.textPercentage);
+        decoView = v.findViewById(R.id.dynamicArcView);
+        status = v.findViewById(R.id.status);
+        start = v.findViewById(R.id.start);
+        horizontalStepView = v.findViewById(R.id.horizontalStepView);
+        plan1 = v.findViewById(R.id.plan1);
+        plan2 = v.findViewById(R.id.plan2);
+        plan3 = v.findViewById(R.id.plan3);
+        plan4 = v.findViewById(R.id.plan4);
+        end_fasting = v.findViewById(R.id.end_fasting);
+        fastingplan = v.findViewById(R.id.fastingplan);
+        waveLoadingView1 = v.findViewById(R.id.waveLoadingView1);
+        waveLoadingView2 = v.findViewById(R.id.waveLoadingView2);
+        waveLoadingView3 = v.findViewById(R.id.waveLoadingView3);
+        waveLoadingView4 = v.findViewById(R.id.waveLoadingView4);
+        waveLoadingView5 = v.findViewById(R.id.waveLoadingView5);
+        waveLoadingView6 = v.findViewById(R.id.waveLoadingView6);
+        waveLoadingView7 = v.findViewById(R.id.waveLoadingView7);
+        waveLoadingView8 = v.findViewById(R.id.waveLoadingView8);
+        waveLoadingView9 = v.findViewById(R.id.waveLoadingView9);
+        waveLoadingView10 = v.findViewById(R.id.waveLoadingView10);
+        tv_add = v.findViewById(R.id.tv_add);
+        tv_drop = v.findViewById(R.id.tv_drop);
+        tv_water = v.findViewById(R.id.tv_water);
+        tv_cc = v.findViewById(R.id.tv_cc);
+        title_water = v.findViewById(R.id.title_water);
         //img_notification = v.findViewById(R.id.iv_bells);
     }
     private void init2(View v) {
-        plan1 = (LinearLayout)v.findViewById(R.id.plan1);
-        plan2 = (LinearLayout)v.findViewById(R.id.plan2);
-        plan3 = (LinearLayout)v.findViewById(R.id.plan3);
-        plan4 = (LinearLayout)v.findViewById(R.id.plan4);
+        plan1 = v.findViewById(R.id.plan1);
+        plan2 = v.findViewById(R.id.plan2);
+        plan3 = v.findViewById(R.id.plan3);
+        plan4 = v.findViewById(R.id.plan4);
 
     }
 
 
 
     private final Runnable updateRunner = new Runnable() {
+        @SuppressLint("SetTextI18n")
         @Override
         public void run() {
 
@@ -657,7 +563,7 @@ public class Frag1 extends Fragment implements View.OnClickListener {
 
             Date date=new Date();
             long now_time =  date.getTime();
-            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 
             //如果今天的日期超過最後一個end_date(使用者閒置過久)
             if (date.after(end_date.get(6))) index = 7;
@@ -800,7 +706,7 @@ public class Frag1 extends Fragment implements View.OnClickListener {
                 .setChartStyle(SeriesItem.ChartStyle.STYLE_DONUT)
                 .build();
 
-        series1Index = decoView.addSeries(seriesItem1);
+        int series1Index = decoView.addSeries(seriesItem1);
         decoView.addEvent(new DecoEvent.Builder(Math.round((progress*100))).setIndex(series1Index).setDuration(1500).build());
     }
 
@@ -820,6 +726,7 @@ public class Frag1 extends Fragment implements View.OnClickListener {
         }
     }
     //獲取相差的時數
+    @SuppressLint("DefaultLocale")
     public String getTimeLeft(long time){
         long hour = time/(60*60);
         long min = (time%(60*60))/(60);
@@ -832,14 +739,13 @@ public class Frag1 extends Fragment implements View.OnClickListener {
         Calendar cal2 = Calendar.getInstance();
         cal1.setTime(current);
         cal2.setTime(compare);
-        boolean sameDay = cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
-                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
 
-        return sameDay;
+        return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
     }
     //取得當前進時斷食進度的百分底
-    public String getPercent(long now_time,boolean isRest){
-        DecimalFormat df1 = new DecimalFormat("");
+    @SuppressLint("DefaultLocale")
+    public String getPercent(long now_time, boolean isRest){
         //如果是休息時間
         if (isRest){
             long startTime = start_time.get(index);
@@ -850,9 +756,8 @@ public class Frag1 extends Fragment implements View.OnClickListener {
             //Log.e("percent",1-restTimeLeft+"");
             //休息時間是越來越少
             //所以得用1-x才能表現出目前休息進度
-            String percent = String.format("%.2f", (1-restTimeLeft));
 
-            return percent;
+            return String.format("%.2f", (1-restTimeLeft));
         }else {
             //如果是斷食時間
             long startTime = start_time.get(index);
@@ -861,8 +766,7 @@ public class Frag1 extends Fragment implements View.OnClickListener {
             double fastTimeLeft =  (now_time-startTime)/(double)(total);
             //Log.e("percent",(now_time-startTime)+"，"+total);
             //Log.e("percent",fastTimeLeft+"");
-            String percent =String.format("%.2f", fastTimeLeft);
-            return percent;
+            return String.format("%.2f", fastTimeLeft);
         }
     }
 

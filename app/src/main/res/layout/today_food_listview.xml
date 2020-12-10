@@ -11,12 +11,13 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        tools:ignore="UselessParent">
         <TextView
             android:id="@+id/meal"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="第 N 餐"
+            android:text="@string/NumberOfMeals"
             android:textSize="25sp"
             android:textStyle="italic"
             android:layout_marginStart="20sp"/>

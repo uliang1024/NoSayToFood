@@ -8,13 +8,13 @@
     tools:context=".fasting.FirstFasting">
 
     <TextView
-        android:id="@+id/textView"
         android:layout_width="match_parent"
         android:layout_height="64dp"
         android:gravity="center"
         android:text="設定七日斷食計畫"
-        android:textSize="50dp"
-        tools:layout_editor_absoluteY="29dp" />
+        android:textSize="50sp"
+        tools:layout_editor_absoluteY="29dp"
+        tools:ignore="HardcodedText" />
 
     <View
         android:layout_width="match_parent"
@@ -28,7 +28,6 @@
         android:layout_height="wrap_content">
 
         <LinearLayout
-            android:id="@+id/set_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="vertical">
@@ -48,27 +47,39 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="30dp"
                     android:padding="5dp"
-                    app:srcCompat="@drawable/one" />
+                    app:srcCompat="@drawable/one"
+                    tools:ignore="ContentDescription" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right"
                     android:orientation="vertical"
-                    android:padding="20sp">
+                    android:padding="20sp"
+                    tools:ignore="RtlHardcoded">
 
-                    <TextView
+                    <LinearLayout
+                        android:id="@+id/teaching"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="斷食區間"
-                        android:textSize="20sp" />
+                        android:orientation="vertical"
+                        tools:ignore="UselessParent">
 
-                    <TextView
-                        android:id="@+id/time1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingTop="5dp"
-                        android:text="" />
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="斷食區間"
+                            android:textSize="20sp"
+                            tools:ignore="HardcodedText" />
+
+                        <TextView
+                            android:id="@+id/time1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:paddingTop="5dp"
+                            android:text="" />
+
+                    </LinearLayout>
 
                 </LinearLayout>
 
@@ -89,20 +100,23 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="30dp"
                     android:padding="5dp"
-                    app:srcCompat="@drawable/two" />
+                    app:srcCompat="@drawable/two"
+                    tools:ignore="ContentDescription" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right"
                     android:orientation="vertical"
-                    android:padding="20sp">
+                    android:padding="20sp"
+                    tools:ignore="RtlHardcoded">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="斷食區間"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/time2"
@@ -130,20 +144,23 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="30dp"
                     android:padding="5dp"
-                    app:srcCompat="@drawable/three" />
+                    app:srcCompat="@drawable/three"
+                    tools:ignore="ContentDescription" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right"
                     android:orientation="vertical"
-                    android:padding="20sp">
+                    android:padding="20sp"
+                    tools:ignore="RtlHardcoded">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="斷食區間"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/time3"
@@ -171,20 +188,23 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="30dp"
                     android:padding="5dp"
-                    app:srcCompat="@drawable/four" />
+                    app:srcCompat="@drawable/four"
+                    tools:ignore="ContentDescription" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right"
                     android:orientation="vertical"
-                    android:padding="20sp">
+                    android:padding="20sp"
+                    tools:ignore="RtlHardcoded">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="斷食區間"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/time4"
@@ -212,20 +232,23 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="30dp"
                     android:padding="5dp"
-                    app:srcCompat="@drawable/five" />
+                    app:srcCompat="@drawable/five"
+                    tools:ignore="ContentDescription" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right"
                     android:orientation="vertical"
-                    android:padding="20sp">
+                    android:padding="20sp"
+                    tools:ignore="RtlHardcoded">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="斷食區間"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/time5"
@@ -253,20 +276,23 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="30dp"
                     android:padding="5dp"
-                    app:srcCompat="@drawable/six" />
+                    app:srcCompat="@drawable/six"
+                    tools:ignore="ContentDescription" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right"
                     android:orientation="vertical"
-                    android:padding="20sp">
+                    android:padding="20sp"
+                    tools:ignore="RtlHardcoded">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="斷食區間"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/time6"
@@ -294,20 +320,23 @@
                     android:layout_gravity="center"
                     android:layout_marginStart="30dp"
                     android:padding="5dp"
-                    app:srcCompat="@drawable/seven" />
+                    app:srcCompat="@drawable/seven"
+                    tools:ignore="ContentDescription" />
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:gravity="right"
                     android:orientation="vertical"
-                    android:padding="20sp">
+                    android:padding="20sp"
+                    tools:ignore="RtlHardcoded">
 
                     <TextView
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="斷食區間"
-                        android:textSize="20sp" />
+                        android:textSize="20sp"
+                        tools:ignore="HardcodedText" />
 
                     <TextView
                         android:id="@+id/time7"
@@ -328,7 +357,8 @@
                 android:background="#28B463"
                 android:text="完成"
                 android:textColor="#424949"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                tools:ignore="HardcodedText,RtlHardcoded" />
         </LinearLayout>
 
 

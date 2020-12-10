@@ -12,7 +12,6 @@
         android:layout_above="@+id/show">
 
         <ImageView
-            android:id="@+id/imageView3"
             android:layout_width="50dp"
             android:layout_height="200dp"
             android:layout_alignParentTop="true"
@@ -20,7 +19,8 @@
             android:layout_marginTop="63dp"
             android:layout_marginEnd="7dp"
             android:scaleType="fitXY"
-            app:srcCompat="@drawable/chopsticks" />
+            app:srcCompat="@drawable/chopsticks"
+            tools:ignore="ContentDescription" />
 
         <Button
             android:id="@+id/bt_milk"
@@ -29,7 +29,8 @@
             android:layout_marginStart="15dp"
             android:layout_marginTop="25dp"
             android:background="@drawable/milk_button_circle"
-            android:text="乳品類"/>
+            android:text="乳品類"
+            tools:ignore="HardcodedText" />
 
 
 
@@ -57,7 +58,7 @@
                 android:paddingTop="30dp"
                 android:paddingEnd="30dp"
                 android:layout_margin="5dp"
-                />
+                tools:ignore="HardcodedText,RtlSymmetry" />
 <LinearLayout
     android:layout_width="wrap_content"
     android:layout_height="match_parent"
@@ -71,7 +72,8 @@
         android:layout_height="match_parent"
         android:background="@drawable/vegetables_button_rounde"
         android:text="蔬菜類"
-        android:layout_margin="3dp"/>
+        android:layout_margin="3dp"
+        tools:ignore="HardcodedText" />
 
     <Button
         android:id="@+id/bt_fruit"
@@ -80,7 +82,8 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:background="@drawable/meet_button_rounde"
-        android:layout_margin="3dp" />
+        android:layout_margin="3dp"
+        tools:ignore="HardcodedText" />
     <Button
         android:layout_weight="1"
         android:id="@+id/bt_oil"
@@ -88,7 +91,8 @@
         android:layout_height="match_parent"
         android:background="@drawable/button_circle"
         android:text="堅果種子類"
-        android:layout_margin="3dp" />
+        android:layout_margin="3dp"
+        tools:ignore="HardcodedText" />
 </LinearLayout>
 
 
@@ -104,7 +108,8 @@
                 肉
                 類"
                 android:gravity="top|center_horizontal"
-                android:paddingTop="10dp"/>
+                android:paddingTop="10dp"
+                tools:ignore="HardcodedText" />
 
 
 
@@ -116,24 +121,21 @@
         android:layout_width="match_parent"
         android:layout_height="375dp"
         android:layout_alignParentStart="true"
-        android:layout_alignParentLeft="true"
         android:layout_alignParentBottom="true"
         android:background="@drawable/food_record_rounde"
         android:layout_margin="20dp">
 
         <TextView
-            android:id="@+id/textView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_alignParentLeft="true"
             android:layout_alignParentTop="true"
             android:layout_marginStart="20dp"
-            android:layout_marginLeft="20dp"
             android:layout_marginTop="22dp"
             android:text="本次用餐:"
-            android:textSize="25dp"
-            android:textStyle="bold" />
+            android:textSize="25sp"
+            android:textStyle="bold"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/bt_recommend"
@@ -146,19 +148,20 @@
             android:text="推薦"
             android:textSize="15sp"
             android:textStyle="bold"
-            android:background="#ffffff"/>
+            android:background="#ffffff"
+            tools:ignore="HardcodedText" />
 
         <Button
             android:id="@+id/bt_what"
             android:layout_width="40dp"
             android:layout_height="40dp"
-            android:text="?"
+            android:text="？"
             android:layout_alignParentTop="true"
             android:layout_alignParentEnd="true"
             android:layout_marginTop="22dp"
             android:layout_marginEnd="10dp"
             android:background="@drawable/circle_progress"
-            />
+            tools:ignore="HardcodedText" />
 
         <ListView
             android:layout_width="match_parent"
@@ -176,12 +179,11 @@
             android:layout_width="147dp"
             android:layout_height="wrap_content"
             android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
             android:layout_alignParentBottom="true"
             android:layout_marginEnd="37dp"
-            android:layout_marginRight="37dp"
             android:layout_marginBottom="49dp"
             android:background="@drawable/button_rounde"
-            android:text="完成紀錄" />
+            android:text="完成紀錄"
+            tools:ignore="HardcodedText" />
     </RelativeLayout>
 </RelativeLayout>

@@ -6,8 +6,6 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-import androidx.annotation.Nullable;
-
 public class PersonalInformation extends SQLiteOpenHelper {
 
     public static final int DATABASE_VERSION = 1;
@@ -63,16 +61,12 @@ public class PersonalInformation extends SQLiteOpenHelper {
         contentValues.put(COL_7,body_fat_percentage);
         contentValues.put(COL_8,activity);
         long result = db.insert(TABLE_NAME1,null ,contentValues);
-        if(result == -1)
-            return false;
-        else
-            return true;
+        return result != -1;
     }
 
     public Cursor getAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from "+TABLE_NAME1,null);
-        return res;
+        return db.rawQuery("select * from "+TABLE_NAME1,null);
     }
 
 
@@ -85,7 +79,7 @@ public class PersonalInformation extends SQLiteOpenHelper {
         return true;
     }
 
-    public boolean updateData2(String uid,String Gender,Integer Age,Float Height ,Float Body_fat_percentage,Integer Activity) {
+    public void updateData2(String uid, String Gender, Integer Age, Float Height , Float Body_fat_percentage, Integer Activity) {
         SQLiteDatabase db = this.getWritableDatabase();
         ContentValues contentValues = new ContentValues();
         contentValues.put(COL_1,uid);
@@ -95,7 +89,6 @@ public class PersonalInformation extends SQLiteOpenHelper {
         contentValues.put(COL_7,Body_fat_percentage);
         contentValues.put(COL_8,Activity);
         db.update(TABLE_NAME1, contentValues, "UID = ?",new String[] { uid });
-        return true;
     }
     public boolean updateBodyData(String uid,Float Height,Float Weight,Float Waistline,Float Body_fat_percentage) {
         SQLiteDatabase db = this.getWritableDatabase();
@@ -110,8 +103,8 @@ public class PersonalInformation extends SQLiteOpenHelper {
         return true;
     }
 
-    public Integer deleteData (String id) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME1, "ID = ?",new String[] {id});
-    }
+//    public Integer deleteData (String id) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        return db.delete(TABLE_NAME1, "ID = ?",new String[] {id});
+//    }
 }

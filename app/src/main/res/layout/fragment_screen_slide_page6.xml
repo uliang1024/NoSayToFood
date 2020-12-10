@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/content"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#e8dfd2">
     <LinearLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        tools:ignore="UselessParent">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -17,25 +18,28 @@
                 android:lineSpacingMultiplier="1.2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="25dp"
-                android:text="油脂與堅果種子類" />
+                android:textSize="25sp"
+                android:text="油脂與堅果種子類"
+                tools:ignore="HardcodedText" />
 
             <TextView
                 android:id="@+id/goodbye"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="    返回    "
-                android:textSize="20dp"
+                android:textSize="20sp"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_margin="10dp"/>
+                android:layout_margin="10dp"
+                tools:ignore="HardcodedText" />
 
         </RelativeLayout>
 
         <ImageView
             android:layout_width="match_parent"
             android:layout_height="400dp"
-            android:src="@drawable/good_oil"/>
+            android:src="@drawable/good_oil"
+            tools:ignore="ContentDescription" />
 
 
     </LinearLayout>

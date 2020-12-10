@@ -9,7 +9,8 @@
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+        tools:ignore="ScopedStorage" />
 
     <application
         android:allowBackup="true"
@@ -17,8 +18,11 @@
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme.NoActionBar.FullScreen">
-        <activity android:name=".fasting.FastingPlan4"></activity>
+        android:theme="@style/AppTheme.NoActionBar.FullScreen"
+        android:fullBackupContent="@xml/backup_descriptor"
+        tools:ignore="AllowBackup">
+        <activity android:name=".ui.home.Fasting_Teaching" />
+        <activity android:name=".fasting.FastingPlan4" />
         <activity android:name=".fasting.FastingPlan3" />
         <activity android:name=".fasting.FastingPlan2" />
         <activity android:name=".LoginActivity" />
@@ -26,8 +30,7 @@
         <activity android:name=".EmailLogin" />
         <activity android:name=".ui.profile.About" />
         <activity android:name=".food.ScreenSlidePagerActivity" />
-        <activity android:name=".manager.ManagerPage"></activity>
-        <activity android:name=".ui.profile.UserEdit" />
+        <activity android:name=".manager.ManagerPage" />
         <activity android:name=".RecordThis" />
         <activity android:name=".ui.dashboard.OneFoodRecord" />
         <activity android:name=".ui.profile.PersonalProfile" />
@@ -50,7 +53,6 @@
         <activity android:name=".fasting.FirstFasting" />
         <activity android:name=".first.HelloUser" />
         <activity android:name=".ui.dashboard.Food_Record" />
-        <activity android:name=".BodyInformation.Weight_scale" />
         <activity
             android:name=".HomeActivity"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize|uiMode"
@@ -102,8 +104,7 @@
         <activity
             android:name="com.theartofdev.edmodo.cropper.CropImageActivity"
             android:theme="@style/Base.Theme.AppCompat" />
-
-        <activity android:name=".UpdatePostingActivity"/>
+        <activity android:name=".UpdatePostingActivity" />
     </application>
 
 </manifest>

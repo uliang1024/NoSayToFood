@@ -50,16 +50,12 @@ public class BodyRecord extends SQLiteOpenHelper {
         Log.e("body data inserted :","ID:"+uid+"weight:"+kg+"height:"+Height+"waist:"+Waist+"fat data:"+BodyFat+"date:"+date);
 
         long result = db.insert(TABLE_NAME,null ,contentValues);
-        if(result == -1)
-            return false;
-        else
-            return true;
+        return result != -1;
     }
 
     public Cursor getAllData() {
         SQLiteDatabase db = this.getWritableDatabase();
-        Cursor res = db.rawQuery("select * from "+TABLE_NAME+" order by TS asc ",null);
-        return res;
+        return db.rawQuery("select * from "+TABLE_NAME+" order by TS asc ",null);
     }
 
     public boolean updateWeightData(Integer id, Float kg,Float waist,Float fat,Long timestamp) {
@@ -87,8 +83,8 @@ public class BodyRecord extends SQLiteOpenHelper {
         return true;
     }
 
-    public Integer deleteData (String uid) {
-        SQLiteDatabase db = this.getWritableDatabase();
-        return db.delete(TABLE_NAME, "Uid = ?",new String[] {uid});
-    }
+//    public Integer deleteData (String uid) {
+//        SQLiteDatabase db = this.getWritableDatabase();
+//        return db.delete(TABLE_NAME, "Uid = ?",new String[] {uid});
+//    }
 }

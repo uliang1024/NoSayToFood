@@ -1,20 +1,12 @@
 package info.androidhive.firebaseauthapp;
 
-import androidx.annotation.NonNull;
-import androidx.appcompat.app.AlertDialog;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.job.JobInfo;
 import android.app.job.JobScheduler;
 import android.content.ComponentName;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Build;
 import android.os.Bundle;
@@ -22,6 +14,14 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MenuItem;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 
 import com.facebook.stetho.Stetho;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -45,12 +45,10 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
         Stetho.initializeWithDefaults(this);
-        Log.e("run","執行onCreate");
 
-        //loading the default fragment
+        //加載 fragment
         loadFragment(new HomeFragment());
 
-        //getting bottom navigation view and attaching the listener
         navigation = findViewById(R.id.navigation);
         navigation.setOnNavigationItemSelectedListener(this);
         //設定提醒
@@ -134,6 +132,7 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
         Log.e("job canceled","job has been canceled");
     }
 
+    @SuppressLint("NonConstantResourceId")
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         Fragment fragment = null;
@@ -247,20 +246,12 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
             final AlertDialog.Builder builder = new AlertDialog.Builder(this);
             builder.setMessage("離開app");
             builder.setCancelable(true);
-            builder.setNegativeButton("我想再看看", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    dialog.cancel();
-                }
-            });
-            builder.setPositiveButton("(揮淚狠心離去)", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    Intent i = new Intent(Intent.ACTION_MAIN);
-                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    i.addCategory(Intent.CATEGORY_HOME);
-                    startActivity(i);
-                }
+            builder.setNegativeButton("我想再看看", (dialog, which) -> dialog.cancel());
+            builder.setPositiveButton("(揮淚狠心離去)", (dialog, which) -> {
+                Intent i = new Intent(Intent.ACTION_MAIN);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                i.addCategory(Intent.CATEGORY_HOME);
+                startActivity(i);
             });
             AlertDialog alertDialog = builder.create();
             alertDialog.show();
@@ -274,46 +265,7 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         // TODO Auto-generated method stub
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-            return super.onKeyDown(keyCode, event);
-        }
-//        switch (keyCode) {
-//            case KeyEvent.KEYCODE_MEDIA_PLAY:
-//                Toast.makeText(this, "KEYCODE_MEDIA_PLAY", Toast.LENGTH_SHORT).show();
-//                AudioManager amanager=(AudioManager)getSystemService(Context.AUDIO_SERVICE);
-//                amanager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, AudioManager.FLAG_SHOW_UI + AudioManager.FLAG_PLAY_SOUND,AudioManager.ADJUST_RAISE);
-//                return true;
-//        }
-
-//        if (keyCode == KeyEvent.KEYCODE_BACK) { // 攔截返回鍵
-//            new AlertDialog.Builder(HomeActivity.this)
-//                    .setTitle("確認視窗")
-//                    .setMessage("確定要結束應用程式嗎?")
-//                    .setPositiveButton("確定",
-//                            new DialogInterface.OnClickListener() {
-//
-//                                @Override
-//                                public void onClick(DialogInterface dialog,
-//                                                    int which) {
-//                                    Intent i = new Intent(Intent.ACTION_MAIN);
-//                                    i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-//                                    i.addCategory(Intent.CATEGORY_HOME);
-//                                    startActivity(i);
-//                                }
-//                            })
-//                    .setNegativeButton("取消",
-//                            new DialogInterface.OnClickListener() {
-//
-//                                @Override
-//                                public void onClick(DialogInterface dialog,
-//                                                    int which) {
-//                                    // TODO Auto-generated method stub
-//
-//                                }
-//                            }).show();
-//        }
-        return true;
+        return super.onKeyDown(keyCode, event);
     }
 
 

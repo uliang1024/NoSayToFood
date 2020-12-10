@@ -10,7 +10,7 @@ public class FastingPlan extends SQLiteOpenHelper {
         public static final int DATABASE_VERSION = 1;
         public static final String DATABASE_NAME = "mydb.db";
         public static final String TABLE_NAME = "FastingPlan";
-        public static final String COL_1 = "ID";
+//        public static final String COL_1 = "ID";
         public static final String COL_2 = "Start_time";
         public static final String COL_3 = "End_time";
         public static final String COL_4 = "Off_day";
@@ -45,31 +45,27 @@ public class FastingPlan extends SQLiteOpenHelper {
             contentValues.put(COL_6,now_time);
             contentValues.put(COL_7,day);
             long result = db.insert(TABLE_NAME,null ,contentValues);
-            if(result == -1)
-                return false;
-            else
-                return true;
+            return result != -1;
         }
 
         public Cursor getAllData() {
             SQLiteDatabase db = this.getWritableDatabase();
-            Cursor res = db.rawQuery("select * from "+TABLE_NAME,null);
-            return res;
+            return db.rawQuery("select * from "+TABLE_NAME,null);
         }
 
-        public boolean updateData(Integer id, long start_time, long end_time, Integer off_day,String uid,long now_time,Integer day) {
-            SQLiteDatabase db = this.getWritableDatabase();
-            ContentValues contentValues = new ContentValues();
-            contentValues.put(COL_1,id);
-            contentValues.put(COL_2,start_time);
-            contentValues.put(COL_3,end_time);
-            contentValues.put(COL_4,off_day);
-            contentValues.put(COL_5,uid);
-            contentValues.put(COL_6,now_time);
-            contentValues.put(COL_7,day);
-            db.update(TABLE_NAME, contentValues, "ID = ?",new String[] {String.valueOf(id)});
-            return true;
-        }
+//        public boolean updateData(Integer id, long start_time, long end_time, Integer off_day,String uid,long now_time,Integer day) {
+//            SQLiteDatabase db = this.getWritableDatabase();
+//            ContentValues contentValues = new ContentValues();
+//            contentValues.put(COL_1,id);
+//            contentValues.put(COL_2,start_time);
+//            contentValues.put(COL_3,end_time);
+//            contentValues.put(COL_4,off_day);
+//            contentValues.put(COL_5,uid);
+//            contentValues.put(COL_6,now_time);
+//            contentValues.put(COL_7,day);
+//            db.update(TABLE_NAME, contentValues, "ID = ?",new String[] {String.valueOf(id)});
+//            return true;
+//        }
 
         public Integer deleteData (String uid) {
             SQLiteDatabase db = this.getWritableDatabase();
