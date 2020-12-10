@@ -82,8 +82,6 @@ public class MainActivity extends AppCompatActivity {
         title = (TextView)findViewById(R.id.title);
         button2 = (TextView)findViewById(R.id.button2);
         banner.setVisibility(View.GONE);
-        handler.removeCallbacks(updateTimer);//設定定時要執行的方法
-        handler.postDelayed(updateTimer, 0);//設定Delay的時間
         button.setVisibility(View.GONE);
 
         Calendar calendar= Calendar.getInstance();
