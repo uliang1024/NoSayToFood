@@ -18,7 +18,7 @@ public class Fasting_Teaching extends AppCompatActivity {
         TextView tv_leave = findViewById(R.id.tv_leave);
 
         tv_leave.setOnClickListener(v -> {
-            startActivity(new Intent(Fasting_Teaching.this, Frag1.class));
+            //startActivity(new Intent(Fasting_Teaching.this, Frag1.class));
             finish();
         });
     }

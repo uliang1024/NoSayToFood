@@ -15,6 +15,7 @@ import android.widget.RemoteViews;
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
 
+import java.security.Provider;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -47,6 +48,7 @@ public class FastTimerService extends Service {
     public void onCreate() {
         Log.e("service created","created");
         super.onCreate();
+        create_notification(null);
     }
 
     @Override
@@ -57,55 +59,131 @@ public class FastTimerService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-        ArrayList<String> getStartDates = intent.getStringArrayListExtra("inputStartDates");
-        ArrayList<String> getEndDates = intent.getStringArrayListExtra("inputEndDates");
-        off_day = intent.getIntegerArrayListExtra("inputOffDates");
+//        ArrayList<String> getStartDates = intent.getStringArrayListExtra("inputStartDates");
+//        ArrayList<String> getEndDates = intent.getStringArrayListExtra("inputEndDates");
+//        off_day = intent.getIntegerArrayListExtra("inputOffDates");
+//        int status_code = intent.getIntExtra("status_code",3);
+//
+//        if (status_code == 1){
+//            start_times = new ArrayList<>();
+//            end_times = new ArrayList<>();
+//            for (int i=0;i<=getStartDates.size()-1;i++){
+//                start_times.add(Long.parseLong(getStartDates.get(i)));
+//                end_times.add(Long.parseLong(getEndDates.get(i)));
+//            }
+//
+//            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+//            start_dates = new ArrayList<>();
+//            end_dates = new ArrayList<>();
+//            for (int i=0;i<=getStartDates.size()-1;i++){
+//                Date date = new Date();
+//                date.setTime(start_times.get(i));
+//                start_dates.add(date);
+//                date.setTime(end_times.get(i));
+//                end_dates.add(date);
+//            }
+//            Log.e("service data",start_dates+"");
+//            Log.e("service data",end_dates+"");
+//
+//            //notificationView = new RemoteViews.RemoteView(getPackageName(), R.layout.notification_layout);
+//            collapsedView = new RemoteViews(getPackageName(),
+//                    R.layout.notification_layout);
+//
+//            Intent navigationIntent = new Intent(this,MainActivity.class);
+//            PendingIntent pendingIntent = PendingIntent.getActivity(this,0,navigationIntent,0);
+//            notification = new NotificationCompat.Builder(this,CHANNEL_ID)
+//                    //.setContentTitle("title")
+//                    .setSmallIcon(R.drawable.ic_baseline_check_24)
+//                    .setShowWhen(false)
+//                    .setPriority(NotificationCompat.PRIORITY_LOW)
+//                    .setCustomContentView(collapsedView)
+//                    .setContentIntent(pendingIntent);
+//
+//            collapsedView.setImageViewResource(R.id.notification_image,R.drawable.bells);
+//            collapsedView.setImageViewResource(R.id.notiication_go,R.drawable.ic_next);
+//
+//            //將service推至前景執行，os才不會一下子就殺掉service
+//            notificationManager.notify(1,notification.build());
+//            startForeground(1,notification.build());
+//            handler.removeCallbacks(updateRunner);
+//            handler.postDelayed(updateRunner, 0);
+//        }if (status_code == 0){
+//            //stopForeground(true);
+//            stopSelf();
+//        }
 
-        start_times = new ArrayList<>();
-        end_times = new ArrayList<>();
-        for (int i=0;i<=getStartDates.size()-1;i++){
-            start_times.add(Long.parseLong(getStartDates.get(i)));
-            end_times.add(Long.parseLong(getEndDates.get(i)));
-        }
-
-        notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        start_dates = new ArrayList<>();
-        end_dates = new ArrayList<>();
-        for (int i=0;i<=getStartDates.size()-1;i++){
-            Date date = new Date();
-            date.setTime(start_times.get(i));
-            start_dates.add(date);
-            date.setTime(end_times.get(i));
-            end_dates.add(date);
-        }
-        Log.e("service data",start_dates+"");
-        Log.e("service data",end_dates+"");
-
-        //notificationView = new RemoteViews.RemoteView(getPackageName(), R.layout.notification_layout);
-        collapsedView = new RemoteViews(getPackageName(),
-                R.layout.notification_layout);
-
-        Intent navigationIntent = new Intent(this,MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,navigationIntent,0);
-        notification = new NotificationCompat.Builder(this,CHANNEL_ID)
-                //.setContentTitle("title")
-                .setSmallIcon(R.drawable.ic_baseline_check_24)
-                .setShowWhen(false)
-                .setPriority(NotificationCompat.PRIORITY_LOW)
-                .setCustomContentView(collapsedView)
-                .setContentIntent(pendingIntent);
-
-        collapsedView.setImageViewResource(R.id.notification_image,R.drawable.bells);
-        collapsedView.setImageViewResource(R.id.notiication_go,R.drawable.ic_next);
-
-        //將service推至前景執行，os才不會一下子就殺掉service
-        notificationManager.notify(1,notification.build());
-        startForeground(1,notification.build());
-        handler.removeCallbacks(updateRunner);
-        handler.postDelayed(updateRunner, 0);
         //假如工作完成，就讓service自己結束
-
+        create_notification(intent);
         return START_REDELIVER_INTENT;
+    }
+
+    private void create_notification(Intent intent){
+        if (intent!= null){
+            ArrayList<String> getStartDates = intent.getStringArrayListExtra("inputStartDates");
+            ArrayList<String> getEndDates = intent.getStringArrayListExtra("inputEndDates");
+            off_day = intent.getIntegerArrayListExtra("inputOffDates");
+            int status_code = intent.getIntExtra("status_code",3);
+
+            if (status_code == 1){
+                start_times = new ArrayList<>();
+                end_times = new ArrayList<>();
+                for (int i=0;i<=getStartDates.size()-1;i++){
+                    start_times.add(Long.parseLong(getStartDates.get(i)));
+                    end_times.add(Long.parseLong(getEndDates.get(i)));
+                }
+
+                notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+                start_dates = new ArrayList<>();
+                end_dates = new ArrayList<>();
+                for (int i=0;i<=getStartDates.size()-1;i++){
+                    Date date = new Date();
+                    date.setTime(start_times.get(i));
+                    start_dates.add(date);
+                    date.setTime(end_times.get(i));
+                    end_dates.add(date);
+                }
+                Log.e("service data",start_dates+"");
+                Log.e("service data",end_dates+"");
+
+                //notificationView = new RemoteViews.RemoteView(getPackageName(), R.layout.notification_layout);
+                collapsedView = new RemoteViews(getPackageName(),
+                        R.layout.notification_layout);
+
+                Intent navigationIntent = new Intent(this,MainActivity.class);
+                PendingIntent pendingIntent = PendingIntent.getActivity(this,0,navigationIntent,0);
+                notification = new NotificationCompat.Builder(this,CHANNEL_ID)
+                        //.setContentTitle("title")
+                        .setSmallIcon(R.drawable.ic_baseline_check_24)
+                        .setShowWhen(false)
+                        .setPriority(NotificationCompat.PRIORITY_LOW)
+                        .setCustomContentView(collapsedView)
+                        .setContentIntent(pendingIntent);
+
+                collapsedView.setImageViewResource(R.id.notification_image,R.drawable.bells);
+                collapsedView.setImageViewResource(R.id.notiication_go,R.drawable.ic_next);
+
+                //將service推至前景執行，os才不會一下子就殺掉service
+                notificationManager.notify(1,notification.build());
+                startForeground(1,notification.build());
+                handler.removeCallbacks(updateRunner);
+                handler.postDelayed(updateRunner, 0);
+            }if (status_code == 0){
+                handler.removeCallbacks(updateRunner);
+                stopForeground(true);
+                Log.e("stop ma foreground","get to stop!");
+                //stopSelf();
+            }
+        }else{
+            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+            notification = new NotificationCompat.Builder(this,CHANNEL_ID)
+                    //.setContentTitle("title")
+                    .setSmallIcon(R.drawable.ic_baseline_check_24)
+                    .setShowWhen(false)
+                    .setPriority(NotificationCompat.PRIORITY_LOW)
+                    .setCustomContentView(collapsedView);
+            notificationManager.notify(1,notification.build());
+            startForeground(1,notification.build());
+        }
     }
 
     private final Runnable updateRunner = new Runnable() {

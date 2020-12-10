@@ -100,7 +100,9 @@ public class Frag1 extends Fragment {
 
     public interface Frag1TimeListener{
         void onTimeChanged(ArrayList<Long> start_time,ArrayList<Long> end_time,ArrayList<Integer> off_day);
+        void onTimeFinished();
     }
+
 
     @Override
     public View onCreateView(@NonNull final LayoutInflater inflater, final ViewGroup container,
@@ -260,6 +262,7 @@ public class Frag1 extends Fragment {
                                     myDb.deleteData(uid1);
                                 }
                             }
+                            listener.onTimeFinished();
                         })
                         .show();
 

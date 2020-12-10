@@ -222,12 +222,15 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
         serviceIntent.putStringArrayListExtra("inputStartDates",start_date);
         serviceIntent.putStringArrayListExtra("inputEndDates",end_date);
         serviceIntent.putIntegerArrayListExtra("inputOffDates",off_day);
+        serviceIntent.putExtra("status_code",1);
         ContextCompat.startForegroundService(this,serviceIntent);
     }
     //停止前景執行
     public void StopService(){
+
         Intent serviceIntent = new Intent(this,FastTimerService.class);
-        stopService(serviceIntent);
+        serviceIntent.putExtra("status_code",0);
+        ContextCompat.startForegroundService(this,serviceIntent);
     }
 
     @Override
@@ -291,5 +294,10 @@ public class HomeActivity extends FragmentActivity implements BottomNavigationVi
             Log.e("get0Data","u havent choose a fasting plan");
         }
 
+    }
+
+    @Override
+    public void onTimeFinished() {
+        StopService();
     }
 }
