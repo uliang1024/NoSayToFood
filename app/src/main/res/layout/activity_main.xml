@@ -127,12 +127,12 @@
         android:layout_marginStart="80dp"
         android:layout_marginBottom="100dp"
         android:background="@drawable/popwindow_zhongjie"
+        android:contentDescription="@string/Google_SignIn"
         android:padding="20dp"
         app:srcCompat="@drawable/googleg_standard_color_18"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="85dp"
-        tools:layout_editor_absoluteY="509dp"
-        android:contentDescription="@string/Google_SignIn" />
+        tools:layout_editor_absoluteY="509dp" />
 
     <TextView
         android:id="@+id/button2"

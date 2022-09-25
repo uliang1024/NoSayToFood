@@ -12,11 +12,11 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 import info.androidhive.firebaseauthapp.adapter.ImageSwipePagerAdapter;
-import ua.zabelnikov.swipelayout.layout.listener.OnLayoutSwipedListener;
+//import ua.zabelnikov.swipelayout.layout.listener.OnLayoutSwipedListener;
+//public class ImageViewPagerActivity extends AppCompatActivity implements OnLayoutSwipedListener {
+public class ImageViewPagerActivity extends AppCompatActivity {
 
-public class ImageViewPagerActivity extends AppCompatActivity implements OnLayoutSwipedListener {
-
-    private ImageSwipePagerAdapter imageSwipePagerAdapter;
+//    private ImageSwipePagerAdapter imageSwipePagerAdapter;
     private ViewPager viewPager;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,11 +26,11 @@ public class ImageViewPagerActivity extends AppCompatActivity implements OnLayou
 
         viewPager = findViewById(R.id.viewPager);
         Intent i = getIntent();
-        ArrayList<String> imageList = i.getStringArrayListExtra("images");
+//        ArrayList<String> imageList = i.getStringArrayListExtra("images");
         int position = i.getIntExtra("position",0);
-        setUpPagerAdapter(imageList);
+//        setUpPagerAdapter(imageList);
 
-        viewPager.setAdapter(imageSwipePagerAdapter);
+//        viewPager.setAdapter(imageSwipePagerAdapter);
         viewPager.setCurrentItem(position);
         viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
@@ -50,20 +50,20 @@ public class ImageViewPagerActivity extends AppCompatActivity implements OnLayou
         });
     }
 
-    //在此接收ArrayList<String>相片
-    private void setUpPagerAdapter(ArrayList<String> imageList) {
-
-        Log.e("imageList","run success");
-        Log.e("imageList",imageList.toString());
-
-        imageSwipePagerAdapter = new ImageSwipePagerAdapter(this,imageList);
-        imageSwipePagerAdapter.setOnLayoutSwipedListener(this);
-
-    }
-
-    @Override
-    public void onLayoutSwiped() {
-        finish();
-        this.overridePendingTransition(R.anim.activity_fade_in,R.anim.activity_fade_out);
-    }
+//    //在此接收ArrayList<String>相片
+//    private void setUpPagerAdapter(ArrayList<String> imageList) {
+//
+//        Log.e("imageList","run success");
+//        Log.e("imageList",imageList.toString());
+//
+//        imageSwipePagerAdapter = new ImageSwipePagerAdapter(this,imageList);
+//        imageSwipePagerAdapter.setOnLayoutSwipedListener(this);
+//
+//    }
+//
+//    @Override
+//    public void onLayoutSwiped() {
+//        finish();
+//        this.overridePendingTransition(R.anim.activity_fade_in,R.anim.activity_fade_out);
+//    }
 }

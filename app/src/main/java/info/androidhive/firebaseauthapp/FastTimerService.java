@@ -1,6 +1,5 @@
 package info.androidhive.firebaseauthapp;
 
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
@@ -8,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.SystemClock;
 import android.util.Log;
 import android.widget.RemoteViews;
 
@@ -36,7 +34,7 @@ public class FastTimerService extends Service {
 
     RemoteViews collapsedView;
     int index ;
-    private Handler handler = new Handler();
+    private final Handler handler = new Handler();
     @Nullable
     @Override
     public IBinder onBind(Intent intent) {
@@ -86,7 +84,10 @@ public class FastTimerService extends Service {
                 R.layout.notification_layout);
 
         Intent navigationIntent = new Intent(this,MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this,0,navigationIntent,0);
+        PendingIntent pendingIntent;
+        pendingIntent = PendingIntent.getActivity(this,
+                0, navigationIntent, PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE);
+
         notification = new NotificationCompat.Builder(this,CHANNEL_ID)
                 //.setContentTitle("title")
                 .setSmallIcon(R.drawable.ic_baseline_check_24)
@@ -198,10 +199,9 @@ public class FastTimerService extends Service {
         Calendar cal2 = Calendar.getInstance();
         cal1.setTime(current);
         cal2.setTime(compare);
-        boolean sameDay = cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
-                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
 
-        return sameDay;
+        return cal1.get(Calendar.DAY_OF_YEAR) == cal2.get(Calendar.DAY_OF_YEAR) &&
+                cal1.get(Calendar.YEAR) == cal2.get(Calendar.YEAR);
     }
     public String getTimeLeft(long time){
         long hour = time/(60*60);

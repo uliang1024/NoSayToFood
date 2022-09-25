@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity {
     private static final String TAG = "FACELOG";
     private FirebaseAuth mAuth;
     private ImageView mFacrbookIma;
-    private static final int RC_SIGN_IN = 1;
+    private static final int RC_SIGN_IN = 1 ;
     private FirebaseAuth.AuthStateListener mAuthListener;
     private GoogleSignInClient mGoogleSignInClient;
     private TextView title;
@@ -99,9 +99,6 @@ public class MainActivity extends AppCompatActivity {
             }
         };
 
-
-
-
         // 配置Google登錄
         GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(getString(R.string.default_web_client_id))
@@ -119,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
             mFacrbookIma.setEnabled(false);
 
             LoginManager.getInstance().logInWithReadPermissions(MainActivity.this, Arrays.asList("email", "public_profile"));
-            LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<LoginResult>() {
+            LoginManager.getInstance().registerCallback(mCallbackManager, new FacebookCallback<>() {
                 @Override
                 public void onSuccess(LoginResult loginResult) {
                     Log.d(TAG, "facebook：成功" + loginResult);
@@ -134,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
 
 
                 @Override
-                public void onError(FacebookException error) {
+                public void onError(@NonNull FacebookException error) {
                     //出問題
                     Log.e(TAG, "facebook:錯誤", error);
                     // ...
@@ -156,6 +153,7 @@ public class MainActivity extends AppCompatActivity {
         }
 
         mAuth.addAuthStateListener(mAuthListener);
+
     }
 
     private void signIn() {
@@ -176,6 +174,8 @@ public class MainActivity extends AppCompatActivity {
 
         // 將活動結果傳遞回Facebook SDK
         mCallbackManager.onActivityResult(requestCode, resultCode, data);
+
+
         // 從GoogleSignInApi.getSignInIntent（...）啟動Intent返回的結果；
         if (requestCode == RC_SIGN_IN) {
             Task<GoogleSignInAccount> task = GoogleSignIn.getSignedInAccountFromIntent(data);
