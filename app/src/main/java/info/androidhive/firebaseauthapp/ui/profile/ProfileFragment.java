@@ -133,11 +133,11 @@ public class ProfileFragment extends Fragment {
                     .requestIdToken(getString(R.string.default_web_client_id))
                     .requestEmail()
                     .build();
-            GoogleSignIn.getClient(Objects.requireNonNull(ProfileFragment.super.getContext()), gso).signOut().addOnCompleteListener(task -> {
+            GoogleSignIn.getClient(ProfileFragment.super.requireContext(), gso).signOut().addOnCompleteListener(task -> {
                 Toast.makeText(ProfileFragment.super.getContext(), "SingOut", Toast.LENGTH_LONG).show();
                 Intent accountIntent = new Intent(ProfileFragment.super.getContext(), MainActivity.class);
                 startActivity(accountIntent);
-                Objects.requireNonNull(getActivity()).finish();
+                requireActivity().finish();
             });
         });
         ll_about.setOnClickListener(v -> {
@@ -174,7 +174,7 @@ public class ProfileFragment extends Fragment {
 
         Intent accountIntent = new Intent(ProfileFragment.super.getContext(), MainActivity.class);
         startActivity(accountIntent);
-        Objects.requireNonNull(getActivity()).finish();
+        requireActivity().finish();
     }
 
 
